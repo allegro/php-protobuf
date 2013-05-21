@@ -10,14 +10,14 @@ PHP Protobuf is PHP implementation of Google's Protocol Buffers. Parsing and ser
 
 PHP Protobuf is highly portable and has no external dependencies. Compiler is written from scratch in pure PHP. Extension has no OS-specific requirements.
 
-Extension is PECL-comliant so compilation is easy. All is needed is PHP developer tools (i.e. phpize).
+Extension is PECL-compliant so compilation is easy. All that is needed are PHP developer tools (i.e. phpize).
 
 Guide
 -----
 
 ### Compilation ###
 
-Use *protoc-php.php* script to compile your *proto* files. It requires extention to be installed.
+Use *protoc-php.php* script to compile your *proto* files. It requires extension to be installed.
 
         php protoc-php.php foo.proto
 
@@ -30,7 +30,7 @@ Use *protoc-php.php* script to compile your *proto* files. It requires extention
 
 PHP Protobuf module implements *ProtobufMessage* class which encapsulates protocol logic. Message compiled from *proto* file extends this class providing message field descriptors. Based on these descriptors *ProtobufMessage* knows how to parse and serialize messages of the given type.
 
-For each field set of accessors is generated. Methods actualy accessible are different for single value fields (*required* / *optional*) and multi-value fields (*repeated*).
+For each field a set of accessors is generated. Methods actualy accessible are different for single value fields (*required* / *optional*) and multi-value fields (*repeated*).
 
 * *required* / *optional*
 
@@ -50,7 +50,7 @@ For each field set of accessors is generated. Methods actualy accessible are dif
 
 ### Enums ###
 
-PHP does not natively support enum type. Hence enum is compiled to a class with set of contstants.
+PHP does not natively support enum type. Hence enum is compiled to a class with set of constants.
 
 Enum field is simple PHP integer type.
 
@@ -85,7 +85,7 @@ Not set value is represented by *null* type. To unset value just set its value t
 
 ### Parsing ###
 
-To parse message create message class instance and call its *parseFromString* method passing it prior serialized message. Errors encountered are signaled by throwing *Exception*. Exception message provides detailed explanation. Required fields not set are silently ignored.
+To parse message create message class instance and call its *parseFromString* method passing it prior to the serialized message. Errors encountered are signaled by throwing *Exception*. Exception message provides detailed explanation. Required fields not set are silently ignored.
 
         $packed = /* serialized FooMessage */;
         $foo = new FooMessage();
@@ -100,7 +100,7 @@ To parse message create message class instance and call its *parseFromString* me
 
 ### Serialization ###
 
-To serialize message call *serializeToString* method. It returns string containing protobuf-encoded message. Errors encountered are signaled by throwing *Exception*. Exception message provides detailed explanation. Required field not set triggers error.
+To serialize message call *serializeToString* method. It returns a string containing protobuf-encoded message. Errors encountered are signaled by throwing *Exception*. Exception message provides detailed explanation. Required field not set triggers an error.
 
         $foo = new FooMessage()
         $foo->setBar(1);
@@ -117,7 +117,7 @@ To serialize message call *serializeToString* method. It returns string containi
 
 There might be situations you need to investigate what actual content of the given message is. What *var_dump* gives on message instance is somewhat obscure.
 
-*ProtobufMessage* class comes with *dump* method which prints out a message content to the standard output. It takes one optional argument specifing whether you what to dump only set fields. By default it dumps only set fields. Pass *false* as argument to dump all fields. Format it produces is similar to *var_dump*.
+*ProtobufMessage* class comes with *dump* method which prints out a message content to the standard output. It takes one optional argument specifing whether you want to dump only set fields. By default it dumps only set fields. Pass *false* as argument to dump all fields. Format it produces is similar to *var_dump*.
 
 ### Example ###
 
