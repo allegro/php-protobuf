@@ -21,13 +21,13 @@
 
 #define PB_COMPILE_ERROR(message, ...) PB_COMPILE_ERROR_EX(getThis(), message, __VA_ARGS__)
 #define PB_COMPILE_ERROR_EX(this, message, ...) \
-	zend_throw_exception_ex(NULL, 0, "%s: compile error - " #message, Z_OBJCE_P(this)->name, __VA_ARGS__)
+	zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "%s: compile error - " #message, Z_OBJCE_P(this)->name, __VA_ARGS__)
 #define PB_CONSTANT(name) \
-	zend_declare_class_constant_long(pb_entry, #name, sizeof(#name) - 1, name)
+	zend_declare_class_constant_long(pb_entry, #name, sizeof(#name) - 1, name TSRMLS_CC)
 #define PB_FOREACH(iter, hash) \
 	for (zend_hash_internal_pointer_reset_ex((hash), (iter)); zend_hash_has_more_elements_ex((hash), (iter)) == SUCCESS; zend_hash_move_forward_ex((hash), (iter)))
 #define PB_PARSE_ERROR(message, ...) \
-	zend_throw_exception_ex(NULL, 0, "%s: parse error - " #message, getThis(), __VA_ARGS__)
+	zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "%s: parse error - " #message, getThis(), __VA_ARGS__)
 
 #define PB_CLEAR_METHOD "clear"
 #define PB_DUMP_METHOD "dump"
@@ -264,7 +264,7 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 	INIT_ZVAL(name);
 	ZVAL_STRINGL(&name, PB_CLEAR_METHOD, sizeof(PB_CLEAR_METHOD) - 1, 0);
 
-	if (call_user_function(NULL, &getThis(), &name, &zret, 0, NULL) == FAILURE)
+	if (call_user_function(NULL, &getThis(), &name, &zret, 0, NULL TSRMLS_CC) == FAILURE)
 		return;
 
 	if ((field_descriptors = pb_get_field_descriptors(getThis())) == NULL)
@@ -343,7 +343,7 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 				INIT_ZVAL(name);
 				ZVAL_STRINGL(&name, ZEND_CONSTRUCTOR_FUNC_NAME, sizeof(ZEND_CONSTRUCTOR_FUNC_NAME) - 1, 0);
 
-				if (call_user_function(NULL, &value, &name, &zret, 0, NULL) == FAILURE) {
+				if (call_user_function(NULL, &value, &name, &zret, 0, NULL TSRMLS_CC) == FAILURE) {
 					return;
 				}
 
@@ -463,7 +463,7 @@ PHP_METHOD(ProtobufMessage, serializeToString)
 			}
 
 			if (Z_BVAL_PP(required) ) {
-				zend_throw_exception_ex(NULL, 0, "%s: '%s' field is required and must be set", Z_OBJCE_P(getThis())->name, pb_get_field_name(getThis(), field_number));
+				zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "%s: '%s' field is required and must be set", Z_OBJCE_P(getThis())->name, pb_get_field_name(getThis(), field_number));
 				goto fail;
 			}
 
@@ -620,6 +620,7 @@ ZEND_GET_MODULE(protobuf)
 static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_number)
 {
 	zval **field_descriptor, *field_descriptors, tmp, **type;
+    TSRMLS_FETCH();
 
 	if ((field_descriptors = pb_get_field_descriptors(this)) == NULL)
 		goto fail0;
@@ -684,6 +685,7 @@ static int pb_dump_field_value(zval **value, long level, zend_bool only_set)
 {
 	const char *string_value;
 	zval tmp, ret, arg0, arg1, *args[2];
+    TSRMLS_FETCH();
 
 	INIT_ZVAL(tmp);
 
@@ -705,7 +707,7 @@ static int pb_dump_field_value(zval **value, long level, zend_bool only_set)
 
 		ZVAL_STRING(&tmp, PB_DUMP_METHOD, 0);
 
-		if (call_user_function(NULL, value, &tmp, &ret, 2, args) == FAILURE)
+		if (call_user_function(NULL, value, &tmp, &ret, 2, args TSRMLS_CC) == FAILURE)
 			return -1;
 		else
 			return 0;
@@ -738,6 +740,7 @@ static int pb_dump_field_value(zval **value, long level, zend_bool only_set)
 static zval **pb_get_field_descriptor(zval *this, zval *field_descriptors, uint32_t field_number)
 {
 	zval **field_descriptor = NULL;
+    TSRMLS_FETCH();
 
 	if (zend_hash_index_find(Z_ARRVAL_P(field_descriptors), field_number, (void **) &field_descriptor) == FAILURE)
 		PB_COMPILE_ERROR_EX(this, "missing %u field descriptor", field_number);
@@ -748,6 +751,7 @@ static zval **pb_get_field_descriptor(zval *this, zval *field_descriptors, uint3
 static zval **pb_get_field_type(zval *this, zval **field_descriptor, uint32_t field_number)
 {
 	zval **field_type;
+    TSRMLS_FETCH();
 
 	if (zend_hash_quick_find(Z_ARRVAL_PP(field_descriptor), PB_FIELD_TYPE, sizeof(PB_FIELD_TYPE), PB_FIELD_TYPE_HASH, (void **) &field_type) == FAILURE)
 		PB_COMPILE_ERROR_EX(this, "missing '%s' field type property in field descriptor", pb_get_field_name(this, field_number));
@@ -758,11 +762,12 @@ static zval **pb_get_field_type(zval *this, zval **field_descriptor, uint32_t fi
 static zval *pb_get_field_descriptors(zval *this)
 {
 	zval *descriptors, method;
+    TSRMLS_FETCH();
 
 	INIT_ZVAL(method);
 	ZVAL_STRINGL(&method, PB_GET_FIELDS_METHOD, sizeof(PB_GET_FIELDS_METHOD) - 1, 0);
 
-	call_user_function_ex(NULL, &this, &method, &descriptors, 0, NULL, 0, NULL TSRMLS_DC);
+	call_user_function_ex(NULL, &this, &method, &descriptors, 0, NULL, 0, NULL TSRMLS_CC);
 
 	Z_DELREF_P(descriptors);
 
@@ -772,6 +777,7 @@ static zval *pb_get_field_descriptors(zval *this)
 static const char *pb_get_field_name(zval *this, uint32_t field_number)
 {
 	zval **field_descriptor, *field_descriptors, **field_name, *this_ptr;
+    TSRMLS_FETCH();
 
 	this_ptr = this;
 
@@ -856,6 +862,7 @@ static const char *pb_get_wire_type_name(int wire_type)
 static zval **pb_get_value(zval *this, zval **values, uint32_t field_number)
 {
 	zval **value = NULL;
+    TSRMLS_FETCH();
 
 	if (zend_hash_index_find(Z_ARRVAL_PP(values), field_number, (void **) &value) == FAILURE)
 		PB_COMPILE_ERROR_EX(this, "missing %u field value", field_number);
@@ -866,6 +873,7 @@ static zval **pb_get_value(zval *this, zval **values, uint32_t field_number)
 static zval **pb_get_values(zval *this)
 {
 	zval **values = NULL;
+    TSRMLS_FETCH();
 
 	zend_hash_quick_find(Z_OBJPROP_P(this), PB_VALUES_PROPERTY, sizeof(PB_VALUES_PROPERTY), PB_VALUES_PROPERTY_HASH, (void **) &values);
 
@@ -876,12 +884,13 @@ static int pb_serialize_field_value(zval *this, writer_t *writer, uint32_t field
 {
 	int r;
 	zval ret, method;
+    TSRMLS_FETCH();
 
 	if (Z_TYPE_PP(type) == IS_STRING) {
 		INIT_ZVAL(method);
 		ZVAL_STRING(&method, PB_SERIALIZE_TO_STRING_METHOD, 0);
 
-		if (call_user_function(NULL, value, &method, &ret, 0, NULL) == FAILURE)
+		if (call_user_function(NULL, value, &method, &ret, 0, NULL TSRMLS_CC) == FAILURE)
 			return -1;
 
 		if (Z_TYPE(ret) != IS_STRING)
