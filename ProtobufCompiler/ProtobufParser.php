@@ -269,6 +269,10 @@ class ProtobufParser
             );
         }
 
+        if ($this->_useNativeNamespaces && !empty($requiresString)) {
+            $requiresString = 'namespace {' . PHP_EOL . $requiresString . PHP_EOL . '}';
+        }
+
         $buffer->append($requiresString);
 
         if ($outputFile == null) {
@@ -885,7 +889,7 @@ class ProtobufParser
                 $parserKey = realpath($includedFilename);
 
                 if (!isset(self::$_parsers[$parserKey])) {
-                    $pbp = new ProtobufParser();
+                    $pbp = new ProtobufParser($this->_useNativeNamespaces);
                     self::$_parsers[$parserKey] = $pbp;
                 }
 
