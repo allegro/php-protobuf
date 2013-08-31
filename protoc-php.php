@@ -11,12 +11,23 @@ if (!debug_backtrace()) {
         exit(1);
     }
 
+    $options = getopt('n', array(
+        'use-namespaces'
+    ));
+    $useNamespaces = isset($options['use-namespaces']);
+
+    $iterator = new \RegexIterator(new \ArrayIterator($argv), '/^-/');
+    foreach ($iterator as $key => $value) {
+        array_splice($argv, $key, 1);
+    }
+
     if (count($argv) != 2) {
         printf('USAGE: %s PROTO_FILE' . PHP_EOL, $argv[0]);
+        printf('       -n, --use-namespaces      Use native PHP namespaces' . PHP_EOL);
         exit(1);
     }
 
-    $parser = new ProtobufParser();
+    $parser = new ProtobufParser($useNamespaces);
     $file = $argv[1];
 
     if (!file_exists($file)) {
