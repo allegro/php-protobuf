@@ -21,10 +21,14 @@ Use *protoc-php.php* script to compile your *proto* files. It requires extension
 
         php protoc-php.php foo.proto
 
+Specify *--use-namespaces* or *-n* option to generate classes using native PHP namespaces.
+
+        php protoc-php.php -n foo.proto
+
 ### Name conversion ###
 
 * underscore seperated message and enum names are converted to CamelCased
-* embedded message and enum names are composed of parent message names seperated by underscore
+* embedded message and enum names are composed of parent message names seperated by underscore or in parent message namespace when *--use-namespace* option is specified
 
 ### Message interface ###
 

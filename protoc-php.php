@@ -11,19 +11,26 @@ if (!debug_backtrace()) {
         exit(1);
     }
 
-    $options = getopt('n', array(
-        'use-namespaces'
-    ));
-    $useNamespaces = isset($options['use-namespaces']);
+    $optionError = false;
+    $useNamespaces = false;
 
     $iterator = new \RegexIterator(new \ArrayIterator($argv), '/^-/');
     foreach ($iterator as $key => $value) {
+        switch ($value) {
+            case '-n' :
+            case '--use-namespaces' :
+                $useNamespaces = true;
+                break;
+            default :
+                $optionError = true;
+                break;
+        }
         array_splice($argv, $key, 1);
     }
 
-    if (count($argv) != 2) {
-        printf('USAGE: %s PROTO_FILE' . PHP_EOL, $argv[0]);
-        printf('       -n, --use-namespaces      Use native PHP namespaces' . PHP_EOL);
+    if ($optionError || count($argv) != 2) {
+        printf('USAGE: %s [OPTIONS] PROTO_FILE' . PHP_EOL, $argv[0]);
+        printf('  -n, --use-namespaces      Use native PHP namespaces' . PHP_EOL);
         exit(1);
     }
 
