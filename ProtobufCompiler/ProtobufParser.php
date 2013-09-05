@@ -793,7 +793,7 @@ class ProtobufParser
                     )
                 );
 
-                $enum = new EnumDescriptor($name, $file, $message);
+                $enum = new EnumDescriptor($name, $file, $parent);
                 $this->_parseEnum($enum, $content);
                 // removing it from string
                 $messageContent = '' . trim(substr($messageContent, $offset['end']));
