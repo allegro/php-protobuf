@@ -15,6 +15,7 @@ require_once 'CommentStringBuffer.php';
 class ProtobufParser
 {
     const NAMESPACE_SEPARATOR = '_';
+    const NAMESPACE_SEPARATOR_NATIVE = '\\';
 
     private static $_globalNamespace = '';
     private static $_parsers = array();
@@ -25,10 +26,12 @@ class ProtobufParser
     const EOL = PHP_EOL;
 
     private $_hasSplTypes = false;
+    private $_useNativeNamespaces = false;
 
-    public function __construct()
+    public function __construct($useNativeNamespaces = null)
     {
         $this->_hasSplTypes = extension_loaded('SPL_Types');
+        $this->_useNativeNamespaces = (boolean)$useNativeNamespaces;
     }
 
     /**
@@ -42,24 +45,35 @@ class ProtobufParser
     }
 
     /**
+     * Returns namespace separator
+     *
+     * @return array
+     */
+    public function getNamespaceSeparator()
+    {
+        return $this->_useNativeNamespaces
+            ? self::NAMESPACE_SEPARATOR_NATIVE : self::NAMESPACE_SEPARATOR;
+    }
+
+    /**
      * Creates package name based on proto package name value
      *
      * @param string $name Package name
      *
      * @return string
      */
-    public static function createPackageName($name)
+    public function createPackageName($name)
     {
         $components = explode('.', $name);
         $name = '';
 
         foreach ($components as $component) {
             if (strlen($component) > 0) {
-                $name .= self::NAMESPACE_SEPARATOR . ucfirst($component);
+                $name .= $this->getNamespaceSeparator() . ucfirst($component);
             }
         }
 
-        return trim($name, '_');
+        return trim($name, $this->getNamespaceSeparator());
     }
 
     /**
@@ -131,7 +145,13 @@ class ProtobufParser
 
         $buffer->newline();
 
-        $name = $this->_createClassName($descriptor);
+        if ($this->_useNativeNamespaces) {
+            $name = self::createTypeName($descriptor->getName());
+            $namespaceName = $this->_createNamespaceName($descriptor);
+            $buffer->append('namespace ' . $namespaceName . ' {');
+        } else {
+            $name = $this->_createClassName($descriptor);
+        }
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
         $path = $this->_createEmbeddedMessagePath($descriptor);
@@ -152,6 +172,10 @@ class ProtobufParser
 
         $buffer->decreaseIdentation()
             ->append('}');
+
+        if ($this->_useNativeNamespaces) {
+            $buffer->append('}');
+        }
     }
 
     /**
@@ -167,7 +191,13 @@ class ProtobufParser
     ) {
         $buffer->newline();
 
-        $name = $this->_createClassName($descriptor);
+        if ($this->_useNativeNamespaces) {
+            $name = self::createTypeName($descriptor->getName());
+            $namespaceName = $this->_createNamespaceName($descriptor);
+            $buffer->append('namespace ' . $namespaceName . ' {');
+        } else {
+            $name = $this->_createClassName($descriptor);
+        }
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
         $path = $this->_createEmbeddedMessagePath($descriptor);
@@ -193,6 +223,10 @@ class ProtobufParser
 
         $buffer->decreaseIdentation()
             ->append('}');
+
+        if ($this->_useNativeNamespaces) {
+            $buffer->append('}');
+        }
     }
 
     /**
@@ -235,6 +269,10 @@ class ProtobufParser
             );
         }
 
+        if ($this->_useNativeNamespaces && !empty($requiresString)) {
+            $requiresString = 'namespace {' . PHP_EOL . $requiresString . PHP_EOL . '}';
+        }
+
         $buffer->append($requiresString);
 
         if ($outputFile == null) {
@@ -245,13 +283,13 @@ class ProtobufParser
     }
 
     /**
-     * Generates class name for given descriptor
+     * Generates namespace name for given descriptor
      *
      * @param DescriptorInterface $descriptor Descriptor
      *
      * @return string
      */
-    private function _createClassName(DescriptorInterface $descriptor)
+    private function _createNamespaceName(DescriptorInterface $descriptor)
     {
         $namespace = array();
 
@@ -265,17 +303,33 @@ class ProtobufParser
         $package = $descriptor->getFile()->getPackage();
 
         if (!empty($package)) {
-            $namespace[] = self::createPackageName($package);
+            $namespace[] = $this->createPackageName($package);
         }
 
         $namespace = array_reverse($namespace);
 
-        $prefix = implode(self::NAMESPACE_SEPARATOR, $namespace);
+        $name = implode($this->getNamespaceSeparator(), $namespace);
 
+        return $name;
+    }
+
+    /**
+     * Generates class name for given descriptor
+     *
+     * @param DescriptorInterface $descriptor Descriptor
+     *
+     * @return string
+     */
+    private function _createClassName(DescriptorInterface $descriptor)
+    {
         $name = self::createTypeName($descriptor->getName());
 
+        $prefix = $this->_createNamespaceName($descriptor);
         if (!empty($prefix)) {
-            $name = $prefix . self::NAMESPACE_SEPARATOR . $name;
+            $name = $prefix . $this->getNamespaceSeparator() . $name;
+            if ($this->_useNativeNamespaces) {
+                $name = self::NAMESPACE_SEPARATOR_NATIVE . $name;
+            }
         }
 
         return $name;
@@ -832,7 +886,7 @@ class ProtobufParser
                 $parserKey = realpath($includedFilename);
 
                 if (!isset(self::$_parsers[$parserKey])) {
-                    $pbp = new ProtobufParser();
+                    $pbp = new ProtobufParser($this->_useNativeNamespaces);
                     self::$_parsers[$parserKey] = $pbp;
                 }
 
