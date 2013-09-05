@@ -100,7 +100,7 @@ class ProtobufParser
         $string = trim($string);
 
         $file = new FileDescriptor($sourceFile);
-        $message = $this->_parseMessageType($file, $string);
+        $this->_parseMessageType($file, $string);
 
         $this->_resolveNamespaces($file);
         $buffer = new CodeStringBuffer(self::TAB, self::EOL);
@@ -755,9 +755,6 @@ class ProtobufParser
     private function _parseMessageType(
         FileDescriptor $file, $messageContent, MessageDescriptor $parent = null
     ) {
-        // recursion sucks!
-        $message = $parent;
-
         if ($messageContent == '') {
             return;
         }
@@ -796,7 +793,7 @@ class ProtobufParser
                     )
                 );
 
-                $enum = new EnumDescriptor($name, $file, $message);
+                $enum = new EnumDescriptor($name, $file, $parent);
                 $this->_parseEnum($enum, $content);
                 // removing it from string
                 $messageContent = '' . trim(substr($messageContent, $offset['end']));
@@ -870,11 +867,11 @@ class ProtobufParser
                     PREG_OFFSET_CAPTURE
                 );
 
-                if (!$match) {
+                if (!$match || !$parent) {
                     throw new Exception('Proto file missformed');
                 }
 
-                $message->addField($this->_parseField($matches[0][0]));
+                $parent->addField($this->_parseField($matches[0][0]));
 
                 $messageContent = trim(
                     substr(
@@ -884,8 +881,6 @@ class ProtobufParser
                 );
             }
         }
-
-        return $message;
     }
 
     /**
