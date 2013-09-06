@@ -19,16 +19,20 @@ Guide
 
 Use *protoc-php.php* script to compile your *proto* files. It requires extension to be installed.
 
-        php protoc-php.php foo.proto
+    php protoc-php.php foo.proto
 
 Specify *--use-namespaces* or *-n* option to generate classes using native PHP namespaces.
 
-        php protoc-php.php -n foo.proto
+    php protoc-php.php -n foo.proto
 
-### Name conversion ###
+### Package ###
 
-* underscore seperated message and enum names are converted to CamelCased
-* embedded message and enum names are composed of parent message names seperated by underscore or in parent message namespace when *--use-namespace* option is specified
+If a proto file is compiled with a -n / --use-namespaces option a package is represented as an namespace. Otherwise message and enum name is prefixed with it seperated by underscore. The package name is composed of a respective first-upper-case parts seperated by underscore.
+
+### Message and enum name ###
+
+* underscore seperated name is converted to CamelCased
+* embedded name is composed of parent message name seperated by underscore
 
 ### Message interface ###
 
@@ -38,17 +42,17 @@ For each field a set of accessors is generated. Methods actualy accessible are d
 
 * *required* / *optional*
 
-            get{FIELD}()        // return field value
-            set{FIELD}($value)  // set field value to $value
+        get{FIELD}()        // return field value
+        set{FIELD}($value)  // set field value to $value
 
 * repeated
 
-            append{FIELD}($value)       // append $value value to field
-            clear{FIELD}()              // empty field
-            get{FIELD}()                // return array of field values
-            getAt{FIELD}($index)        // return field value at $index index
-            getCount{FIELD}()           // return number of field values
-            getIterator{FIELD}($index)  // return ArrayIterator for field values
+        append{FIELD}($value)       // append $value value to field
+        clear{FIELD}()              // empty field
+        get{FIELD}()                // return array of field values
+        getAt{FIELD}($index)        // return field value at $index index
+        getCount{FIELD}()           // return number of field values
+        getIterator{FIELD}($index)  // return ArrayIterator for field values
 
 {FIELD} is camel cased field name.
 
@@ -64,26 +68,26 @@ Range of available build-in PHP types poses some limitations. PHP does not suppo
 
 Protocol Buffers types map to PHP types as follows:
 
-        | Protocol Buffers | PHP    |
-        | ---------------- | ------ |
-        | double           | float  |
-        | float            |        |
-        | ---------------- | ------ |
-        | int32            | int    |
-        | int64            |        |
-        | uint32           |        |
-        | uint64           |        |
-        | sint32           |        |
-        | sint64           |        |
-        | fixed32          |        |
-        | fixed64          |        |
-        | sfixed32         |        |
-        | sfixed64         |        |
-        | ---------------- | ------ |
-        | bool             | bool   |
-        | ---------------- | ------ |
-        | string           | string |
-        | bytes            |        |
+    | Protocol Buffers | PHP    |
+    | ---------------- | ------ |
+    | double           | float  |
+    | float            |        |
+    | ---------------- | ------ |
+    | int32            | int    |
+    | int64            |        |
+    | uint32           |        |
+    | uint64           |        |
+    | sint32           |        |
+    | sint64           |        |
+    | fixed32          |        |
+    | fixed64          |        |
+    | sfixed32         |        |
+    | sfixed64         |        |
+    | ---------------- | ------ |
+    | bool             | bool   |
+    | ---------------- | ------ |
+    | string           | string |
+    | bytes            |        |
 
 Not set value is represented by *null* type. To unset value just set its value to *null*.
 
@@ -91,31 +95,31 @@ Not set value is represented by *null* type. To unset value just set its value t
 
 To parse message create message class instance and call its *parseFromString* method passing it prior to the serialized message. Errors encountered are signaled by throwing *Exception*. Exception message provides detailed explanation. Required fields not set are silently ignored.
 
-        $packed = /* serialized FooMessage */;
-        $foo = new FooMessage();
+    $packed = /* serialized FooMessage */;
+    $foo = new FooMessage();
 
-        try {
-            $foo->parseFromString($packed);
-        } catch (Exception $ex) {
-            die('Parse error: ' . $e->getMessage());
-        }
+    try {
+        $foo->parseFromString($packed);
+    } catch (Exception $ex) {
+        die('Parse error: ' . $e->getMessage());
+    }
 
-        $foo->dump(); // see what you got
+    $foo->dump(); // see what you got
 
 ### Serialization ###
 
 To serialize message call *serializeToString* method. It returns a string containing protobuf-encoded message. Errors encountered are signaled by throwing *Exception*. Exception message provides detailed explanation. Required field not set triggers an error.
 
-        $foo = new FooMessage()
-        $foo->setBar(1);
+    $foo = new FooMessage()
+    $foo->setBar(1);
 
-        try {
-            $packed = $foo->serializeToString();
-        } catch (Exception $ex) {
-            die 'Serialize error: ' . $e->getMessage();
-        }
+    try {
+        $packed = $foo->serializeToString();
+    } catch (Exception $ex) {
+        die 'Serialize error: ' . $e->getMessage();
+    }
 
-        /* do some cool stuff with protobuf-encoded $packed */
+    /* do some cool stuff with protobuf-encoded $packed */
 
 ### Dumping ###
 
@@ -164,13 +168,13 @@ There might be situations you need to investigate what actual content of the giv
 
 `php foo.php` should produce following output:
 
-        Foo {
-          1: bar => 1
-          2: baz => 'two'
-          3: spam(2) =>
-            [0] => 3
-            [1] => 4
-        }
+    Foo {
+      1: bar => 1
+      2: baz => 'two'
+      3: spam(2) =>
+        [0] => 3
+        [1] => 4
+    }
 
 Compatibility
 -------------
