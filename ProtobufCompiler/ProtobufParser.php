@@ -1209,7 +1209,7 @@ class ProtobufParser
      */
     private function _stripComments(&$string)
     {
-        $string = preg_replace('/\/\/.+/', '', $string);
+        $string = preg_replace('/\/\/.*/', '', $string);
         // now replace empty lines and whitespaces in front
         $string = preg_replace('/\\r?\\n\s*/', PHP_EOL, $string);
     }
