@@ -779,8 +779,8 @@ class ProtobufParser
                     )
                 );
 
-                $message = new MessageDescriptor($name, $file, $parent);
-                $this->_parseMessageType($file, $content, $message);
+                $childMessage = new MessageDescriptor($name, $file, $parent);
+                $this->_parseMessageType($file, $content, $childMessage);
 
                 $messageContent = '' . trim(substr($messageContent, $offset['end']));
             } else if (strtolower($next) == 'enum') {
