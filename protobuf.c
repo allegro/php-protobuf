@@ -29,9 +29,9 @@
 #define PB_PARSE_ERROR(message, ...) \
 	zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "%s: parse error - " #message, getThis(), __VA_ARGS__)
 
-#define PB_CLEAR_METHOD "clear"
+#define PB_RESET_METHOD "reset"
 #define PB_DUMP_METHOD "dump"
-#define PB_GET_FIELDS_METHOD "getFields"
+#define PB_FIELDS_METHOD "fields"
 #define PB_PARSE_FROM_STRING_METHOD "parseFromString"
 #define PB_SERIALIZE_TO_STRING_METHOD "serializeToString"
 
@@ -39,6 +39,8 @@
 #define PB_FIELD_REQUIRED "required"
 #define PB_FIELD_TYPE "type"
 #define PB_VALUES_PROPERTY "values"
+
+#define RETURN_THIS() RETURN_ZVAL(this_ptr, 1, 0);
 
 enum
 {
@@ -79,34 +81,35 @@ PHP_METHOD(ProtobufMessage, __construct)
 	add_property_zval(getThis(), PB_VALUES_PROPERTY, values);
 }
 
-PHP_METHOD(ProtobufMessage, appendValue)
+PHP_METHOD(ProtobufMessage, append)
 {
 	long field_number;
 	zval **array, *value, **values, *val;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &field_number, &value) == FAILURE) {
-		return;
+		RETURN_THIS();
 	}
 
 	if (Z_TYPE_P(value) == IS_NULL)
-		return;
+		RETURN_THIS();
 
 	if ((values = pb_get_values(getThis())) == NULL)
-		return;
+		RETURN_THIS();
 
 	if ((array = pb_get_value(getThis(), values, field_number)) == NULL)
-		return;
+		RETURN_THIS();
 
 	MAKE_STD_ZVAL(val);
 	if (pb_assign_value(getThis(), val, value, field_number) != 0) {
 		zval_ptr_dtor(&val);
-		return;
+		RETURN_THIS();
 	}
 
 	add_next_index_zval(*array, val);
+	RETURN_THIS();
 }
 
-PHP_METHOD(ProtobufMessage, clearValues)
+PHP_METHOD(ProtobufMessage, clear)
 {
 	long field_number;
 	zval **array, **values;
@@ -116,18 +119,19 @@ PHP_METHOD(ProtobufMessage, clearValues)
 	}
 
 	if ((values = pb_get_values(getThis())) == NULL)
-		return;
+		RETURN_THIS();
 
 	if ((array = pb_get_value(getThis(), values, field_number)) == NULL)
-		return;
+		RETURN_THIS();
 
 	if (Z_TYPE_PP(array) != IS_ARRAY) {
 		PB_COMPILE_ERROR("'%s' field internal type should be an array", pb_get_field_name(getThis(), field_number));
 
-		return;
+		RETURN_THIS();
 	}
 
 	zend_hash_clean(Z_ARRVAL_PP(array));
+	RETURN_THIS();
 }
 
 PHP_METHOD(ProtobufMessage, dump)
@@ -195,7 +199,7 @@ PHP_METHOD(ProtobufMessage, dump)
 		php_printf("}\n");
 }
 
-PHP_METHOD(ProtobufMessage, getCount)
+PHP_METHOD(ProtobufMessage, count)
 {
 	long field_number;
 	zval **value, **values;
@@ -218,7 +222,7 @@ PHP_METHOD(ProtobufMessage, getCount)
 	}
 }
 
-PHP_METHOD(ProtobufMessage, getValue)
+PHP_METHOD(ProtobufMessage, get)
 {
 	long field_number, index = -1;
 	zval **val, **value, **values;
@@ -262,7 +266,7 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 		return;
 
 	INIT_ZVAL(name);
-	ZVAL_STRINGL(&name, PB_CLEAR_METHOD, sizeof(PB_CLEAR_METHOD) - 1, 0);
+	ZVAL_STRINGL(&name, PB_RESET_METHOD, sizeof(PB_RESET_METHOD) - 1, 0);
 
 	if (call_user_function(NULL, &getThis(), &name, &zret, 0, NULL TSRMLS_CC) == FAILURE)
 		return;
@@ -492,20 +496,20 @@ fail:
 	return;
 }
 
-PHP_METHOD(ProtobufMessage, setValue)
+PHP_METHOD(ProtobufMessage, set)
 {
 	long field_number = -1;
 	zval **old_value, *value, **values;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &field_number, &value) == FAILURE) {
-		return;
+		RETURN_THIS();
 	}
 
 	if ((values = pb_get_values(getThis())) == NULL)
-		return;
+		RETURN_THIS();
 
 	if ((old_value = pb_get_value(getThis(), values, field_number)) == NULL)
-		return;
+		RETURN_THIS();
 
 	if (Z_TYPE_P(value) == IS_NULL) {
 		if (Z_TYPE_PP(old_value) != IS_NULL) {
@@ -517,21 +521,21 @@ PHP_METHOD(ProtobufMessage, setValue)
 		pb_assign_value(getThis(), *old_value, value, field_number);
 	}
 
-	return;
+	RETURN_THIS();
 }
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_clear, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_reset, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_appendValue, 0, 0, 2)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_append, 0, 0, 2)
 	ZEND_ARG_INFO(0, position)
 	ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_clearValues, 0, 0, 1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_clear, 0, 0, 1)
 	ZEND_ARG_INFO(0, position)
 ZEND_END_ARG_INFO()
 
@@ -540,11 +544,11 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_dump, 0, 0, 0)
 	ZEND_ARG_INFO(0, indendation)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_getCount, 0, 0, 1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_count, 0, 0, 1)
 	ZEND_ARG_INFO(0, position)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_getValue, 0, 0, 1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_get, 0, 0, 1)
 	ZEND_ARG_INFO(0, position)
 ZEND_END_ARG_INFO()
 
@@ -555,22 +559,22 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(arginfo_serializeToString, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_setValue, 0, 0, 2)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_set, 0, 0, 2)
 	ZEND_ARG_INFO(0, position)
 	ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO()
 
 zend_function_entry pb_methods[] = {
 	PHP_ME(ProtobufMessage, __construct, arginfo_construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-	PHP_ABSTRACT_ME(ProtobufMessage, clear, arginfo_clear)
-	PHP_ME(ProtobufMessage, appendValue, arginfo_appendValue, ZEND_ACC_PUBLIC)
-	PHP_ME(ProtobufMessage, clearValues, arginfo_clearValues, ZEND_ACC_PUBLIC)
+	PHP_ABSTRACT_ME(ProtobufMessage, reset, arginfo_reset)
+	PHP_ME(ProtobufMessage, append, arginfo_append, ZEND_ACC_PUBLIC)
+	PHP_ME(ProtobufMessage, clear, arginfo_clear, ZEND_ACC_PUBLIC)
 	PHP_ME(ProtobufMessage, dump, arginfo_dump, ZEND_ACC_PUBLIC)
-	PHP_ME(ProtobufMessage, getCount, arginfo_getCount, ZEND_ACC_PUBLIC)
-	PHP_ME(ProtobufMessage, getValue, arginfo_getValue, ZEND_ACC_PUBLIC)
+	PHP_ME(ProtobufMessage, count, arginfo_count, ZEND_ACC_PUBLIC)
+	PHP_ME(ProtobufMessage, get, arginfo_get, ZEND_ACC_PUBLIC)
 	PHP_ME(ProtobufMessage, parseFromString, arginfo_parseFromString, ZEND_ACC_PUBLIC)
 	PHP_ME(ProtobufMessage, serializeToString, arginfo_serializeToString, ZEND_ACC_PUBLIC)
-	PHP_ME(ProtobufMessage, setValue, arginfo_setValue, ZEND_ACC_PUBLIC)
+	PHP_ME(ProtobufMessage, set, arginfo_set, ZEND_ACC_PUBLIC)
 	PHP_FE_END
 };
 
@@ -765,7 +769,7 @@ static zval *pb_get_field_descriptors(zval *this)
     TSRMLS_FETCH();
 
 	INIT_ZVAL(method);
-	ZVAL_STRINGL(&method, PB_GET_FIELDS_METHOD, sizeof(PB_GET_FIELDS_METHOD) - 1, 0);
+	ZVAL_STRINGL(&method, PB_FIELDS_METHOD, sizeof(PB_FIELDS_METHOD) - 1, 0);
 
 	call_user_function_ex(NULL, &this, &method, &descriptors, 0, NULL, 0, NULL TSRMLS_CC);
 
