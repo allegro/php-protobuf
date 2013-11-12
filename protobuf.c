@@ -40,6 +40,8 @@
 #define PB_FIELD_TYPE "type"
 #define PB_VALUES_PROPERTY "values"
 
+#define RETURN_THIS() RETURN_ZVAL(this_ptr, 1, 0);
+
 enum
 {
 	PB_TYPE_DOUBLE = 1,
@@ -85,25 +87,26 @@ PHP_METHOD(ProtobufMessage, append)
 	zval **array, *value, **values, *val;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &field_number, &value) == FAILURE) {
-		return;
+		RETURN_THIS();
 	}
 
 	if (Z_TYPE_P(value) == IS_NULL)
-		return;
+		RETURN_THIS();
 
 	if ((values = pb_get_values(getThis())) == NULL)
-		return;
+		RETURN_THIS();
 
 	if ((array = pb_get_value(getThis(), values, field_number)) == NULL)
-		return;
+		RETURN_THIS();
 
 	MAKE_STD_ZVAL(val);
 	if (pb_assign_value(getThis(), val, value, field_number) != 0) {
 		zval_ptr_dtor(&val);
-		return;
+		RETURN_THIS();
 	}
 
 	add_next_index_zval(*array, val);
+	RETURN_THIS();
 }
 
 PHP_METHOD(ProtobufMessage, clear)
@@ -116,18 +119,19 @@ PHP_METHOD(ProtobufMessage, clear)
 	}
 
 	if ((values = pb_get_values(getThis())) == NULL)
-		return;
+		RETURN_THIS();
 
 	if ((array = pb_get_value(getThis(), values, field_number)) == NULL)
-		return;
+		RETURN_THIS();
 
 	if (Z_TYPE_PP(array) != IS_ARRAY) {
 		PB_COMPILE_ERROR("'%s' field internal type should be an array", pb_get_field_name(getThis(), field_number));
 
-		return;
+		RETURN_THIS();
 	}
 
 	zend_hash_clean(Z_ARRVAL_PP(array));
+	RETURN_THIS();
 }
 
 PHP_METHOD(ProtobufMessage, dump)
@@ -498,14 +502,14 @@ PHP_METHOD(ProtobufMessage, set)
 	zval **old_value, *value, **values;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &field_number, &value) == FAILURE) {
-		return;
+		RETURN_THIS();
 	}
 
 	if ((values = pb_get_values(getThis())) == NULL)
-		return;
+		RETURN_THIS();
 
 	if ((old_value = pb_get_value(getThis(), values, field_number)) == NULL)
-		return;
+		RETURN_THIS();
 
 	if (Z_TYPE_P(value) == IS_NULL) {
 		if (Z_TYPE_PP(old_value) != IS_NULL) {
@@ -517,7 +521,7 @@ PHP_METHOD(ProtobufMessage, set)
 		pb_assign_value(getThis(), *old_value, value, field_number);
 	}
 
-	return;
+	RETURN_THIS();
 }
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_construct, 0, 0, 0)

@@ -455,7 +455,7 @@ class ProtobufParser
             )
             ->append('{')
             ->append(
-                '$this->append(self::' . $field->getConstName() . ', $value);',
+                'return $this->append(self::' . $field->getConstName() . ', $value);',
                 false,
                 1
             )
@@ -471,7 +471,7 @@ class ProtobufParser
             ->append('public function clear' . $field->getCamelCaseName() . '()')
             ->append('{')
             ->append(
-                '$this->clear(self::' . $field->getConstName() . ');',
+                'return $this->clear(self::' . $field->getConstName() . ');',
                 false,
                 1
             )
