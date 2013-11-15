@@ -571,7 +571,7 @@ zend_function_entry pb_methods[] = {
 	PHP_ME(ProtobufMessage, parseFromString, arginfo_parseFromString, ZEND_ACC_PUBLIC)
 	PHP_ME(ProtobufMessage, serializeToString, arginfo_serializeToString, ZEND_ACC_PUBLIC)
 	PHP_ME(ProtobufMessage, setValue, arginfo_setValue, ZEND_ACC_PUBLIC)
-	PHP_FE_END
+	{NULL, NULL, NULL, 0, 0}
 };
 
 PHP_MINIT_FUNCTION(protobuf)
