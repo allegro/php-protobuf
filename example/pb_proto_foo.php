@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from foo.proto at 2013-04-09 09:53:17
+ * Auto generated from foo.proto at 2013-11-20 11:12:53
  */
 
 /**
@@ -39,7 +39,7 @@ class Foo extends \ProtobufMessage
      */
     public function __construct()
     {
-        $this->clear();
+        $this->reset();
     }
 
     /**
@@ -47,7 +47,7 @@ class Foo extends \ProtobufMessage
      *
      * @return null
      */
-    public function clear()
+    public function reset()
     {
         $this->values[self::BAR] = null;
         $this->values[self::BAZ] = null;
@@ -59,7 +59,7 @@ class Foo extends \ProtobufMessage
      *
      * @return array
      */
-    public function getFields()
+    public function fields()
     {
         return self::$fields;
     }
@@ -73,7 +73,7 @@ class Foo extends \ProtobufMessage
      */
     public function setBar($value)
     {
-        return $this->setValue(self::BAR, $value);
+        return $this->set(self::BAR, $value);
     }
 
     /**
@@ -83,7 +83,7 @@ class Foo extends \ProtobufMessage
      */
     public function getBar()
     {
-        return $this->getValue(self::BAR);
+        return $this->get(self::BAR);
     }
 
     /**
@@ -95,7 +95,7 @@ class Foo extends \ProtobufMessage
      */
     public function setBaz($value)
     {
-        return $this->setValue(self::BAZ, $value);
+        return $this->set(self::BAZ, $value);
     }
 
     /**
@@ -105,7 +105,7 @@ class Foo extends \ProtobufMessage
      */
     public function getBaz()
     {
-        return $this->getValue(self::BAZ);
+        return $this->get(self::BAZ);
     }
 
     /**
@@ -117,7 +117,7 @@ class Foo extends \ProtobufMessage
      */
     public function appendSpam($value)
     {
-        $this->appendValue(self::SPAM, $value);
+        return $this->append(self::SPAM, $value);
     }
 
     /**
@@ -127,7 +127,7 @@ class Foo extends \ProtobufMessage
      */
     public function clearSpam()
     {
-        $this->clearValues(self::SPAM);
+        return $this->clear(self::SPAM);
     }
 
     /**
@@ -137,7 +137,7 @@ class Foo extends \ProtobufMessage
      */
     public function getSpam()
     {
-        return $this->getValue(self::SPAM);
+        return $this->get(self::SPAM);
     }
 
     /**
@@ -147,7 +147,7 @@ class Foo extends \ProtobufMessage
      */
     public function getSpamIterator()
     {
-        return new \ArrayIterator($this->getValue(self::SPAM));
+        return new \ArrayIterator($this->get(self::SPAM));
     }
 
     /**
@@ -159,7 +159,7 @@ class Foo extends \ProtobufMessage
      */
     public function getSpamAt($offset)
     {
-        return $this->getValue(self::SPAM, $offset);
+        return $this->get(self::SPAM, $offset);
     }
 
     /**
@@ -169,6 +169,6 @@ class Foo extends \ProtobufMessage
      */
     public function getSpamCount()
     {
-        return $this->getCount(self::SPAM);
+        return $this->count(self::SPAM);
     }
 }

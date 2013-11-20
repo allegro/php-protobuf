@@ -408,7 +408,7 @@ class ProtobufParser
             ->appendParam('return', 'array');
 
         $buffer->append($comment)
-            ->append('public function getFields()')
+            ->append('public function fields()')
             ->append('{')
             ->append('return self::$fields;', false, 1)
             ->append('}');
@@ -455,7 +455,7 @@ class ProtobufParser
             )
             ->append('{')
             ->append(
-                '$this->appendValue(self::' . $field->getConstName() . ', $value);',
+                'return $this->append(self::' . $field->getConstName() . ', $value);',
                 false,
                 1
             )
@@ -471,7 +471,7 @@ class ProtobufParser
             ->append('public function clear' . $field->getCamelCaseName() . '()')
             ->append('{')
             ->append(
-                '$this->clearValues(self::' . $field->getConstName() . ');',
+                'return $this->clear(self::' . $field->getConstName() . ');',
                 false,
                 1
             )
@@ -487,7 +487,7 @@ class ProtobufParser
             ->append('public function get' . $field->getCamelCaseName() . '()')
             ->append('{')
             ->append(
-                'return $this->getValue(self::' . $field->getConstName() . ');',
+                'return $this->get(self::' . $field->getConstName() . ');',
                 false,
                 1
             )
@@ -505,7 +505,7 @@ class ProtobufParser
             )
             ->append('{')
             ->append(
-                'return new \ArrayIterator($this->getValue(self::' .
+                'return new \ArrayIterator($this->get(self::' .
                 $field->getConstName() . '));',
                 false,
                 1
@@ -529,7 +529,7 @@ class ProtobufParser
             )
             ->append('{')
             ->append(
-                'return $this->getValue(self::' .
+                'return $this->get(self::' .
                 $field->getConstName() . ', $offset);',
                 false,
                 1
@@ -546,7 +546,7 @@ class ProtobufParser
             ->append('public function get' . $field->getCamelCaseName() . 'Count()')
             ->append('{')
             ->append(
-                'return $this->getCount(self::' . $field->getConstName() . ');',
+                'return $this->count(self::' . $field->getConstName() . ');',
                 false,
                 1
             )
@@ -593,7 +593,7 @@ class ProtobufParser
             )
             ->append('{')
             ->append(
-                'return $this->setValue(self::' .
+                'return $this->set(self::' .
                 $field->getConstName() . ', $value);',
                 false,
                 1
@@ -611,7 +611,7 @@ class ProtobufParser
             ->append('{')
             ->append(
                 'return ' .
-                '$this->getValue(self::' . $field->getConstName() . ');',
+                '$this->get(self::' . $field->getConstName() . ');',
                 false,
                 1
             )
@@ -749,7 +749,7 @@ class ProtobufParser
             ->append('public function __construct()')
             ->append('{')
             ->increaseIdentation()
-            ->append('$this->clear();')
+            ->append('$this->reset();')
             ->decreaseIdentation()
             ->append('}')
             ->newline();
@@ -760,7 +760,7 @@ class ProtobufParser
             ->appendParam('return', 'null');
 
         $buffer->append($comment)
-            ->append('public function clear()')
+            ->append('public function reset()')
             ->append('{')
             ->increaseIdentation();
 

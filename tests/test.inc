@@ -139,7 +139,7 @@ class Foo extends \ProtobufMessage
      */
     public function __construct()
     {
-        $this->clear();
+        $this->reset();
     }
 
     /**
@@ -147,7 +147,7 @@ class Foo extends \ProtobufMessage
      *
      * @return null
      */
-    public function clear()
+    public function reset()
     {
         $this->values[self::DOUBLE_FIELD] = null;
         $this->values[self::FLOAT_FIELD] = null;
@@ -173,7 +173,7 @@ class Foo extends \ProtobufMessage
      *
      * @return array
      */
-    public function getFields()
+    public function fields()
     {
         return self::$fields;
     }
@@ -187,7 +187,7 @@ class Foo extends \ProtobufMessage
      */
     public function setDoubleField($value)
     {
-        return $this->setValue(self::DOUBLE_FIELD, $value);
+        return $this->set(self::DOUBLE_FIELD, $value);
     }
 
     /**
@@ -197,7 +197,7 @@ class Foo extends \ProtobufMessage
      */
     public function getDoubleField()
     {
-        return $this->getValue(self::DOUBLE_FIELD);
+        return $this->get(self::DOUBLE_FIELD);
     }
 
     /**
@@ -209,7 +209,7 @@ class Foo extends \ProtobufMessage
      */
     public function setFloatField($value)
     {
-        return $this->setValue(self::FLOAT_FIELD, $value);
+        return $this->set(self::FLOAT_FIELD, $value);
     }
 
     /**
@@ -219,7 +219,7 @@ class Foo extends \ProtobufMessage
      */
     public function getFloatField()
     {
-        return $this->getValue(self::FLOAT_FIELD);
+        return $this->get(self::FLOAT_FIELD);
     }
 
     /**
@@ -231,7 +231,7 @@ class Foo extends \ProtobufMessage
      */
     public function setInt32Field($value)
     {
-        return $this->setValue(self::INT32_FIELD, $value);
+        return $this->set(self::INT32_FIELD, $value);
     }
 
     /**
@@ -241,7 +241,7 @@ class Foo extends \ProtobufMessage
      */
     public function getInt32Field()
     {
-        return $this->getValue(self::INT32_FIELD);
+        return $this->get(self::INT32_FIELD);
     }
 
     /**
@@ -253,7 +253,7 @@ class Foo extends \ProtobufMessage
      */
     public function setInt64Field($value)
     {
-        return $this->setValue(self::INT64_FIELD, $value);
+        return $this->set(self::INT64_FIELD, $value);
     }
 
     /**
@@ -263,7 +263,7 @@ class Foo extends \ProtobufMessage
      */
     public function getInt64Field()
     {
-        return $this->getValue(self::INT64_FIELD);
+        return $this->get(self::INT64_FIELD);
     }
 
     /**
@@ -275,7 +275,7 @@ class Foo extends \ProtobufMessage
      */
     public function setUint32Field($value)
     {
-        return $this->setValue(self::UINT32_FIELD, $value);
+        return $this->set(self::UINT32_FIELD, $value);
     }
 
     /**
@@ -285,7 +285,7 @@ class Foo extends \ProtobufMessage
      */
     public function getUint32Field()
     {
-        return $this->getValue(self::UINT32_FIELD);
+        return $this->get(self::UINT32_FIELD);
     }
 
     /**
@@ -297,7 +297,7 @@ class Foo extends \ProtobufMessage
      */
     public function setUint64Field($value)
     {
-        return $this->setValue(self::UINT64_FIELD, $value);
+        return $this->set(self::UINT64_FIELD, $value);
     }
 
     /**
@@ -307,7 +307,7 @@ class Foo extends \ProtobufMessage
      */
     public function getUint64Field()
     {
-        return $this->getValue(self::UINT64_FIELD);
+        return $this->get(self::UINT64_FIELD);
     }
 
     /**
@@ -319,7 +319,7 @@ class Foo extends \ProtobufMessage
      */
     public function setSint32Field($value)
     {
-        return $this->setValue(self::SINT32_FIELD, $value);
+        return $this->set(self::SINT32_FIELD, $value);
     }
 
     /**
@@ -329,7 +329,7 @@ class Foo extends \ProtobufMessage
      */
     public function getSint32Field()
     {
-        return $this->getValue(self::SINT32_FIELD);
+        return $this->get(self::SINT32_FIELD);
     }
 
     /**
@@ -341,7 +341,7 @@ class Foo extends \ProtobufMessage
      */
     public function setSint64Field($value)
     {
-        return $this->setValue(self::SINT64_FIELD, $value);
+        return $this->set(self::SINT64_FIELD, $value);
     }
 
     /**
@@ -351,7 +351,7 @@ class Foo extends \ProtobufMessage
      */
     public function getSint64Field()
     {
-        return $this->getValue(self::SINT64_FIELD);
+        return $this->get(self::SINT64_FIELD);
     }
 
     /**
@@ -363,7 +363,7 @@ class Foo extends \ProtobufMessage
      */
     public function setFixed32Field($value)
     {
-        return $this->setValue(self::FIXED32_FIELD, $value);
+        return $this->set(self::FIXED32_FIELD, $value);
     }
 
     /**
@@ -373,7 +373,7 @@ class Foo extends \ProtobufMessage
      */
     public function getFixed32Field()
     {
-        return $this->getValue(self::FIXED32_FIELD);
+        return $this->get(self::FIXED32_FIELD);
     }
 
     /**
@@ -385,7 +385,7 @@ class Foo extends \ProtobufMessage
      */
     public function setFixed64Field($value)
     {
-        return $this->setValue(self::FIXED64_FIELD, $value);
+        return $this->set(self::FIXED64_FIELD, $value);
     }
 
     /**
@@ -395,7 +395,7 @@ class Foo extends \ProtobufMessage
      */
     public function getFixed64Field()
     {
-        return $this->getValue(self::FIXED64_FIELD);
+        return $this->get(self::FIXED64_FIELD);
     }
 
     /**
@@ -407,7 +407,7 @@ class Foo extends \ProtobufMessage
      */
     public function setSfixed32Field($value)
     {
-        return $this->setValue(self::SFIXED32_FIELD, $value);
+        return $this->set(self::SFIXED32_FIELD, $value);
     }
 
     /**
@@ -417,7 +417,7 @@ class Foo extends \ProtobufMessage
      */
     public function getSfixed32Field()
     {
-        return $this->getValue(self::SFIXED32_FIELD);
+        return $this->get(self::SFIXED32_FIELD);
     }
 
     /**
@@ -429,7 +429,7 @@ class Foo extends \ProtobufMessage
      */
     public function setSfixed64Field($value)
     {
-        return $this->setValue(self::SFIXED64_FIELD, $value);
+        return $this->set(self::SFIXED64_FIELD, $value);
     }
 
     /**
@@ -439,7 +439,7 @@ class Foo extends \ProtobufMessage
      */
     public function getSfixed64Field()
     {
-        return $this->getValue(self::SFIXED64_FIELD);
+        return $this->get(self::SFIXED64_FIELD);
     }
 
     /**
@@ -451,7 +451,7 @@ class Foo extends \ProtobufMessage
      */
     public function setBoolField($value)
     {
-        return $this->setValue(self::BOOL_FIELD, $value);
+        return $this->set(self::BOOL_FIELD, $value);
     }
 
     /**
@@ -461,7 +461,7 @@ class Foo extends \ProtobufMessage
      */
     public function getBoolField()
     {
-        return $this->getValue(self::BOOL_FIELD);
+        return $this->get(self::BOOL_FIELD);
     }
 
     /**
@@ -473,7 +473,7 @@ class Foo extends \ProtobufMessage
      */
     public function setStringField($value)
     {
-        return $this->setValue(self::STRING_FIELD, $value);
+        return $this->set(self::STRING_FIELD, $value);
     }
 
     /**
@@ -483,7 +483,7 @@ class Foo extends \ProtobufMessage
      */
     public function getStringField()
     {
-        return $this->getValue(self::STRING_FIELD);
+        return $this->get(self::STRING_FIELD);
     }
 
     /**
@@ -495,7 +495,7 @@ class Foo extends \ProtobufMessage
      */
     public function setBytesField($value)
     {
-        return $this->setValue(self::BYTES_FIELD, $value);
+        return $this->set(self::BYTES_FIELD, $value);
     }
 
     /**
@@ -505,7 +505,7 @@ class Foo extends \ProtobufMessage
      */
     public function getBytesField()
     {
-        return $this->getValue(self::BYTES_FIELD);
+        return $this->get(self::BYTES_FIELD);
     }
 
     /**
@@ -517,7 +517,7 @@ class Foo extends \ProtobufMessage
      */
     public function appendRepeatedField($value)
     {
-        $this->appendValue(self::REPEATED_FIELD, $value);
+        $this->append(self::REPEATED_FIELD, $value);
     }
 
     /**
@@ -527,7 +527,7 @@ class Foo extends \ProtobufMessage
      */
     public function clearRepeatedField()
     {
-        $this->clearValues(self::REPEATED_FIELD);
+        $this->clear(self::REPEATED_FIELD);
     }
 
     /**
@@ -537,7 +537,7 @@ class Foo extends \ProtobufMessage
      */
     public function getRepeatedField()
     {
-        return $this->getValue(self::REPEATED_FIELD);
+        return $this->get(self::REPEATED_FIELD);
     }
 
     /**
@@ -547,7 +547,7 @@ class Foo extends \ProtobufMessage
      */
     public function getRepeatedFieldIterator()
     {
-        return new \ArrayIterator($this->getValue(self::REPEATED_FIELD));
+        return new \ArrayIterator($this->get(self::REPEATED_FIELD));
     }
 
     /**
@@ -559,7 +559,7 @@ class Foo extends \ProtobufMessage
      */
     public function getRepeatedFieldAt($offset)
     {
-        return $this->getValue(self::REPEATED_FIELD, $offset);
+        return $this->get(self::REPEATED_FIELD, $offset);
     }
 
     /**
@@ -569,7 +569,7 @@ class Foo extends \ProtobufMessage
      */
     public function getRepeatedFieldCount()
     {
-        return $this->getCount(self::REPEATED_FIELD);
+        return $this->count(self::REPEATED_FIELD);
     }
 
     /**
@@ -581,7 +581,7 @@ class Foo extends \ProtobufMessage
      */
     public function setEmbeddedField(Foo $value)
     {
-        return $this->setValue(self::EMBEDDED_FIELD, $value);
+        return $this->set(self::EMBEDDED_FIELD, $value);
     }
 
     /**
@@ -591,7 +591,7 @@ class Foo extends \ProtobufMessage
      */
     public function getEmbeddedField()
     {
-        return $this->getValue(self::EMBEDDED_FIELD);
+        return $this->get(self::EMBEDDED_FIELD);
     }
 }
 
@@ -626,7 +626,7 @@ class Bar extends \ProtobufMessage
      */
     public function __construct()
     {
-        $this->clear();
+        $this->reset();
     }
 
     /**
@@ -634,7 +634,7 @@ class Bar extends \ProtobufMessage
      *
      * @return null
      */
-    public function clear()
+    public function reset()
     {
         $this->values[self::DOUBLE_FIELD] = null;
     }
@@ -644,7 +644,7 @@ class Bar extends \ProtobufMessage
      *
      * @return array
      */
-    public function getFields()
+    public function fields()
     {
         return self::$fields;
     }
@@ -658,7 +658,7 @@ class Bar extends \ProtobufMessage
      */
     public function setDoubleField($value)
     {
-        return $this->setValue(self::DOUBLE_FIELD, $value);
+        return $this->set(self::DOUBLE_FIELD, $value);
     }
 
     /**
@@ -668,6 +668,6 @@ class Bar extends \ProtobufMessage
      */
     public function getDoubleField()
     {
-        return $this->getValue(self::DOUBLE_FIELD);
+        return $this->get(self::DOUBLE_FIELD);
     }
 }

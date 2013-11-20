@@ -9,7 +9,7 @@ $foo->appendSpam(4.0);
 
 $packed = $foo->serializeToString();
 
-$foo->clear();
+$foo->reset();
 
 try {
 	$foo->parseFromString($packed);
