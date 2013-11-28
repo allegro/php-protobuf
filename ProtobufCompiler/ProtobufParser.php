@@ -705,9 +705,16 @@ class ProtobufParser
                         addslashes($field->getDefault()) . '\', '
                     );
                 } else {
-                    $buffer->append(
-                        '\'default\' => ' . $field->getDefault() . ', '
-                    );
+                     if ($field->isProtobufScalarType()) {
+		                $buffer->append(
+			                '\'default\' => ' . $field->getDefault() . ', '
+		                );
+	                } else {
+		                $className = $this->_createClassName($field->getTypeDescriptor());
+		                $buffer->append(
+			                '\'default\' => ' . $className . '::' . $field->getDefault() . ', '
+		                );
+	                }
                 }
             }
 
@@ -778,9 +785,10 @@ class ProtobufParser
                         $field->getDefault() . ';'
                     );
                 } else {
-                    $buffer->append(
+                    $className = $this->_createClassName($field->getTypeDescriptor());
+	                $buffer->append(
                         '$this->values[self::' . $field->getConstName() . '] = ' .
-                        $type . '::' . $field->getDefault() . ';'
+                        $className . '::' . $field->getDefault() . ';'
                     );
                 }
             } else {
