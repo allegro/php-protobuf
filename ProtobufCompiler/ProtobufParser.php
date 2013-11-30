@@ -705,7 +705,7 @@ class ProtobufParser
                         addslashes($field->getDefault()) . '\', '
                     );
                 } else {
-                     if ($field->isProtobufScalarType()) {
+                    if ($field->isProtobufScalarType()) {
                         $buffer->append(
                             '\'default\' => ' . $field->getDefault() . ', '
                         );
