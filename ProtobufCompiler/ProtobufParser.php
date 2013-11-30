@@ -706,15 +706,15 @@ class ProtobufParser
                     );
                 } else {
                      if ($field->isProtobufScalarType()) {
-		                $buffer->append(
-			                '\'default\' => ' . $field->getDefault() . ', '
-		                );
-	                } else {
-		                $className = $this->_createClassName($field->getTypeDescriptor());
-		                $buffer->append(
-			                '\'default\' => ' . $className . '::' . $field->getDefault() . ', '
-		                );
-	                }
+                        $buffer->append(
+                            '\'default\' => ' . $field->getDefault() . ', '
+                        );
+                    } else {
+                        $className = $this->_createClassName($field->getTypeDescriptor());
+                        $buffer->append(
+                            '\'default\' => ' . $className . '::' . $field->getDefault() . ', '
+                        );
+                    }
                 }
             }
 
@@ -786,7 +786,7 @@ class ProtobufParser
                     );
                 } else {
                     $className = $this->_createClassName($field->getTypeDescriptor());
-	                $buffer->append(
+                    $buffer->append(
                         '$this->values[self::' . $field->getConstName() . '] = ' .
                         $className . '::' . $field->getDefault() . ';'
                     );
