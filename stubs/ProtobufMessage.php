@@ -47,7 +47,7 @@ abstract class ProtobufMessage
      * 
      * @return string
      */
-    public function dump($onlySet = true, $indentation)
+    public function dump($onlySet = true, $indentation = 0)
     {
         
     }
@@ -67,7 +67,7 @@ abstract class ProtobufMessage
      * 
      * @return mixed
      */
-    public function get($position)
+    public function get($position = -1)
     {
         
     }
@@ -100,9 +100,8 @@ abstract class ProtobufMessage
      * 
      * @return null
      */
-    public function set($position, $value)
+    public function set($position = -1, $value)
     {
         
     }
-    
 }
