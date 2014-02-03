@@ -900,6 +900,28 @@ class ProtobufParser
 
                 $file->addDependency($pbp->parse($includedFilename));
 
+            } else if (strtolower($next) == 'option') {
+
+                $match = preg_match(
+                    '/php_package[\s]+=[\s]+"([^;]+)";?/',
+                    $messageContent,
+                    $matches,
+                    PREG_OFFSET_CAPTURE
+                );
+
+                if ($match) {
+                    $file->setPackage($matches[1][0]);
+                    $messageContent = trim(
+                        substr(
+                            $messageContent,
+                            $matches[0][1] + strlen($matches[0][0])
+                        )
+                    );
+                } else {
+                    // Non-PHP option, skip it
+                    $messageContent = preg_replace('/^.+\n/', '', $messageContent);
+                }
+
             } else if (strtolower($next) == 'package') {
 
                 $match = preg_match(
