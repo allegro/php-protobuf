@@ -29,6 +29,15 @@ Specify *--use-namespaces* or *-n* option to generate classes using native PHP n
 
 If a proto file is compiled with a -n / --use-namespaces option a package is represented as an namespace. Otherwise message and enum name is prefixed with it seperated by underscore. The package name is composed of a respective first-upper-case parts seperated by underscore.
 
+If your proto files are used by multiple projects you can use the optional `php_package` parameter to override the package definition. For example:
+
+    package MyProject;
+
+    option java_package="com.foo.bar";
+    option php_package="app.messages.foo.bar";
+
+The above example will generate a package with `namespace App\Messages\Foo\Bar` instead of `namespace \MyProject`.
+
 ### Message and enum name ###
 
 * underscore seperated name is converted to CamelCased
