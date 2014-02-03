@@ -909,17 +909,18 @@ class ProtobufParser
                     PREG_OFFSET_CAPTURE
                 );
 
-                if (!$match) {
-                    throw new Exception('Malformed package');
+                if ($match) {
+                    $file->setPackage($matches[1][0]);
+                    $messageContent = trim(
+                        substr(
+                            $messageContent,
+                            $matches[0][1] + strlen($matches[0][0])
+                        )
+                    );
+                } else {
+                    // Non-PHP option, skip it
+                    $messageContent = preg_replace('/^.+\n/', '', $messageContent);
                 }
-
-                $file->setPackage($matches[1][0]);
-                $messageContent = trim(
-                    substr(
-                        $messageContent,
-                        $matches[0][1] + strlen($matches[0][0])
-                    )
-                );
 
             } else if (strtolower($next) == 'package') {
 
