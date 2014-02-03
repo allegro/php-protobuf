@@ -181,6 +181,11 @@ Compatibility
 
 PHP Protobuf does not support repeated packed fields.
 
+IDE Helper and Auto-Complete Support
+------------------------------------
+
+To integrate this extension with your IDE (PhpStorm, Eclipse etc.) and get auto-complete support, simply include `stubs\ProtobufMessage.php` anywhere under your project root.
+
 References
 ----------
 
