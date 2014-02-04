@@ -900,6 +900,11 @@ class ProtobufParser
 
                 $file->addDependency($pbp->parse($includedFilename));
 
+            } else if (strtolower($next) == 'option') {
+
+                // We don't support option parameters just yet, skip for now.
+                $messageContent = preg_replace('/^.+\n/', '', $messageContent);
+                
             } else if (strtolower($next) == 'package') {
 
                 $match = preg_match(
