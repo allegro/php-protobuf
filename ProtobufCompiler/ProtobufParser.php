@@ -896,6 +896,8 @@ class ProtobufParser
                 if (!isset(self::$_parsers[$parserKey])) {
                     $pbp = new ProtobufParser($this->_useNativeNamespaces);
                     self::$_parsers[$parserKey] = $pbp;
+                } else {
+                    $pbp = self::$_parsers[$parserKey];
                 }
 
                 $file->addDependency($pbp->parse($includedFilename));
