@@ -29,6 +29,7 @@ class ProtobufParser
     private $_useNativeNamespaces = false;
 
     private $_baseNameSpace = null;
+    private $_filenamePrefix = 'pb_proto_';
 
     public function __construct($useNativeNamespaces = null)
     {
@@ -372,7 +373,27 @@ class ProtobufParser
     {
         $pathInfo = pathinfo($sourceFilename);
 
+        return $this->getFilenamePrefix() . $pathInfo['filename'] . '.php';
+
         return $pathInfo['filename'] . '.php';
+    }
+
+    /**
+     * Sets filename prefix
+     *
+     * @param string $prefix
+     */
+    public function setFilenamePrefix($prefix)
+    {
+        $this->_filenamePrefix = $prefix;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilenamePrefix()
+    {
+        return $this->_filenamePrefix;
     }
 
     /**
