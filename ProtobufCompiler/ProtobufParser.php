@@ -28,6 +28,8 @@ class ProtobufParser
     private $_hasSplTypes = false;
     private $_useNativeNamespaces = false;
 
+    private $_baseNameSpace = null;
+
     public function __construct($useNativeNamespaces = null)
     {
         $this->_hasSplTypes = extension_loaded('SPL_Types');
@@ -53,6 +55,26 @@ class ProtobufParser
     {
         return $this->_useNativeNamespaces
             ? self::NAMESPACE_SEPARATOR_NATIVE : self::NAMESPACE_SEPARATOR;
+    }
+
+    /**
+     * Sets a base namespace
+     *
+     * @param string $baseNamespace
+     */
+    public function setBaseNamespace($baseNamespace)
+    {
+        $this->_baseNameSpace = $baseNamespace;
+    }
+
+    /**
+     * Gets the base namespace
+     *
+     * @return null|string
+     */
+    public function getBaseNamespace()
+    {
+        return $this->_baseNameSpace;
     }
 
     /**
@@ -306,6 +328,10 @@ class ProtobufParser
             $namespace[] = $this->createPackageName($package);
         }
 
+        if (!is_null($this->getBaseNamespace())) {
+            $namespace[] = $this->getBaseNamespace();
+        }
+
         $namespace = array_reverse($namespace);
 
         $name = implode($this->getNamespaceSeparator(), $namespace);
@@ -346,7 +372,7 @@ class ProtobufParser
     {
         $pathInfo = pathinfo($sourceFilename);
 
-        return 'pb_proto_' . $pathInfo['filename'] . '.php';
+        return $pathInfo['filename'] . '.php';
     }
 
     /**
