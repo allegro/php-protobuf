@@ -13,13 +13,12 @@ if (!debug_backtrace()) {
 
     $optionError = false;
     $useNamespaces = false;
-    $baseNamespace = false;
     $filenamePrefix = false;
 
     $iterator = new \RegexIterator(new \ArrayIterator($argv), '/^-/');
 
-    $shortOpts = "nb:p:";
-    $longOpts = array("use-namespaces", "base-namespace:", "filename-prefix");
+    $shortOpts = "np:";
+    $longOpts = array("use-namespaces", "filename-prefix:");
 
     $options = getOpt($shortOpts, $longOpts);
 
@@ -28,14 +27,6 @@ if (!debug_backtrace()) {
             case 'n' :
             case 'use-namespaces' :
                 $useNamespaces = true;
-                break;
-            case 'b':
-            case 'base-namespace' :
-                $useNamespaces = true;
-                $baseNamespace = $value;
-                if (strpos($value, '-') === 0) {
-                    $optionError = true;
-                }
                 break;
             case 'p':
             case 'filename-prefix' :
@@ -70,7 +61,6 @@ if (!debug_backtrace()) {
     if ($optionError || count($argv) != 2) {
         printf('USAGE: %s [OPTIONS] PROTO_FILE' . PHP_EOL, $argv[0]);
         printf('  -n, --use-namespaces              Use native PHP namespaces' . PHP_EOL);
-        printf('  -b, --base-namespace [NAMESPACE]  Specify a base namespace for generated classes' . PHP_EOL);
         printf('  -p, --filename-prefix [PREFIX]    Specify a prefix for generated file names' . PHP_EOL);
         exit(1);
     }
@@ -79,10 +69,6 @@ if (!debug_backtrace()) {
     $GLOBALS['argv'] = array_values($GLOBALS['argv']);
 
     $parser = new ProtobufParser($useNamespaces);
-
-    if ($baseNamespace !== false) {
-        $parser->setBaseNamespace($baseNamespace);
-    }
 
     if ($filenamePrefix !== false) {
         $parser->setFilenamePrefix($filenamePrefix);
