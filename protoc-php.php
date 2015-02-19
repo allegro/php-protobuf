@@ -14,11 +14,12 @@ if (!debug_backtrace()) {
     $optionError = false;
     $useNamespaces = false;
     $filenamePrefix = false;
+    $outputPsr = false;
 
     $iterator = new \RegexIterator(new \ArrayIterator($argv), '/^-/');
 
     $shortOpts = "np:";
-    $longOpts = array("use-namespaces", "filename-prefix:");
+    $longOpts = array("use-namespaces", "filename-prefix:", "psr");
 
     $options = getOpt($shortOpts, $longOpts);
 
@@ -35,6 +36,9 @@ if (!debug_backtrace()) {
                     $optionError = true;
                 }
                 break;
+            case 'psr':
+                $outputPsr = true;
+                break;
             default :
                 $optionError = true;
                 break;
@@ -42,18 +46,18 @@ if (!debug_backtrace()) {
 
         // Look for occurrences of -o (simple option with no value) or -o<val> (no space in between):
         if ($value === false) {
-            while ($argvKey = array_search("-" . $key . $value, $GLOBALS['argv'])) {
-                if ($argvKey) {
-                    unset($GLOBALS['argv'][$argvKey]);
+            while ($matches = preg_grep("/--?$key$value/", $GLOBALS['argv'])) {
+                foreach ($matches as $key => $match) {
+                    unset($GLOBALS['argv'][$key]);
                 }
             }
         }
 
         // Look for remaining occurrences of -o <val> (space in between):
-        while($argvKey = array_search("-" . $key, $GLOBALS['argv'])) {
-            if($argvKey) {
-                unset($GLOBALS['argv'][$argvKey]);
-                unset($GLOBALS['argv'][$argvKey + 1]);
+        while ($matches = preg_grep("/--?$key/", $GLOBALS['argv'])) {
+            foreach ($matches as $key => $match) {
+                unset($GLOBALS['argv'][$key]);
+                unset($GLOBALS['argv'][$key + 1]);
             }
         }
     }
@@ -62,6 +66,7 @@ if (!debug_backtrace()) {
         printf('USAGE: %s [OPTIONS] PROTO_FILE' . PHP_EOL, $argv[0]);
         printf('  -n, --use-namespaces              Use native PHP namespaces' . PHP_EOL);
         printf('  -p, --filename-prefix [PREFIX]    Specify a prefix for generated file names' . PHP_EOL);
+        printf('  --psr                             Output class files in a psr-4 directory structure' . PHP_EOL);
         exit(1);
     }
 
@@ -72,6 +77,10 @@ if (!debug_backtrace()) {
 
     if ($filenamePrefix !== false) {
         $parser->setFilenamePrefix($filenamePrefix);
+    }
+
+    if ($outputPsr !== false) {
+        $parser->setSavePsrOutput(true);
     }
 
     $file = $argv[1];

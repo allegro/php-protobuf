@@ -29,6 +29,9 @@ class ProtobufParser
     private $_useNativeNamespaces = false;
 
     private $_filenamePrefix = 'pb_proto_';
+    private $_savePsrOutput = false;
+
+    private $_comment;
 
     public function __construct($useNativeNamespaces = null)
     {
@@ -137,6 +140,11 @@ class ProtobufParser
     private function _createClass(
         MessageDescriptor $descriptor, CodeStringBuffer $buffer
     ) {
+        if ($this->getSavePsrOutput()) {
+            $buffer = new CodeStringBuffer(self::TAB, self::EOL);
+            $buffer->append($this->_comment);
+        }
+
         foreach ($descriptor->getEnums() as $enum) {
             $this->_createEnum($enum, $buffer);
         }
@@ -178,6 +186,10 @@ class ProtobufParser
         if ($this->_useNativeNamespaces) {
             $buffer->append('}');
         }
+
+        if ($this->getSavePsrOutput()) {
+            $this->_createFilePsr($name, $namespaceName, $buffer);
+        }
     }
 
     /**
@@ -191,7 +203,12 @@ class ProtobufParser
     private function _createEnum(
         EnumDescriptor $descriptor, CodeStringBuffer $buffer
     ) {
-        $buffer->newline();
+        if ($this->getSavePsrOutput()) {
+            $buffer = new CodeStringBuffer(self::TAB, self::EOL);
+            $buffer->append($this->_comment);
+        } else {
+            $buffer->newline();
+        }
 
         if ($this->_useNativeNamespaces) {
             $name = self::createTypeName($descriptor->getName());
@@ -229,6 +246,9 @@ class ProtobufParser
         if ($this->_useNativeNamespaces) {
             $buffer->append('}');
         }
+        if ($this->getSavePsrOutput()) {
+            $this->_createFilePsr($name, $namespaceName, $buffer);
+        }
     }
 
     /**
@@ -250,6 +270,10 @@ class ProtobufParser
         if ($file->getPackage()) {
             $comment->newline()
                 ->append($file->getPackage() . ' package');
+        }
+
+        if ($this->getSavePsrOutput()) {
+            $this->_comment = $comment;
         }
 
         $buffer->append($comment);
@@ -281,7 +305,19 @@ class ProtobufParser
             $outputFile = $this->_createOutputFilename($file->getName());
         }
 
-        file_put_contents($outputFile, '<?php' . PHP_EOL . $buffer);
+        if (!$this->getSavePsrOutput()) {
+            file_put_contents($outputFile, '<?php' . PHP_EOL . $buffer);
+        }
+    }
+
+    private function _createFilePsr($outputFile, $namespace, $buffer)
+    {
+        $path = str_replace('\\', '/', $namespace  .'/');
+        if (!file_exists($path)) {
+            mkdir($path, 0755, true);
+        }
+
+        file_put_contents($path . $outputFile . '.php', '<?php' . PHP_EOL . $buffer);
     }
 
     /**
@@ -349,8 +385,6 @@ class ProtobufParser
         $pathInfo = pathinfo($sourceFilename);
 
         return $this->getFilenamePrefix() . $pathInfo['filename'] . '.php';
-
-        return $pathInfo['filename'] . '.php';
     }
 
     /**
@@ -364,11 +398,33 @@ class ProtobufParser
     }
 
     /**
+     * Gets filename prefix
+     *
      * @return string
      */
     public function getFilenamePrefix()
     {
         return $this->_filenamePrefix;
+    }
+
+    /**
+     * Sets flag for directory based file layout vs single file
+     *
+     * @param bool $psrOutput
+     */
+    public function setSavePsrOutput($psrOutput)
+    {
+        $this->_savePsrOutput = $psrOutput;
+    }
+
+    /**
+     * Gets flag for directory based file layout vs single file
+     *
+     * @return bool
+     */
+    public function getSavePsrOutput()
+    {
+        return $this->_savePsrOutput;
     }
 
     /**
