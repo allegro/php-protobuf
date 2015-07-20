@@ -916,7 +916,7 @@ class ProtobufParser
             ->appendParam('param', 'array $callback in the following format: array($anObject, \'someMethod\')')
             ->appendParam('return', 'null');
         $buffer->append($comment)
-            ->append('public function registerObjectReadyCallback($callback)')
+            ->append('public static function registerObjectReadyCallback($callback)')
             ->append('{')
             ->increaseIdentation()
             ->append('self::$objectReadyCallbacks[] = $callback;')
