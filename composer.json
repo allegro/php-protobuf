@@ -8,7 +8,7 @@
     "pb"
   ],
   "homepage": "https://github.com/allegro/php-protobuf",
-  "bin": "bin/protoc",
+  "bin": ["bin/protoc"],
   "autoload": {
     "psr-0": {
         "": "stubs"
