@@ -27,18 +27,18 @@ Specify *--use-namespaces* or *-n* option to generate classes using native PHP n
 
 ### Package ###
 
-If a proto file is compiled with a -n / --use-namespaces option a package is represented as an namespace. Otherwise message and enum name is prefixed with it seperated by underscore. The package name is composed of a respective first-upper-case parts seperated by underscore.
+If a proto file is compiled with a -n / --use-namespaces option a package is represented as an namespace. Otherwise message and enum name is prefixed with it separated by underscore. The package name is composed of a respective first-upper-case parts separated by underscore.
 
 ### Message and enum name ###
 
-* underscore seperated name is converted to CamelCased
-* embedded name is composed of parent message name seperated by underscore
+* underscore separated name is converted to CamelCased
+* embedded name is composed of parent message name separated by underscore
 
 ### Message interface ###
 
 PHP Protobuf module implements *ProtobufMessage* class which encapsulates protocol logic. Message compiled from *proto* file extends this class providing message field descriptors. Based on these descriptors *ProtobufMessage* knows how to parse and serialize messages of the given type.
 
-For each field a set of accessors is generated. Methods actualy accessible are different for single value fields (*required* / *optional*) and multi-value fields (*repeated*).
+For each field a set of accessors is generated. Methods actually accessible are different for single value fields (*required* / *optional*) and multi-value fields (*repeated*).
 
 * *required* / *optional*
 
@@ -125,7 +125,7 @@ To serialize message call *serializeToString* method. It returns a string contai
 
 There might be situations you need to investigate what actual content of the given message is. What *var_dump* gives on message instance is somewhat obscure.
 
-*ProtobufMessage* class comes with *dump* method which prints out a message content to the standard output. It takes one optional argument specifing whether you want to dump only set fields. By default it dumps only set fields. Pass *false* as argument to dump all fields. Format it produces is similar to *var_dump*.
+*ProtobufMessage* class comes with *dump* method which prints out a message content to the standard output. It takes one optional argument specifying whether you want to dump only set fields. By default it dumps only set fields. Pass *false* as argument to dump all fields. Format it produces is similar to *var_dump*.
 
 ### Example ###
 
@@ -160,7 +160,7 @@ There might be situations you need to investigate what actual content of the giv
             try {
                 $foo->parseFromString($packed);
             } catch (Exception $ex) {
-                die('Upss.. there is a bug in this example');
+                die('Oops.. there is a bug in this example');
             }
 
             $foo->dump();
