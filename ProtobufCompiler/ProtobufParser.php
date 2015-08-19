@@ -1007,7 +1007,7 @@ class ProtobufParser
 
                 // We don't support option parameters just yet, skip for now.
                 $messageContent = preg_replace('/^.+\n/', '', $messageContent);
-                
+
             } else if (strtolower($next) == 'package') {
 
                 $match = preg_match(
@@ -1320,7 +1320,6 @@ class ProtobufParser
         }
     }
 
-
     /**
      * Finds starting, ending char in string
      *
@@ -1375,6 +1374,7 @@ class ProtobufParser
     private function _stripComments(&$string)
     {
         $string = preg_replace('/\/\/.*/', '', $string);
+        $string = preg_replace('!/\*.*?\*/!s', '', $string);
         // now replace empty lines and whitespaces in front
         $string = preg_replace('/\\r?\\n\s*/', PHP_EOL, $string);
     }
