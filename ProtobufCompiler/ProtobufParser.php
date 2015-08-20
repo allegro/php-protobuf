@@ -954,8 +954,8 @@ class ProtobufParser
                     );
                 }
 
-                $includedFilename = $matches[1][0];
-
+                // use dirname to get absolute path in case file parsed is not in cwd
+                $includedFilename = dirname($file->getName()) . DIRECTORY_SEPARATOR . $matches[1][0];
                 if (!file_exists($includedFilename)) {
                     throw new Exception(
                         'Included file ' . $includedFilename . ' does not exist'
@@ -984,7 +984,7 @@ class ProtobufParser
 
                 // We don't support option parameters just yet, skip for now.
                 $messageContent = preg_replace('/^.+\n/', '', $messageContent);
-                
+
             } else if (strtolower($next) == 'package') {
 
                 $match = preg_match(
@@ -1128,8 +1128,7 @@ class ProtobufParser
                     continue;
                 }
 
-                $exists = $this->_namespaces[$file->getPackage()]
-                    [$field->getType()];
+                $exists = $this->_namespaces[$file->getPackage()][$field->getType()];
 
                 if (isset($exists)) {
 
@@ -1297,7 +1296,6 @@ class ProtobufParser
         }
     }
 
-
     /**
      * Finds starting, ending char in string
      *
@@ -1352,6 +1350,7 @@ class ProtobufParser
     private function _stripComments(&$string)
     {
         $string = preg_replace('/\/\/.*/', '', $string);
+        $string = preg_replace('!/\*.*?\*/!s', '', $string);
         // now replace empty lines and whitespaces in front
         $string = preg_replace('/\\r?\\n\s*/', PHP_EOL, $string);
     }

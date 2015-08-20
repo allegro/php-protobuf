@@ -1,0 +1,37 @@
+{
+  "name": "allegro/protobuf",
+  "description": "Protocol buffer support for PHP",
+  "type": "library",
+  "keywords": [
+    "protocol buffers",
+    "data",
+    "pb"
+  ],
+  "homepage": "https://github.com/allegro/php-protobuf",
+  "bin": ["bin/protoc"],
+  "autoload": {
+    "psr-0": {
+        "": "stubs"
+    }
+  },
+  "authors": [
+    {
+      "name": "Hubert Jagodziński",
+      "email": "hubert.jagodzinski@allegro.pl",
+      "homepage": "https://github.com/hjagodzinski",
+      "role": "Original Author"
+    },
+    {
+      "name": "Mateusz Gajewski",
+      "email": "mateusz.gajewski@allegro.pl",
+      "homepage": "https://github.com/wendigo",
+      "role": "Contributor"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/allegro/php-protobuf/issues"
+  },
+  "require": {
+    "php": ">=5.3"
+  }
+}

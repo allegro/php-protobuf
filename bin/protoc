@@ -1,5 +1,7 @@
+#!/usr/bin/env php
+
 <?php
-require 'ProtobufCompiler/ProtobufParser.php';
+require implode(DIRECTORY_SEPARATOR, array(dirname(__DIR__), 'ProtobufCompiler', 'ProtobufParser.php'));
 
 if (!debug_backtrace()) {
     if (!class_exists('\ProtobufMessage')) {
@@ -63,7 +65,7 @@ if (!debug_backtrace()) {
     }
 
     if ($optionError || count($argv) != 2) {
-        printf('USAGE: %s [OPTIONS] PROTO_FILE' . PHP_EOL, $argv[0]);
+        printf('USAGE: protoc [options] message.proto' . PHP_EOL . PHP_EOL, $argv[0]);
         printf('  -n, --use-namespaces              Use native PHP namespaces' . PHP_EOL);
         printf('  -p, --filename-prefix [PREFIX]    Specify a prefix for generated file names' . PHP_EOL);
         printf('  --psr                             Output class files in a psr-4 directory structure' . PHP_EOL);
