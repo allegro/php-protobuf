@@ -977,8 +977,8 @@ class ProtobufParser
                     );
                 }
 
-                $includedFilename = $matches[1][0];
-
+                // use dirname to get absolute path in case file parsed is not in cwd
+                $includedFilename = dirname($file->getName()) . DIRECTORY_SEPARATOR . $matches[1][0];
                 if (!file_exists($includedFilename)) {
                     throw new Exception(
                         'Included file ' . $includedFilename . ' does not exist'
@@ -1151,8 +1151,7 @@ class ProtobufParser
                     continue;
                 }
 
-                $exists = $this->_namespaces[$file->getPackage()]
-                    [$field->getType()];
+                $exists = $this->_namespaces[$file->getPackage()][$field->getType()];
 
                 if (isset($exists)) {
 
