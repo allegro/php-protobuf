@@ -19,7 +19,6 @@ class ProtobufParser
 
     private static $_globalNamespace = '';
     private static $_parsers = array();
-    private $_file = null;
     private $_namespaces = array();
 
     const TAB = '    ';
@@ -32,8 +31,57 @@ class ProtobufParser
     private $_savePsrOutput = false;
 
     private $_comment;
+    private $verbose = false;
+    private $package = '';
+    private $destination = './';
 
-    private $_targetDir = '.';
+    /**
+     * @return string
+     */
+    public function getDestination()
+    {
+        return $this->destination;
+    }
+
+    /**
+     * @param string $destination
+     */
+    public function setDestination($destination)
+    {
+        $this->destination = $destination;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPackage()
+    {
+        return $this->package;
+    }
+
+    /**
+     * @param string $package
+     */
+    public function setPackage($package)
+    {
+        $this->package = $package;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isVerbose()
+    {
+        return $this->verbose;
+    }
+
+    /**
+     * @param boolean $verbose
+     */
+    public function setVerbose($verbose)
+    {
+        $this->verbose = $verbose;
+    }
 
     public function __construct($useNativeNamespaces = null)
     {
@@ -58,8 +106,7 @@ class ProtobufParser
      */
     public function getNamespaceSeparator()
     {
-        return $this->_useNativeNamespaces
-            ? self::NAMESPACE_SEPARATOR_NATIVE : self::NAMESPACE_SEPARATOR;
+        return $this->_useNativeNamespaces ? self::NAMESPACE_SEPARATOR_NATIVE : self::NAMESPACE_SEPARATOR;
     }
 
     /**
@@ -115,15 +162,21 @@ class ProtobufParser
     public function parse($sourceFile, $outputFile = null)
     {
         $string = file_get_contents($sourceFile);
-        $this->_file = new FileDescriptor($sourceFile);
         $this->_stripComments($string);
 
         $string = trim($string);
 
         $file = new FileDescriptor($sourceFile);
+
+        // if package is manually set
+        if ($this->getPackage()) {
+            $file->setPackage($this->getPackage());
+        }
+
         $this->_parseMessageType($file, $string);
 
         $this->_resolveNamespaces($file);
+
         $buffer = new CodeStringBuffer(self::TAB, self::EOL);
 
         $this->_createClassFile($file, $buffer, $outputFile);
@@ -139,9 +192,8 @@ class ProtobufParser
      *
      * @return null
      */
-    private function _createClass(
-        MessageDescriptor $descriptor, CodeStringBuffer $buffer
-    ) {
+    private function _createClass(MessageDescriptor $descriptor, CodeStringBuffer $buffer)
+    {
         if ($this->getSavePsrOutput()) {
             $buffer = new CodeStringBuffer(self::TAB, self::EOL);
             $buffer->append($this->_comment);
@@ -175,15 +227,12 @@ class ProtobufParser
 
         $buffer->append($comment);
 
-        $buffer->append('class ' . $name . ' extends \ProtobufMessage')
-            ->append('{')
-            ->increaseIdentation();
+        $buffer->append('class ' . $name . ' extends \ProtobufMessage')->append('{')->increaseIdentation();
 
         $this->_createClassConstructor($descriptor->getFields(), $buffer);
         $this->_createClassBody($descriptor->getFields(), $buffer);
 
-        $buffer->decreaseIdentation()
-            ->append('}');
+        $buffer->decreaseIdentation()->append('}');
 
         if ($this->_useNativeNamespaces) {
             $buffer->append('}');
@@ -202,9 +251,8 @@ class ProtobufParser
      *
      * @return null
      */
-    private function _createEnum(
-        EnumDescriptor $descriptor, CodeStringBuffer $buffer
-    ) {
+    private function _createEnum(EnumDescriptor $descriptor, CodeStringBuffer $buffer)
+    {
         if ($this->getSavePsrOutput()) {
             $buffer = new CodeStringBuffer(self::TAB, self::EOL);
             $buffer->append($this->_comment);
@@ -242,8 +290,7 @@ class ProtobufParser
 
         $this->_createEnumClassDefinition($descriptor->getValues(), $buffer);
 
-        $buffer->decreaseIdentation()
-            ->append('}');
+        $buffer->decreaseIdentation()->append('}');
 
         if ($this->_useNativeNamespaces) {
             $buffer->append('}');
@@ -262,16 +309,14 @@ class ProtobufParser
      *
      * @return null
      */
-    private function _createClassFile(
-        FileDescriptor $file, CodeStringBuffer $buffer, $outputFile = null
-    ) {
+    private function _createClassFile(FileDescriptor $file, CodeStringBuffer $buffer, $outputFile = null)
+    {
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
         $date = strftime("%Y-%m-%d %H:%M:%S");
         $comment->append('Auto generated from ' . basename($file->getName()) . ' at ' . $date);
 
         if ($file->getPackage()) {
-            $comment->newline()
-                ->append($file->getPackage() . ' package');
+            $comment->newline()->append($file->getPackage() . ' package');
         }
 
         if ($this->getSavePsrOutput()) {
@@ -289,12 +334,8 @@ class ProtobufParser
         }
 
         $requiresString = '';
-
         foreach ($file->getDependencies() as $dependency) {
-            $requiresString .= sprintf(
-                'require_once \'%s\';',
-                $this->_createOutputFilename($dependency->getName())
-            );
+            $requiresString .= sprintf('require_once \'%s\';', $this->_createOutputFilename($dependency->getName()));
         }
 
         if ($this->_useNativeNamespaces && !empty($requiresString)) {
@@ -308,19 +349,25 @@ class ProtobufParser
         }
 
         if (!$this->getSavePsrOutput()) {
-            file_put_contents($this->getTargetDir() . $outputFile, '<?php' . PHP_EOL . $buffer);
+            $this->writeFile($outputFile, $buffer);
         }
     }
 
     private function _createFilePsr($outputFile, $namespace, $buffer)
     {
-        $path = $this->getTargetDir() . str_replace('\\', '/', $namespace  .'/');
-
-        if (!file_exists($path)) {
-            mkdir($path, 0755, true);
+        $path = str_replace('\\', '/', $namespace  .'/');
+        if (!file_exists($this->destination . $path)) {
+            mkdir($this->destination . $path, 0755, true);
         }
+        $this->writeFile($path . $outputFile . '.php', $buffer);
+    }
 
-        file_put_contents($path . $outputFile . '.php', '<?php' . PHP_EOL . $buffer);
+    private function writeFile($file, $buffer)
+    {
+        if ($this->isVerbose()) {
+            echo "Creating classfile {$this->destination}{$file}" . PHP_EOL;
+        }
+        file_put_contents($this->destination . $file, '<?php' . PHP_EOL . $buffer);
     }
 
     /**
@@ -335,21 +382,17 @@ class ProtobufParser
         $namespace = array();
 
         $containing = $descriptor->getContaining();
-
         while (!is_null($containing)) {
             $namespace[] = self::createTypeName($containing->getName());
             $containing = $containing->getContaining();
         }
 
         $package = $descriptor->getFile()->getPackage();
-
         if (!empty($package)) {
             $namespace[] = $this->createPackageName($package);
         }
 
-        $namespace = array_reverse($namespace);
-
-        $name = implode($this->getNamespaceSeparator(), $namespace);
+        $name = implode($this->getNamespaceSeparator(), array_reverse($namespace));
 
         return $name;
     }
@@ -431,26 +474,6 @@ class ProtobufParser
     }
 
     /**
-     * Sets the directory to save output
-     *
-     * @param $targetDir
-     */
-    public function setTargetDir($targetDir)
-    {
-        $this->_targetDir = $targetDir;
-    }
-
-    /**
-     * Gets the directory to save the output
-     *
-     * @return string
-     */
-    public function getTargetDir()
-    {
-        return $this->_targetDir;
-    }
-
-    /**
      * Creates embedded message path composed of ancestor messages
      * seperated by slash "/". If message has no ancestor returns empty string.
      *
@@ -503,7 +526,6 @@ class ProtobufParser
     private function _createClassBody($fields, CodeStringBuffer $buffer)
     {
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
-
         $comment->append('Returns field descriptors')
             ->newline()
             ->appendParam('return', 'array');
@@ -531,9 +553,8 @@ class ProtobufParser
      *
      * @return null
      */
-    private function _describeRepeatedField(
-        FieldDescriptor $field, CodeStringBuffer $buffer
-    ) {
+    private function _describeRepeatedField(FieldDescriptor $field, CodeStringBuffer $buffer)
+    {
         if ($field->isProtobufScalarType() || $field->getTypeDescriptor() instanceof EnumDescriptor) {
             $typeName = $field->getTypeName();
             $argumentClass = '';
@@ -551,15 +572,9 @@ class ProtobufParser
 
         $buffer->newline()
             ->append($comment)
-            ->append(
-                'public function append' . $field->getCamelCaseName() . '(' . $argumentClass . '$value)'
-            )
+            ->append('public function append' . $field->getCamelCaseName() . '(' . $argumentClass . '$value)')
             ->append('{')
-            ->append(
-                'return $this->append(self::' . $field->getConstName() . ', $value);',
-                false,
-                1
-            )
+            ->append('return $this->append(self::' . $field->getConstName() . ', $value);', false, 1)
             ->append('}');
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -571,11 +586,7 @@ class ProtobufParser
             ->append($comment)
             ->append('public function clear' . $field->getCamelCaseName() . '()')
             ->append('{')
-            ->append(
-                'return $this->clear(self::' . $field->getConstName() . ');',
-                false,
-                1
-            )
+            ->append('return $this->clear(self::' . $field->getConstName() . ');', false, 1)
             ->append('}');
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -587,11 +598,7 @@ class ProtobufParser
             ->append($comment)
             ->append('public function get' . $field->getCamelCaseName() . '()')
             ->append('{')
-            ->append(
-                'return $this->get(self::' . $field->getConstName() . ');',
-                false,
-                1
-            )
+            ->append('return $this->get(self::' . $field->getConstName() . ');', false, 1)
             ->append('}');
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -601,23 +608,13 @@ class ProtobufParser
 
         $buffer->newline()
             ->append($comment)
-            ->append(
-                'public function get' . $field->getCamelCaseName() . 'Iterator()'
-            )
+            ->append('public function get' . $field->getCamelCaseName() . 'Iterator()')
             ->append('{')
-            ->append(
-                'return new \ArrayIterator($this->get(self::' .
-                $field->getConstName() . '));',
-                false,
-                1
-            )
+            ->append('return new \ArrayIterator($this->get(self::' . $field->getConstName() . '));', false, 1)
             ->append('}');
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
-        $comment->append(
-            'Returns element from \'' . $field->getName() .
-            '\' list at given offset'
-        )
+        $comment->append('Returns element from \'' . $field->getName() . '\' list at given offset')
             ->newline()
             ->appendParam('param', 'int $offset Position in list')
             ->newline()
@@ -625,16 +622,9 @@ class ProtobufParser
 
         $buffer->newline()
             ->append($comment)
-            ->append(
-                'public function get' . $field->getCamelCaseName() . 'At($offset)'
-            )
+            ->append('public function get' . $field->getCamelCaseName() . 'At($offset)')
             ->append('{')
-            ->append(
-                'return $this->get(self::' .
-                $field->getConstName() . ', $offset);',
-                false,
-                1
-            )
+            ->append('return $this->get(self::' . $field->getConstName() . ', $offset);', false, 1)
             ->append('}');
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -646,11 +636,7 @@ class ProtobufParser
             ->append($comment)
             ->append('public function get' . $field->getCamelCaseName() . 'Count()')
             ->append('{')
-            ->append(
-                'return $this->count(self::' . $field->getConstName() . ');',
-                false,
-                1
-            )
+            ->append('return $this->count(self::' . $field->getConstName() . ');', false, 1)
             ->append('}');
     }
 
@@ -662,9 +648,8 @@ class ProtobufParser
      *
      * @return null
      */
-    private function _describeSingleField(
-        FieldDescriptor $field, CodeStringBuffer $buffer
-    ) {
+    private function _describeSingleField(FieldDescriptor $field, CodeStringBuffer $buffer)
+    {
         if ($field->isProtobufScalarType() || $field->getTypeDescriptor() instanceof EnumDescriptor) {
             $typeName = $field->getTypeName();
             $argumentClass = '';
@@ -675,30 +660,17 @@ class ProtobufParser
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
 
-        $comment->append(
-            'Sets value of \'' . $field->getName() . '\' property'
-        )
+        $comment->append('Sets value of \'' . $field->getName() . '\' property')
             ->newline()
-            ->appendParam(
-                'param',
-                $typeName . ' $value Property value'
-            )
+            ->appendParam('param', $typeName . ' $value Property value')
             ->newline()
             ->appendParam('return', 'null');
 
         $buffer->newline()
             ->append($comment)
-            ->append(
-                'public function set' . $field->getCamelCaseName() .
-                '(' . $argumentClass . '$value)'
-            )
+            ->append('public function set' . $field->getCamelCaseName() . '(' . $argumentClass . '$value)')
             ->append('{')
-            ->append(
-                'return $this->set(self::' .
-                $field->getConstName() . ', $value);',
-                false,
-                1
-            )
+            ->append('return $this->set(self::' . $field->getConstName() . ', $value);', false, 1)
             ->append('}');
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -710,12 +682,7 @@ class ProtobufParser
             ->append($comment)
             ->append('public function get' . $field->getCamelCaseName() . '()')
             ->append('{')
-            ->append(
-                'return ' .
-                '$this->get(self::' . $field->getConstName() . ');',
-                false,
-                1
-            )
+            ->append('return ' . '$this->get(self::' . $field->getConstName() . ');', false, 1)
             ->append('}');
     }
 
@@ -727,13 +694,10 @@ class ProtobufParser
      *
      * @return null
      */
-    private function _createEnumClassDefinition(
-        array $enums, CodeStringBuffer $buffer
-    ) {
+    private function _createEnumClassDefinition(array $enums, CodeStringBuffer $buffer)
+    {
         foreach ($enums as $enum) {
-            $buffer->append(
-                'const ' . $enum->getName() . ' = ' . $enum->getValue() . ';'
-            );
+            $buffer->append('const ' . $enum->getName() . ' = ' . $enum->getValue() . ';');
         }
 
         $buffer->newline();
@@ -748,8 +712,7 @@ class ProtobufParser
             ->append('{');
 
         if ($this->_hasSplTypes) {
-            $buffer->increaseIdentation()
-                ->append('return $this->getConstList(false);');
+            $buffer->increaseIdentation()->append('return $this->getConstList(false);');
         } else {
             $buffer->append('return array(', false, 1)
                 ->increaseIdentation()
@@ -759,13 +722,10 @@ class ProtobufParser
                 $buffer->append('\'' . $enum->getName() . '\' => self::' . $enum->getName() . ',');
             }
 
-            $buffer->decreaseIdentation()
-                ->append(');');
-
+            $buffer->decreaseIdentation()->append(');');
         }
 
-        $buffer->decreaseIdentation()
-            ->append('}');
+        $buffer->decreaseIdentation()->append('}');
     }
 
     /**
@@ -781,10 +741,7 @@ class ProtobufParser
         $buffer->append('/* Field index constants */');
 
         foreach ($fields as $field) {
-            $buffer->append(
-                'const ' . $field->getConstName() .
-                ' = ' . $field->getNumber() . ';'
-            );
+            $buffer->append('const ' . $field->getConstName() . ' = ' . $field->getNumber() . ';');
         }
 
         $buffer->newline();
@@ -796,38 +753,25 @@ class ProtobufParser
         foreach ($fields as $field) {
             $type = $this->_getType($field);
 
-            $buffer->append('self::' . $field->getConstName() . ' => array(')
-                ->increaseIdentation();
+            $buffer->append('self::' . $field->getConstName() . ' => array(')->increaseIdentation();
 
             if (!is_null($field->getDefault())) {
                 if ($type == ProtobufMessage::PB_TYPE_STRING) {
-                    $buffer->append(
-                        '\'default\' => \'' .
-                        addslashes($field->getDefault()) . '\', '
-                    );
+                    $buffer->append('\'default\' => \'' . addslashes($field->getDefault()) . '\', ');
                 } else {
                     if ($field->isProtobufScalarType()) {
-                        $buffer->append(
-                            '\'default\' => ' . $field->getDefault() . ', '
-                        );
+                        $buffer->append('\'default\' => ' . $field->getDefault() . ', ');
                     } else {
                         $className = $this->_createClassName($field->getTypeDescriptor());
-                        $buffer->append(
-                            '\'default\' => ' . $className . '::' . $field->getDefault() . ', '
-                        );
+                        $buffer->append('\'default\' => ' . $className . '::' . $field->getDefault() . ', ');
                     }
                 }
             }
 
-            $buffer->append(
-                '\'name\' => \'' . addslashes($field->getName()) . '\'' . ','
-            );
+            $buffer->append('\'name\' => \'' . addslashes($field->getName()) . '\'' . ',');
 
             if (!$field->isRepeated()) {
-                $buffer->append(
-                    '\'required\' => ' .
-                    ($field->isOptional() ? 'false' : 'true') . ','
-                );
+                $buffer->append('\'required\' => ' . ($field->isOptional() ? 'false' : 'true') . ',');
             } else {
                 $buffer->append('\'repeated\' => true,');
             }
@@ -847,9 +791,7 @@ class ProtobufParser
             ->newline();
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
-        $comment->append(
-            'Constructs new message container and clears its internal state'
-        )
+        $comment->append('Constructs new message container and clears its internal state')
             ->newline()
             ->appendParam('return', 'null');
 
@@ -876,32 +818,20 @@ class ProtobufParser
             $type = $this->_getType($field);
 
             if ($field->isRepeated()) {
-                $buffer->append(
-                    '$this->values[self::' . $field->getConstName() . '] = array();'
-                );
+                $buffer->append('$this->values[self::' . $field->getConstName() . '] = array();');
             } else if ($field->isOptional() && !is_null($field->getDefault())) {
                 if ($field->isProtobufScalarType()) {
-                    $buffer->append(
-                        '$this->values[self::' . $field->getConstName() . '] = ' .
-                        $field->getDefault() . ';'
-                    );
+                    $buffer->append('$this->values[self::' . $field->getConstName() . '] = ' . $field->getDefault() . ';');
                 } else {
                     $className = $this->_createClassName($field->getTypeDescriptor());
-                    $buffer->append(
-                        '$this->values[self::' . $field->getConstName() . '] = ' .
-                        $className . '::' . $field->getDefault() . ';'
-                    );
+                    $buffer->append('$this->values[self::' . $field->getConstName() . '] = ' . $className . '::' . $field->getDefault() . ';');
                 }
             } else {
-                $buffer->append(
-                    '$this->values[self::' . $field->getConstName() . '] = null;'
-                );
+                $buffer->append('$this->values[self::' . $field->getConstName() . '] = null;');
             }
         }
 
-        $buffer->decreaseIdentation()
-            ->append('}')
-            ->newline();
+        $buffer->decreaseIdentation()->append('}')->newline();
     }
 
     /**
@@ -915,29 +845,21 @@ class ProtobufParser
      *
      * @throws Exception
      */
-    private function _parseMessageType(
-        FileDescriptor $file, $messageContent, MessageDescriptor $parent = null
-    ) {
+    private function _parseMessageType(FileDescriptor $file, $messageContent, MessageDescriptor $parent = null)
+    {
         if ($messageContent == '') {
             return;
         }
 
         while (strlen($messageContent) > 0) {
             $next = ($this->_next($messageContent));
-
             if (strtolower($next) == 'message') {
                 $messageContent = trim(substr($messageContent, strlen($next)));
                 $name = $this->_next($messageContent);
 
                 $offset = $this->_getBeginEnd($messageContent, '{', '}');
                 // now extract the content and call parse_message again
-                $content = trim(
-                    substr(
-                        $messageContent,
-                        $offset['begin'] + 1,
-                        $offset['end'] - $offset['begin'] - 2
-                    )
-                );
+                $content = trim(substr($messageContent, $offset['begin'] + 1, $offset['end'] - $offset['begin'] - 2));
 
                 $childMessage = new MessageDescriptor($name, $file, $parent);
                 $this->_parseMessageType($file, $content, $childMessage);
@@ -948,54 +870,34 @@ class ProtobufParser
                 $name = $this->_next($messageContent);
                 $offset = $this->_getBeginEnd($messageContent, '{', '}');
                 // now extract the content and call parse_message again
-                $content = trim(
-                    substr(
-                        $messageContent,
-                        $offset['begin'] + 1,
-                        $offset['end'] - $offset['begin'] - 2
-                    )
-                );
+                $content = trim(substr($messageContent, $offset['begin'] + 1, $offset['end'] - $offset['begin'] - 2));
 
                 $enum = new EnumDescriptor($name, $file, $parent);
                 $this->_parseEnum($enum, $content);
                 // removing it from string
                 $messageContent = '' . trim(substr($messageContent, $offset['end']));
+
             } else if (strtolower($next) == 'import') {
                 $name = $this->_next($messageContent);
-
-                $match = preg_match(
-                    '/"([^"]+)";*\s?/',
-                    $messageContent,
-                    $matches,
-                    PREG_OFFSET_CAPTURE
-                );
+                $match = preg_match('/"([^"]+)";*\s?/', $messageContent, $matches, PREG_OFFSET_CAPTURE);
 
                 if (!$match) {
-                    throw new Exception(
-                        'Malformed include / look at your import statement: ' .
-                        $messageContent
-                    );
+                    throw new Exception('Malformed include / look at your import statement: ' . $messageContent);
                 }
 
                 // use dirname to get absolute path in case file parsed is not in cwd
                 $includedFilename = dirname($file->getName()) . DIRECTORY_SEPARATOR . $matches[1][0];
                 if (!file_exists($includedFilename)) {
-                    throw new Exception(
-                        'Included file ' . $includedFilename . ' does not exist'
-                    );
+                    throw new Exception('Included file ' . $includedFilename . ' does not exist');
                 }
 
-                $messageContent = trim(
-                    substr(
-                        $messageContent,
-                        $matches[0][1] + strlen($matches[0][0])
-                    )
-                );
-
+                $messageContent = trim(substr($messageContent, $matches[0][1] + strlen($matches[0][0])));
                 $parserKey = realpath($includedFilename);
 
                 if (!isset(self::$_parsers[$parserKey])) {
                     $pbp = new ProtobufParser($this->_useNativeNamespaces);
+                    // passthrough manually set package
+                    $pbp->setPackage($this->getPackage());
                     self::$_parsers[$parserKey] = $pbp;
                 } else {
                     $pbp = self::$_parsers[$parserKey];
@@ -1004,51 +906,26 @@ class ProtobufParser
                 $file->addDependency($pbp->parse($includedFilename));
 
             } else if (strtolower($next) == 'option') {
-
                 // We don't support option parameters just yet, skip for now.
                 $messageContent = preg_replace('/^.+\n/', '', $messageContent);
 
             } else if (strtolower($next) == 'package') {
-
-                $match = preg_match(
-                    '/package[\s]+([^;]+);?/',
-                    $messageContent,
-                    $matches,
-                    PREG_OFFSET_CAPTURE
-                );
-
+                $match = preg_match('/package[\s]+([^;]+);?/', $messageContent, $matches, PREG_OFFSET_CAPTURE);
                 if (!$match) {
                     throw new Exception('Malformed package');
                 }
-
                 $file->setPackage($matches[1][0]);
-                $messageContent = trim(
-                    substr(
-                        $messageContent,
-                        $matches[0][1] + strlen($matches[0][0])
-                    )
-                );
+                $messageContent = trim(substr($messageContent, $matches[0][1] + strlen($matches[0][0])));
+
             } else {
                 // now a normal field
-                $match = preg_match(
-                    '/(.*);/',
-                    $messageContent,
-                    $matches,
-                    PREG_OFFSET_CAPTURE
-                );
-
+                $match = preg_match('/(.*);/', $messageContent, $matches, PREG_OFFSET_CAPTURE);
                 if (!$match || !$parent) {
                     throw new Exception('Proto file missformed');
                 }
 
                 $parent->addField($this->_parseField($matches[0][0]));
-
-                $messageContent = trim(
-                    substr(
-                        $messageContent,
-                        $matches[0][1] + strlen($matches[0][0])
-                    )
-                );
+                $messageContent = trim(substr($messageContent, $matches[0][1] + strlen($matches[0][0])));
             }
         }
     }
@@ -1066,13 +943,7 @@ class ProtobufParser
         $field = new FieldDescriptor();
 
         // parse the default value
-        $match = preg_match(
-            '/\[\s?default\s?=\s?([^\[]*)\]\s?;/',
-            $content,
-            $matches,
-            PREG_OFFSET_CAPTURE
-        );
-
+        $match = preg_match('/\[\s?default\s?=\s?([^\[]*)\]\s?;/', $content, $matches, PREG_OFFSET_CAPTURE);
         if ($match) {
             $field->setDefault($matches[1][0]);
             $content = trim(substr($content, 0, $matches[0][1])) . ';';
@@ -1085,21 +956,19 @@ class ProtobufParser
             $content,
             $matches
         );
-
         if ($match) {
             switch ($matches[1]) {
+                case 'optional':
+                    $label = FieldLabel::OPTIONAL;
+                    break;
 
-            case 'optional':
-                $label = FieldLabel::OPTIONAL;
-                break;
+                case 'required':
+                    $label = FieldLabel::REQUIRED;
+                    break;
 
-            case 'required':
-                $label = FieldLabel::REQUIRED;
-                break;
-
-            case 'repeated':
-                $label = FieldLabel::REPEATED;
-                break;
+                case 'repeated':
+                    $label = FieldLabel::REPEATED;
+                    break;
             }
 
             $field->setLabel($label);
@@ -1134,17 +1003,14 @@ class ProtobufParser
      * @throws Exception
      * @return null
      */
-    private function _resolveMessageFieldTypes(
-        MessageDescriptor $descriptor, FileDescriptor $file
-    ) {
+    private function _resolveMessageFieldTypes(MessageDescriptor $descriptor, FileDescriptor $file)
+    {
         foreach ($descriptor->getFields() as $field) {
-
             if ($field->isProtobufScalarType()) {
                 continue;
             }
 
             $namespace = $field->getNamespace();
-
             if (is_null($namespace)) {
                 if (($type = $descriptor->findType($field->getType())) !== false) {
                     $field->setTypeDescriptor($type);
@@ -1152,25 +1018,15 @@ class ProtobufParser
                 }
 
                 $exists = $this->_namespaces[$file->getPackage()][$field->getType()];
-
                 if (isset($exists)) {
-
-                    $field->setTypeDescriptor(
-                        $this->_namespaces[$file->getPackage()][$field->getType()]
-                    );
+                    $field->setTypeDescriptor($this->_namespaces[$file->getPackage()][$field->getType()]);
 
                     continue;
                 }
 
-                $exists = isset($this->_namespaces[self::$_globalNamespace])
-                    && isset($this->_namespaces[self::$_globalNamespace]
-                    [$field->getType()]);
-
+                $exists = isset($this->_namespaces[self::$_globalNamespace]) && isset($this->_namespaces[self::$_globalNamespace][$field->getType()]);
                 if ($exists) {
-
-                    $field->setTypeDescriptor(
-                        $this->_namespaces[self::GLOBAL_NAMESPACE][$field->getType()]
-                    );
+                    $field->setTypeDescriptor($this->_namespaces[self::GLOBAL_NAMESPACE][$field->getType()]);
 
                     continue;
                 }
@@ -1184,16 +1040,11 @@ class ProtobufParser
                 }
 
                 if (!isset($this->_namespaces[$namespace])) {
-                    throw new Exception(
-                        'Namespace \'' . $namespace . '\' for type ' .
-                        $field->getType() . ' not defined'
-                    );
+                    throw new Exception('Namespace \'' . $namespace . '\' for type ' . $field->getType() . ' not defined');
                 }
 
                 if (!isset($this->_namespaces[$namespace][$field->getType()])) {
-                    throw new Exception(
-                        'Type ' . $field->getType() . ' not defined in ' . $namespace
-                    );
+                    throw new Exception('Type ' . $field->getType() . ' not defined in ' . $namespace);
                 }
 
                 $field->setTypeDescriptor(
@@ -1211,23 +1062,16 @@ class ProtobufParser
                 }
 
                 if (!isset($this->_namespaces[$namespace])) {
-                    throw new Exception(
-                        'Namespace ' . $namespace . ' for type ' .
-                        $field->getType() . ' not defined'
-                    );
+                    throw new Exception('Namespace ' . $namespace . ' for type ' . $field->getType() . ' not defined');
                 }
 
                 $exists = isset($this->_namespaces[$namespace][$field->getType()]);
 
                 if (!$exists) {
-                    throw new Exception(
-                        'Type ' . $field->getType() . ' not defined in ' . $namespace
-                    );
+                    throw new Exception('Type ' . $field->getType() . ' not defined in ' . $namespace);
                 }
 
-                $field->setTypeDescriptor(
-                    $this->_namespaces[$namespace][$field->getType()]
-                );
+                $field->setTypeDescriptor($this->_namespaces[$namespace][$field->getType()]);
             }
         }
 
@@ -1246,13 +1090,11 @@ class ProtobufParser
     private function _resolveNamespaces(FileDescriptor $file)
     {
         foreach ($file->getEnums() as $descriptor) {
-            $this->_namespaces[$file->getPackage()]
-            [$descriptor->getName()] = $descriptor;
+            $this->_namespaces[$file->getPackage()][$descriptor->getName()] = $descriptor;
         }
 
         foreach ($file->getMessages() as $descriptor) {
-            $this->_namespaces[$file->getPackage()]
-            [$descriptor->getName()] = $descriptor;
+            $this->_namespaces[$file->getPackage()][$descriptor->getName()] = $descriptor;
         }
 
         foreach (self::$_parsers as $parser) {
@@ -1280,17 +1122,13 @@ class ProtobufParser
     private function _parseEnum(EnumDescriptor $enum, $content)
     {
         $match = preg_match_all('/(.*);\s?/', $content, $matches);
-
         if (!$match) {
             throw new \Exception('Semantic error in Enum!');
         }
 
         foreach ($matches[1] as $match) {
             $split = preg_split('/=/', $match);
-
-            $enum->addValue(
-                new EnumValueDescriptor(trim($split[0]), trim($split[1]))
-            );
+            $enum->addValue(new EnumValueDescriptor(trim($split[0]), trim($split[1])));
         }
 
         return $enum;
@@ -1305,18 +1143,12 @@ class ProtobufParser
      */
     private function _next($message)
     {
-        $match = preg_match(
-            '/([^\s^\{}]*)/',
-            $message,
-            $matches,
-            PREG_OFFSET_CAPTURE
-        );
-
+        $match = preg_match('/([^\s^\{}]*)/', $message, $matches, PREG_OFFSET_CAPTURE);
         if (!$match) {
             return -1;
-        } else {
-            return trim($matches[0][0]);
         }
+
+        return trim($matches[0][0]);
     }
 
     /**
@@ -1332,7 +1164,6 @@ class ProtobufParser
     private function _getBeginEnd($string, $char, $charend)
     {
         $offsetBegin = strpos($string, $char);
-
         if ($offsetBegin === false) {
             return array('begin' => -1, 'end' => -1);
         }
@@ -1373,6 +1204,7 @@ class ProtobufParser
     private function _stripComments(&$string)
     {
         $string = preg_replace('/\/\/.*/', '', $string);
+        // Remove multiline comments
         $string = preg_replace('!/\*.*?\*/!s', '', $string);
         // now replace empty lines and whitespaces in front
         $string = preg_replace('/\\r?\\n\s*/', PHP_EOL, $string);
