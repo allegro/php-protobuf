@@ -1,0 +1,14 @@
+Source: php5-protobuf
+Section: php
+Priority: optional
+Maintainer: Ilya Kozlov <unicast.ru@gmail.com>
+Uploaders: Ilya Kozlov <unicast.ru@gmail.com>
+Build-Depends: debhelper (>= 9), pkg-php-tools (>= 1.6~), php5-dev, dh-php5
+#Standards-Version: 3.9.5
+Vcs-Browser: https://github.com/allegro/php-protobuf
+Vcs-Git: https://github.com/allegro/php-protobuf
+Homepage: https://github.com/allegro/php-protobuf
+
+Package: php5-protobuf
+Architecture: any
+Description: PHP Protobuf - Fast PHP Protocol Buffers implementation
