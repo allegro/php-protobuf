@@ -39,6 +39,55 @@ class FieldDescriptor
         'bytes'    => 'string'
     );
 
+    private static $_reservedWords = array(
+        'ABSTRACT',
+        'AND',
+        'AS',
+        'BREAK',
+        'CALLABLE',
+        'CASE',
+        'CATCH',
+        'CLASS',
+        'CLONE',
+        'CONST',
+        'CONTINUE',
+        'DECLARE',
+        'DEFAULT',
+        'DO',
+        'ECHO',
+        'EXTENDS',
+        'FINAL',
+        'FOR',
+        'FUNCTION',
+        'GLOBAL',
+        'GLOBAL',
+        'IF',
+        'IMPLEMENTS',
+        'INCLUDE',
+        'INSTANCEOF',
+        'INSTEADOF',
+        'INTERFACE',
+        'NAMESPACE',
+        'NEW',
+        'OR',
+        'PRINT',
+        'PRIVATE',
+        'PROTECTED',
+        'PUBLIC',
+        'REQUIRE',
+        'RETURN',
+        'STATIC',
+        'SWITCH',
+        'THROW',
+        'TRAIT',
+        'TRY',
+        'USE',
+        'VAR',
+        'WHILE',
+        'XOR',
+        'YIELD',
+    );
+
     private $_default;
     private $_label;
     private $_name;
@@ -96,7 +145,14 @@ class FieldDescriptor
     public function getConstName()
     {
         $chunks = preg_split('/[^a-z0-9]/is', $this->getName());
-        return implode('_', array_map('strtoupper', $chunks));
+        $constant = implode('_', array_map('strtoupper', $chunks));
+
+        // intercept reserved word field names and append '_FIELD' to avoid unexpected errors
+        if (in_array($constant, static::$_reservedWords)) {
+            $constant = $constant . '_FIELD';
+        }
+
+        return $constant;
     }
 
     /**
