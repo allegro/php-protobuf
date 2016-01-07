@@ -33,6 +33,8 @@ class ProtobufParser
 
     private $_comment;
 
+	private $_targetDir = '.';
+
     public function __construct($useNativeNamespaces = null)
     {
         $this->_hasSplTypes = extension_loaded('SPL_Types');
@@ -306,13 +308,14 @@ class ProtobufParser
         }
 
         if (!$this->getSavePsrOutput()) {
-            file_put_contents($outputFile, '<?php' . PHP_EOL . $buffer);
+            file_put_contents($this->getTargetDir() . $outputFile, '<?php' . PHP_EOL . $buffer);
         }
     }
 
     private function _createFilePsr($outputFile, $namespace, $buffer)
     {
-        $path = str_replace('\\', '/', $namespace  .'/');
+        $path = $this->getTargetDir() . str_replace('\\', '/', $namespace  .'/');
+
         if (!file_exists($path)) {
             mkdir($path, 0755, true);
         }
@@ -426,6 +429,26 @@ class ProtobufParser
     {
         return $this->_savePsrOutput;
     }
+
+	/**
+	 * Sets the directory to save output
+	 *
+	 * @param $targetDir
+	 */
+	public function setTargetDir($targetDir)
+	{
+		$this->_targetDir = $targetDir;
+	}
+
+	/**
+	 * Gets the directory to save the output
+	 *
+	 * @return string
+	 */
+	public function getTargetDir()
+	{
+		return $this->_targetDir;
+	}
 
     /**
      * Creates embedded message path composed of ancestor messages
