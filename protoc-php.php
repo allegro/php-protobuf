@@ -15,7 +15,7 @@ if (!debug_backtrace()) {
     $useNamespaces = false;
     $filenamePrefix = false;
     $outputPsr = false;
-	$targetDir = false;
+    $targetDir = false;
 
     $iterator = new \RegexIterator(new \ArrayIterator($argv), '/^-/');
 
@@ -40,9 +40,9 @@ if (!debug_backtrace()) {
             case 'psr':
                 $outputPsr = true;
                 break;
-	        case 't':
-		        $targetDir = rtrim($value, '/') . '/';
-		        break;
+            case 't':
+                $targetDir = rtrim($value, '/') . '/';
+                break;
             default :
                 $optionError = true;
                 break;
@@ -70,7 +70,7 @@ if (!debug_backtrace()) {
         printf('USAGE: %s [OPTIONS] PROTO_FILE' . PHP_EOL, $argv[0]);
         printf('  -n, --use-namespaces              Use native PHP namespaces' . PHP_EOL);
         printf('  -p, --filename-prefix [PREFIX]    Specify a prefix for generated file names' . PHP_EOL);
-	    printf('  -t [path]                         Target directory for output' . PHP_EOL);
+        printf('  -t [path]                         Target directory for output' . PHP_EOL);
         printf('  --psr                             Output class files in a psr-4 directory structure' . PHP_EOL);
         exit(1);
     }
@@ -88,14 +88,14 @@ if (!debug_backtrace()) {
         $parser->setSavePsrOutput(true);
     }
 
-	if ($targetDir !== false) {
-		if (!is_dir($targetDir)) {
-			printf('Target directory ' . $targetDir . ' does not exist' . PHP_EOL);
-			exit(1);
-		}
+    if ($targetDir !== false) {
+        if (!is_dir($targetDir)) {
+            printf('Target directory ' . $targetDir . ' does not exist' . PHP_EOL);
+            exit(1);
+        }
 
-		$parser->setTargetDir($targetDir);
-	}
+        $parser->setTargetDir($targetDir);
+    }
 
     $file = $argv[1];
 

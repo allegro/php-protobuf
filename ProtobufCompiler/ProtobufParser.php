@@ -33,7 +33,7 @@ class ProtobufParser
 
     private $_comment;
 
-	private $_targetDir = '.';
+    private $_targetDir = '.';
 
     public function __construct($useNativeNamespaces = null)
     {
@@ -430,25 +430,25 @@ class ProtobufParser
         return $this->_savePsrOutput;
     }
 
-	/**
-	 * Sets the directory to save output
-	 *
-	 * @param $targetDir
-	 */
-	public function setTargetDir($targetDir)
-	{
-		$this->_targetDir = $targetDir;
-	}
+    /**
+     * Sets the directory to save output
+     *
+     * @param $targetDir
+     */
+    public function setTargetDir($targetDir)
+    {
+        $this->_targetDir = $targetDir;
+    }
 
-	/**
-	 * Gets the directory to save the output
-	 *
-	 * @return string
-	 */
-	public function getTargetDir()
-	{
-		return $this->_targetDir;
-	}
+    /**
+     * Gets the directory to save the output
+     *
+     * @return string
+     */
+    public function getTargetDir()
+    {
+        return $this->_targetDir;
+    }
 
     /**
      * Creates embedded message path composed of ancestor messages
