@@ -27,6 +27,7 @@ class ProtobufParser
 
     private $_hasSplTypes = false;
     private $_useNativeNamespaces = false;
+    private $_shouldCompileInPlace = false;
 
     private $_filenamePrefix = 'pb_proto_';
     private $_savePsrOutput = false;
@@ -35,10 +36,11 @@ class ProtobufParser
 
     private $_targetDir = '.';
 
-    public function __construct($useNativeNamespaces = null)
+    public function __construct($useNativeNamespaces = null, $shouldCompileInPlace=false)
     {
         $this->_hasSplTypes = extension_loaded('SPL_Types');
         $this->_useNativeNamespaces = (boolean)$useNativeNamespaces;
+        $this->_shouldCompileInPlace = (boolean)$shouldCompileInPlace;
     }
 
     /**
@@ -110,7 +112,7 @@ class ProtobufParser
      * @param string $sourceFile Source filename (.proto)
      * @param string $outputFile Output filename
      *
-     * @return null
+     * @return FileDescriptor file
      */
     public function parse($sourceFile, $outputFile = null)
     {
@@ -126,7 +128,10 @@ class ProtobufParser
         $this->_resolveNamespaces($file);
         $buffer = new CodeStringBuffer(self::TAB, self::EOL);
 
-        $this->_createClassFile($file, $buffer, $outputFile);
+        $compiledFilename = $this->_createClassFile($file, $buffer, $outputFile);
+        if (!is_null($compiledFilename)) {
+          $file->setCompiledFilename($compiledFilename);
+        }
 
         return $file;
     }
@@ -189,6 +194,7 @@ class ProtobufParser
             $buffer->append('}');
         }
 
+        // Side effect of this function: this writes a compiled file to disk
         if ($this->getSavePsrOutput()) {
             $this->_createFilePsr($name, $namespaceName, $buffer);
         }
@@ -260,7 +266,7 @@ class ProtobufParser
      * @param CodeStringBuffer $buffer     Buffer to write code to
      * @param string|null      $outputFile Output filename
      *
-     * @return null
+     * @return string|null $compiledFilename if one is created
      */
     private function _createClassFile(
         FileDescriptor $file, CodeStringBuffer $buffer, $outputFile = null
@@ -288,12 +294,18 @@ class ProtobufParser
             $this->_createClass($descriptor, $buffer);
         }
 
+        // The PSR format doesn't use require_once dependency strings
+        // so we can exit early
+        if ($this->getSavePsrOutput()) {
+          return null;
+        }
+
         $requiresString = '';
 
         foreach ($file->getDependencies() as $dependency) {
             $requiresString .= sprintf(
-                'require_once \'%s\';',
-                $this->_createOutputFilename($dependency->getName())
+                'require_once \'%s\';' . PHP_EOL,
+                $dependency->getCompiledFilename()
             );
         }
 
@@ -307,9 +319,15 @@ class ProtobufParser
             $outputFile = $this->_createOutputFilename($file->getName());
         }
 
-        if (!$this->getSavePsrOutput()) {
-            file_put_contents($this->getTargetDir() . $outputFile, '<?php' . PHP_EOL . $buffer);
+        $compiledFilename = '';
+        if ($this->_shouldCompileInPlace) {
+          $compiledFilename = dirname($file->getName()) . '/' . $outputFile;
+        } else {
+          $compiledFilename = $this->getTargetDir() . $outputFile;
         }
+
+        file_put_contents($compiledFilename, '<?php' . PHP_EOL . $buffer);
+        return $compiledFilename;
     }
 
     private function _createFilePsr($outputFile, $namespace, $buffer)
@@ -995,13 +1013,16 @@ class ProtobufParser
                 $parserKey = realpath($includedFilename);
 
                 if (!isset(self::$_parsers[$parserKey])) {
-                    $pbp = new ProtobufParser($this->_useNativeNamespaces);
+                    # TODO: should the other settings from the top-most parser
+                    # be passed into the child ones?
+                    $pbp = new ProtobufParser($this->_useNativeNamespaces,
+                        $this->_shouldCompileInPlace);
                     self::$_parsers[$parserKey] = $pbp;
                 } else {
                     $pbp = self::$_parsers[$parserKey];
                 }
-
-                $file->addDependency($pbp->parse($includedFilename));
+                $newDependencyFile = $pbp->parse($includedFilename);
+                $file->addDependency($newDependencyFile);
 
             } else if (strtolower($next) == 'option') {
 

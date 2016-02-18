@@ -16,11 +16,12 @@ if (!debug_backtrace()) {
     $filenamePrefix = false;
     $outputPsr = false;
     $targetDir = false;
+    $shouldCompileInPlace = false;
 
     $iterator = new \RegexIterator(new \ArrayIterator($argv), '/^-/');
 
     $shortOpts = "np:t:";
-    $longOpts = array("use-namespaces", "filename-prefix:", "psr");
+    $longOpts = array("use-namespaces", "filename-prefix:", "psr", "compile-in-place");
 
     $options = getOpt($shortOpts, $longOpts);
 
@@ -42,6 +43,9 @@ if (!debug_backtrace()) {
                 break;
             case 't':
                 $targetDir = rtrim($value, '/') . '/';
+                break;
+            case 'compile-in-place':
+                $shouldCompileInPlace = true;
                 break;
             default :
                 $optionError = true;
@@ -72,13 +76,14 @@ if (!debug_backtrace()) {
         printf('  -p, --filename-prefix [PREFIX]    Specify a prefix for generated file names' . PHP_EOL);
         printf('  -t [path]                         Target directory for output' . PHP_EOL);
         printf('  --psr                             Output class files in a psr-4 directory structure' . PHP_EOL);
+        printf('  --compile-in-place                Generated files will be outputted in the same directory as their source files' . PHP_EOL);
         exit(1);
     }
 
     // Reindex argv
     $GLOBALS['argv'] = array_values($GLOBALS['argv']);
 
-    $parser = new ProtobufParser($useNamespaces);
+    $parser = new ProtobufParser($useNamespaces, $shouldCompileInPlace);
 
     if ($filenamePrefix !== false) {
         $parser->setFilenamePrefix($filenamePrefix);
