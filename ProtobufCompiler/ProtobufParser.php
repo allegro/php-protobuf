@@ -1081,7 +1081,7 @@ class ProtobufParser
         // parse the value
         $match = preg_match(
             '/(optional|required|repeated)[\s]+([^;^=^\s^]+)' .
-            '[\s]+([^;^=^\s]+)[\s]+=[\s]+([\d]+);/',
+            '[\s]+([^;^=^\s]+)[\s]*=[\s]*([\d]+)[\s]*;/',
             $content,
             $matches
         );
