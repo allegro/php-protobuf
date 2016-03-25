@@ -1381,14 +1381,10 @@ class ProtobufParser
 
     private static function _path_join()
     {
-        $args = func_get_args();
-        $paths = array();
-        foreach ($args as $arg) {
-            $paths = array_merge($paths, (array)$arg);
-        }
-
-        $paths = array_map(create_function('$p', 'return trim($p, "/");'), $paths);
-        $paths = array_filter($paths);
-        return join('/', $paths);
+        $paths = func_get_args();
+        $mapper = function ($path) {
+            return trim($path, DIRECTORY_SEPARATOR);
+        };
+        return join(DIRECTORY_SEPARATOR, array_map($mapper, $paths));
     }
 }
