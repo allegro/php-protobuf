@@ -33,7 +33,7 @@ class ProtobufParser
 
     private $_comment;
 
-    private $_targetDir = '.';
+    private $_targetDir = './';
 
     public function __construct($useNativeNamespaces = null)
     {
