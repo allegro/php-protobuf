@@ -52,8 +52,7 @@ static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_numb
 static int pb_dump_field_value(zval *value, long level, zend_bool only_set);
 static zval *pb_get_field_type(zval *this, zval *field_descriptors, uint32_t field_number);
 static zval *pb_get_field_descriptor(zval *this, zval *field_descriptors, uint32_t field_number);
-//static zval *pb_get_field_descriptors(zval *this);
-static int pb_get_field_descriptors_ex(zval *this, zval* return_value);
+static int pb_get_field_descriptors(zval *this, zval* return_value);
 static const char *pb_get_field_name(zval *this, uint32_t field_number);
 static int pb_get_wire_type(int field_type);
 static const char *pb_get_wire_type_name(int wire_type);
@@ -95,7 +94,6 @@ PHP_METHOD(ProtobufMessage, append)
 	if (pb_assign_value(getThis(), &val, value, field_number) != 0) {
 		RETURN_THIS();
 	}
-
 	add_next_index_zval(array, &val);
 	RETURN_THIS();
 }
@@ -138,9 +136,8 @@ PHP_METHOD(ProtobufMessage, dump)
 		return;
 	}
 
-	if (pb_get_field_descriptors_ex(getThis(), &field_descriptors))
+	if (pb_get_field_descriptors(getThis(), &field_descriptors))
 		return;
-	zval_copy_ctor(&field_descriptors); // FIX!!
 
 	if ((values = pb_get_values(getThis())) == NULL)
 		goto fail0;
@@ -190,7 +187,7 @@ PHP_METHOD(ProtobufMessage, dump)
 		php_printf("}\n");
 
 fail0:
-	zval_dtor(&field_descriptors);
+	zval_ptr_dtor(&field_descriptors);
 }
 
 PHP_METHOD(ProtobufMessage, count)
@@ -263,17 +260,20 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 
 	ZVAL_STRINGL(&name, PB_RESET_METHOD, sizeof(PB_RESET_METHOD) - 1);
 
-	if (call_user_function(NULL, getThis(), &name, &zret, 0, NULL TSRMLS_CC) == FAILURE)
+	if (call_user_function(NULL, getThis(), &name, &zret, 0, NULL TSRMLS_CC) == FAILURE) {
+		zval_ptr_dtor(&name);
 		return;
-	zval_dtor(&zret);
+	}
 
-	if (pb_get_field_descriptors_ex(getThis(), &field_descriptors))
+	zval_ptr_dtor(&name);
+	zval_ptr_dtor(&zret);
+
+	if (pb_get_field_descriptors(getThis(), &field_descriptors))
 		return;
 
 	if ((values = pb_get_values(getThis())) == NULL)
 		goto fail0;
 
-	zval_copy_ctor(&field_descriptors); // FIX !!
 	reader_init(&reader, pack, pack_size);
 
 	while (reader_has_more(&reader)) {
@@ -336,22 +336,27 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 				ZVAL_STRINGL(&name, ZEND_CONSTRUCTOR_FUNC_NAME, sizeof(ZEND_CONSTRUCTOR_FUNC_NAME) - 1);
 
 				if (call_user_function(NULL, &value, &name, &zret, 0, NULL TSRMLS_CC) == FAILURE) {
+					zval_ptr_dtor(&name);
 					goto fail0;
 				}
-				zval_dtor(&zret);
+
+				zval_ptr_dtor(&name);
+				zval_ptr_dtor(&zret);
 
 				ZVAL_STRINGL(&name, PB_PARSE_FROM_STRING_METHOD, sizeof(PB_PARSE_FROM_STRING_METHOD) - 1);
-
 				ZVAL_STRINGL(&arg, subpack, subpack_size);
-				Z_ADDREF(arg);
 
 				args = &arg;
-
-				if (call_user_function(NULL, &value, &name, &zret, 1, args TSRMLS_CC) == FAILURE)
+				if (call_user_function(NULL, &value, &name, &zret, 1, args TSRMLS_CC) == FAILURE) {
+					zval_ptr_dtor(&name);
 					goto fail0;
+				}
+
+				zval_ptr_dtor(&arg);
+				zval_ptr_dtor(&name);
 
 				bool_value = (Z_TYPE(zret) != IS_TRUE) && (Z_TYPE(zret) != IS_FALSE);
-				zval_dtor(&zret);
+				zval_ptr_dtor(&zret);
 
 				if (bool_value) {
 					goto fail0;
@@ -420,22 +425,24 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 		}
 
 		if (Z_TYPE_P(old_value) == IS_ARRAY) {
+			if (Z_REFCOUNTED(value))
+				Z_ADDREF(value);
 			add_next_index_zval(old_value, &value);
 		} else {
-			zval_dtor(old_value);
-			*old_value = value;
-			zval_copy_ctor(old_value);
+			zval_ptr_dtor(old_value);
+			ZVAL_COPY(old_value, &value);
 		}
 
-		zval_dtor(&value);
+		zval_ptr_dtor(&value);
 	}
 
+	zval_ptr_dtor(&field_descriptors);
 	RETURN_TRUE;
 
 fail1:
-	zval_dtor(&zret);
+	zval_ptr_dtor(&zret);
 fail0:
-	zval_dtor(&field_descriptors);
+	zval_ptr_dtor(&field_descriptors);
 	return;
 }
 
@@ -451,7 +458,7 @@ PHP_METHOD(ProtobufMessage, serializeToString)
 	if ((values = pb_get_values(getThis())) == NULL)
 		return;
 
-	if (pb_get_field_descriptors_ex(getThis(), &field_descriptors))
+	if (pb_get_field_descriptors(getThis(), &field_descriptors))
 		return;
 
 	writer_init(&writer);
@@ -498,11 +505,15 @@ PHP_METHOD(ProtobufMessage, serializeToString)
 	}
 
 	pack = writer_get_pack(&writer, &pack_size);
+	RETVAL_STRINGL(pack, pack_size);
 
-	RETURN_STRINGL(pack, pack_size);
+	zval_ptr_dtor(&field_descriptors);
+	writer_free_pack(&writer);
+
+	return;
 
 fail:
-	zval_dtor(&field_descriptors);
+	zval_ptr_dtor(&field_descriptors);
 	writer_free_pack(&writer);
 
 	return;
@@ -525,10 +536,11 @@ PHP_METHOD(ProtobufMessage, set)
 
 	if (Z_TYPE_P(value) == IS_NULL) {
 		if (Z_TYPE_P(old_value) != IS_NULL) {
-			zval_dtor(old_value);
+			zval_ptr_dtor(old_value);
+			ZVAL_NULL(old_value);
 		}
 	} else {
-		zval_dtor(old_value);
+		zval_ptr_dtor(old_value);
 		pb_assign_value(getThis(), old_value, value, field_number);
 	}
 
@@ -612,9 +624,7 @@ PHP_MINIT_FUNCTION(protobuf)
 }
 
 zend_module_entry protobuf_module_entry = {
-#if ZEND_MODULE_API_NO >= 20010901
 	STANDARD_MODULE_HEADER,
-#endif
 	PHP_PROTOBUF_EXTNAME,
 	NULL,
 	PHP_MINIT(protobuf),
@@ -622,9 +632,7 @@ zend_module_entry protobuf_module_entry = {
 	NULL,
 	NULL,
 	NULL,
-#if ZEND_MODULE_API_NO >= 20010901
 	PHP_PROTOBUF_VERSION,
-#endif
 	STANDARD_MODULE_PROPERTIES
 };
 
@@ -637,7 +645,7 @@ static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_numb
 	zval *field_descriptor, field_descriptors, tmp, *type;
     TSRMLS_FETCH();
 
-	if (pb_get_field_descriptors_ex(this, &field_descriptors))
+	if (pb_get_field_descriptors(this, &field_descriptors))
 		goto fail0;
 
 	if ((field_descriptor = pb_get_field_descriptor(this, &field_descriptors, field_number)) == NULL)
@@ -647,7 +655,7 @@ static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_numb
 		goto fail1;
 
 	tmp = *src;
-	zval_copy_ctor(&tmp);
+	ZVAL_COPY(&tmp, src);
 
 	if (Z_TYPE_P(type) == IS_LONG) {
 		switch (Z_LVAL_P(type))
@@ -686,11 +694,12 @@ static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_numb
 
 	*dst = tmp;
 
+	zval_ptr_dtor(&field_descriptors);
 	return 0;
 fail2:
-	zval_dtor(&tmp);
+	zval_ptr_dtor(&tmp);
 fail1:
-	zval_dtor(field_descriptor);
+	zval_ptr_dtor(&field_descriptors);
 fail0:
 	return -1;
 }
@@ -699,6 +708,7 @@ static int pb_dump_field_value(zval *value, long level, zend_bool only_set)
 {
 	const char *string_value;
 	zval tmp, ret, arg0, arg1, args[2];
+	int dump_result;
     TSRMLS_FETCH();
 
     ZVAL_UNDEF(&tmp);
@@ -715,7 +725,9 @@ static int pb_dump_field_value(zval *value, long level, zend_bool only_set)
 
 		ZVAL_STRINGL(&tmp, PB_DUMP_METHOD, sizeof(PB_DUMP_METHOD) - 1);
 
-		if (call_user_function(NULL, value, &tmp, &ret, 2, args TSRMLS_CC) == FAILURE)
+		dump_result = call_user_function(NULL, value, &tmp, &ret, 2, args TSRMLS_CC);
+		zval_ptr_dtor(&tmp);
+		if (dump_result == FAILURE)
 			return -1;
 		else
 			return 0;
@@ -727,7 +739,7 @@ static int pb_dump_field_value(zval *value, long level, zend_bool only_set)
 		string_value = "false";
 	} else {
 		tmp = *value;
-		zval_copy_ctor(&tmp);
+		ZVAL_COPY(&tmp, value);
 		convert_to_string(&tmp);
 		string_value = Z_STRVAL(tmp);
 	}
@@ -737,8 +749,8 @@ static int pb_dump_field_value(zval *value, long level, zend_bool only_set)
 	else
 		php_printf(" %s\n", string_value);
 
-	zval_dtor(&tmp);
-	zval_dtor(&ret);
+	zval_ptr_dtor(&tmp);
+	zval_ptr_dtor(&ret);
 
 	return 0;
 }
@@ -767,22 +779,7 @@ static zval *pb_get_field_type(zval *this, zval *field_descriptor, uint32_t fiel
 	return field_type;
 }
 
-//static zval *pb_get_field_descriptors(zval *this)
-//{
-//	zval *descriptors, method;
-//    TSRMLS_FETCH();
-//
-//    INIT_ZVAL(method);
-//    ZVAL_STRINGL(&method, PB_FIELDS_METHOD, sizeof(PB_FIELDS_METHOD) - 1, 0);
-//    ZVAL_STRINGL(&method, PB_FIELDS_METHOD, sizeof(PB_FIELDS_METHOD) - 1);
-//    call_user_function_ex(NULL, this, &method, descriptors, 0, NULL, 0, NULL TSRMLS_CC);
-//    Z_DELREF_P(descriptors); // TODO check is this needed
-//
-//    call_user_function_ex(NULL, &this, &method, &descriptors, 0, NULL, 0, NULL TSRMLS_CC);
-//    return descriptors;
-//}
-
-static int pb_get_field_descriptors_ex(zval *this, zval* return_value)
+static int pb_get_field_descriptors(zval *this, zval* return_value)
 {
 	zval descriptors, method;
     TSRMLS_FETCH();
@@ -792,33 +789,33 @@ static int pb_get_field_descriptors_ex(zval *this, zval* return_value)
 		return -1;
 	}
 	*return_value = descriptors;
-	//	Z_DELREF_P(descriptors); // TODO check is this needed
+	zval_ptr_dtor(&method);
 
 	return 0;
 }
 
 static const char *pb_get_field_name(zval *this, uint32_t field_number)
 {
-	zval *field_descriptor, field_descriptors, *field_name, pb_field_name;
+	zval *field_descriptor, field_descriptors, *field_name;
     TSRMLS_FETCH();
 
-	if (pb_get_field_descriptors_ex(this, &field_descriptors))
+	if (pb_get_field_descriptors(this, &field_descriptors))
 		return NULL;
 
 	if ((field_descriptor = pb_get_field_descriptor(this, &field_descriptors, field_number)) == NULL)
 		goto fail0;
 
-	ZVAL_STRINGL(&pb_field_name, PB_FIELD_NAME, sizeof(PB_FIELD_NAME) - 1);
 	field_name = zend_hash_str_find(Z_ARRVAL_P(field_descriptor), PB_FIELD_NAME, sizeof(PB_FIELD_NAME) - 1);
 	if (field_name == NULL) {
 		PB_COMPILE_ERROR_EX(this, "missing %u field name property in field descriptor", field_number);
 		goto fail0;
 	}
 
+	zval_ptr_dtor(&field_descriptors);
 	return (const char *) Z_STRVAL_P(field_name);
 
 fail0:
-	zval_dtor(&field_descriptors);
+	zval_ptr_dtor(&field_descriptors);
 	return NULL;
 }
 
@@ -916,16 +913,21 @@ static int pb_serialize_field_value(zval *this, writer_t *writer, uint32_t field
 	if (Z_TYPE_P(type) == IS_STRING) {
 		ZVAL_STRINGL(&method, PB_SERIALIZE_TO_STRING_METHOD, sizeof(PB_SERIALIZE_TO_STRING_METHOD) - 1);
 
-		if (call_user_function(NULL, value, &method, &ret, 0, NULL TSRMLS_CC) == FAILURE)
+		if (call_user_function(NULL, value, &method, &ret, 0, NULL TSRMLS_CC) == FAILURE) {
+			zval_ptr_dtor(&method);
 			return -1;
+		}
+		zval_ptr_dtor(&method);
 
-		if (Z_TYPE(ret) != IS_STRING)
+		if (Z_TYPE(ret) != IS_STRING) {
+			zval_ptr_dtor(&ret);
 			return -1;
+		}
 
 		if (Z_STRLEN(ret) > 0)
 			writer_write_message(writer, field_number, Z_STRVAL(ret), Z_STRLEN(ret));
 
-		zval_dtor(&ret);
+		zval_ptr_dtor(&ret);
 	} else if (Z_TYPE_P(type) == IS_LONG) {
 		switch (Z_LVAL_P(type))
 		{
