@@ -74,6 +74,25 @@ static int pb_serialize_field_value(zval *this, writer_t *writer, uint32_t field
 static ulong PB_FIELD_TYPE_HASH;
 static ulong PB_VALUES_PROPERTY_HASH;
 
+static const uint32_t primeFor32Bit = 16777619;
+static const uint32_t offsetBiasFor32Bit = 2166136261;
+
+static uint32_t static_hash(const char * string, const int length, const uint32_t hash)
+{
+	return (length > 0) ? static_hash(string + 1, length - 1, (hash ^ *string) * primeFor32Bit) : hash;
+}
+
+PHP_FUNCTION(fnvhash)
+{
+	char * str;
+    int str_len;
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &str, &str_len) == FAILURE) {
+		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Missing String", 0 TSRMLS_CC);
+    }
+
+    RETURN_LONG(static_hash(str, str_len, offsetBiasFor32Bit));
+}
+
 PHP_METHOD(ProtobufMessage, __construct)
 {
 	zval *values;
@@ -186,7 +205,7 @@ PHP_METHOD(ProtobufMessage, debugPrint)
                 if (Z_TYPE_PP(value) == IS_NULL)
                     continue;
                 
-                if (wire == WIRE_TYPE_LENGTH_DELIMITED || wire == -1)
+                if ((wire == WIRE_TYPE_LENGTH_DELIMITED && Z_TYPE_PP(val) != IS_STRING) || wire == -1)
                 {
                     php_printf("%*c%s {", ((int) level + 1) * 2, ' ', field_name);
                     if (pb_debug_print_field_value(val, level + 3) != 0)
@@ -648,7 +667,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_set, 0, 0, 2)
 	ZEND_ARG_INFO(0, value)
 ZEND_END_ARG_INFO()
 
-zend_function_entry pb_methods[] = {
+static zend_function_entry pb_methods[] = {
 	PHP_ME(ProtobufMessage, __construct, arginfo_construct, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
 	PHP_ABSTRACT_ME(ProtobufMessage, reset, arginfo_reset)
 	PHP_ME(ProtobufMessage, append, arginfo_append, ZEND_ACC_PUBLIC)
@@ -661,6 +680,15 @@ zend_function_entry pb_methods[] = {
 	PHP_ME(ProtobufMessage, set, arginfo_set, ZEND_ACC_PUBLIC)
     PHP_ME(ProtobufMessage, debugPrint, arginfo_debugPrint, ZEND_ACC_PUBLIC)
 	{NULL, NULL, NULL, 0, 0}
+};
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_fnvhash, 0, 0, 1)
+	ZEND_ARG_INFO(0, packed)
+ZEND_END_ARG_INFO()
+
+static zend_function_entry free_functions[] = {
+    PHP_FE(fnvhash, arginfo_fnvhash)
+    {NULL, NULL, NULL}
 };
 
 PHP_MINIT_FUNCTION(protobuf)
@@ -690,7 +718,7 @@ zend_module_entry protobuf_module_entry = {
 	STANDARD_MODULE_HEADER,
 #endif
 	PHP_PROTOBUF_EXTNAME,
-	NULL,
+	free_functions,
 	PHP_MINIT(protobuf),
 	NULL,
 	NULL,
@@ -996,8 +1024,7 @@ static int pb_serialize_field_value(zval *this, writer_t *writer, uint32_t field
 		if (Z_TYPE(ret) != IS_STRING)
 			return -1;
 
-		if (Z_STRLEN(ret) > 0)
-			writer_write_message(writer, field_number, Z_STRVAL(ret), Z_STRLEN(ret));
+		writer_write_message(writer, field_number, Z_STRVAL(ret), Z_STRLEN(ret));
 
 		zval_dtor(&ret);
 	} else if (Z_TYPE_PP(type) == IS_LONG) {
