@@ -65,12 +65,11 @@ static ulong PB_VALUES_PROPERTY_HASH;
 
 PHP_METHOD(ProtobufMessage, __construct)
 {
-	zval *values;
+	zval values;
+	array_init(&values);
 
-	ALLOC_INIT_ZVAL(values);
-	array_init(values);
-
-	add_property_zval(getThis(), PB_VALUES_PROPERTY, values);
+	add_property_zval(getThis(), PB_VALUES_PROPERTY, &values);
+	zval_ptr_dtor(&values);
 }
 
 PHP_METHOD(ProtobufMessage, append)
