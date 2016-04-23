@@ -424,6 +424,8 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 		}
 
 		if (Z_TYPE_P(old_value) == IS_ARRAY) {
+			if (Z_REFCOUNTED(value))
+				Z_ADDREF(value);
 			ARRAY_ADD_NEXT_INDEX(old_value, &value);
 		} else {
 			zval_ptr_dtor(old_value);

@@ -1,26 +1,10 @@
 <?php
 /**
- * Auto generated from test.proto
- *
- * PHP version 5
- *
- * @category  CATEGORY
- * @package   
- * @author    AUTHOR <author@example.com>
- * @copyright 2013 COPYRIGHT
- * @license   http://example.com License
- * @link      http://example.com
+ * Auto generated from test.proto at 2016-04-23 10:07:59
  */
 
 /**
- * Class Foo
- *
- * @category  CATEGORY
- * @package   
- * @author    AUTHOR <author@example.com>
- * @copyright 2013 COPYRIGHT
- * @license   http://example.com License
- * @link      http://example.com
+ * Foo message
  */
 class Foo extends \ProtobufMessage
 {
@@ -42,6 +26,7 @@ class Foo extends \ProtobufMessage
     const BYTES_FIELD = 15;
     const REPEATED_FIELD = 16;
     const EMBEDDED_FIELD = 17;
+    const REPEATED_OBJ_FIELD = 18;
 
     /* @var array Field descriptors */
     protected static $fields = array(
@@ -130,6 +115,11 @@ class Foo extends \ProtobufMessage
             'required' => false,
             'type' => 'Foo'
         ),
+        self::REPEATED_OBJ_FIELD => array(
+            'name' => 'repeated_obj_field',
+            'repeated' => true,
+            'type' => 'Bar'
+        ),
     );
 
     /**
@@ -166,6 +156,7 @@ class Foo extends \ProtobufMessage
         $this->values[self::BYTES_FIELD] = null;
         $this->values[self::REPEATED_FIELD] = array();
         $this->values[self::EMBEDDED_FIELD] = null;
+        $this->values[self::REPEATED_OBJ_FIELD] = array();
     }
 
     /**
@@ -517,7 +508,7 @@ class Foo extends \ProtobufMessage
      */
     public function appendRepeatedField($value)
     {
-        $this->append(self::REPEATED_FIELD, $value);
+        return $this->append(self::REPEATED_FIELD, $value);
     }
 
     /**
@@ -527,7 +518,7 @@ class Foo extends \ProtobufMessage
      */
     public function clearRepeatedField()
     {
-        $this->clear(self::REPEATED_FIELD);
+        return $this->clear(self::REPEATED_FIELD);
     }
 
     /**
@@ -593,17 +584,74 @@ class Foo extends \ProtobufMessage
     {
         return $this->get(self::EMBEDDED_FIELD);
     }
+
+    /**
+     * Appends value to 'repeated_obj_field' list
+     *
+     * @param Bar $value Value to append
+     *
+     * @return null
+     */
+    public function appendRepeatedObjField(Bar $value)
+    {
+        return $this->append(self::REPEATED_OBJ_FIELD, $value);
+    }
+
+    /**
+     * Clears 'repeated_obj_field' list
+     *
+     * @return null
+     */
+    public function clearRepeatedObjField()
+    {
+        return $this->clear(self::REPEATED_OBJ_FIELD);
+    }
+
+    /**
+     * Returns 'repeated_obj_field' list
+     *
+     * @return Bar[]
+     */
+    public function getRepeatedObjField()
+    {
+        return $this->get(self::REPEATED_OBJ_FIELD);
+    }
+
+    /**
+     * Returns 'repeated_obj_field' iterator
+     *
+     * @return ArrayIterator
+     */
+    public function getRepeatedObjFieldIterator()
+    {
+        return new \ArrayIterator($this->get(self::REPEATED_OBJ_FIELD));
+    }
+
+    /**
+     * Returns element from 'repeated_obj_field' list at given offset
+     *
+     * @param int $offset Position in list
+     *
+     * @return Bar
+     */
+    public function getRepeatedObjFieldAt($offset)
+    {
+        return $this->get(self::REPEATED_OBJ_FIELD, $offset);
+    }
+
+    /**
+     * Returns count of 'repeated_obj_field' list
+     *
+     * @return int
+     */
+    public function getRepeatedObjFieldCount()
+    {
+        return $this->count(self::REPEATED_OBJ_FIELD);
+    }
 }
 
 /**
- * Class Bar
- *
- * @category  CATEGORY
- * @package   
- * @author    AUTHOR <author@example.com>
- * @copyright 2013 COPYRIGHT
- * @license   http://example.com License
- * @link      http://example.com
+ * Bar message
  */
 class Bar extends \ProtobufMessage
 {

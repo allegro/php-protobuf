@@ -17,6 +17,7 @@ message Foo
 	optional bytes bytes_field = 15;
 	repeated int32 repeated_field = 16;
 	optional Foo embedded_field = 17;
+	repeated Bar repeated_obj_field = 18;
 }
 
 message Bar
