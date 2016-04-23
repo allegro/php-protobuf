@@ -7,10 +7,6 @@
 #include "reader.h"
 #include "writer.h"
 
-#ifndef Z_ADDREF
-#define Z_ADDREF(z) ZVAL_ADDREF(&(z))
-#endif
-
 #define PB_COMPILE_ERROR(message, ...) PB_COMPILE_ERROR_EX(getThis(), message, __VA_ARGS__)
 #define PB_COMPILE_ERROR_EX(this, message, ...) \
 	zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "%s: compile error - " #message, ZSTR_VAL(Z_OBJCE_P(this)->name), __VA_ARGS__)
@@ -33,6 +29,12 @@
 #define PB_VALUES_PROPERTY "values"
 
 #define RETURN_THIS() RETURN_ZVAL(getThis(), 1, 0);
+
+// when opcache is enabled initial array could be stored in
+// shared memory as an immutable one, in this case it should be separated
+#define ARRAY_ADD_NEXT_INDEX(array, zval_p) \
+	if (Z_IMMUTABLE_P(array)) SEPARATE_ARRAY(array); \
+	add_next_index_zval((array), (zval_p))
 
 enum
 {
@@ -59,9 +61,6 @@ static const char *pb_get_wire_type_name(int wire_type);
 static zval *pb_get_value(zval *this, zval *values, uint32_t field_number);
 static zval *pb_get_values(zval *this);
 static int pb_serialize_field_value(zval *this, writer_t *writer, uint32_t field_number, zval *type, zval *value);
-
-static ulong PB_FIELD_TYPE_HASH;
-static ulong PB_VALUES_PROPERTY_HASH;
 
 PHP_METHOD(ProtobufMessage, __construct)
 {
@@ -93,7 +92,8 @@ PHP_METHOD(ProtobufMessage, append)
 	if (pb_assign_value(getThis(), &val, value, field_number) != 0) {
 		RETURN_THIS();
 	}
-	add_next_index_zval(array, &val);
+
+	ARRAY_ADD_NEXT_INDEX(array, &val);
 	RETURN_THIS();
 }
 
@@ -424,9 +424,7 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 		}
 
 		if (Z_TYPE_P(old_value) == IS_ARRAY) {
-			if (Z_REFCOUNTED(value))
-				Z_ADDREF(value);
-			add_next_index_zval(old_value, &value);
+			ARRAY_ADD_NEXT_INDEX(old_value, &value);
 		} else {
 			zval_ptr_dtor(old_value);
 			ZVAL_COPY(old_value, &value);
@@ -604,9 +602,6 @@ PHP_MINIT_FUNCTION(protobuf)
 {
 	zend_class_entry ce;
 
-	PB_FIELD_TYPE_HASH = zend_hash_func(PB_FIELD_TYPE, sizeof(PB_FIELD_TYPE));
-	PB_VALUES_PROPERTY_HASH = zend_hash_func(PB_VALUES_PROPERTY, sizeof(PB_VALUES_PROPERTY));
-
 	INIT_CLASS_ENTRY(ce, "ProtobufMessage", pb_methods);
 	pb_entry = zend_register_internal_class(&ce TSRMLS_CC);
 
@@ -653,8 +648,7 @@ static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_numb
 	if ((type = pb_get_field_type(this, field_descriptor, field_number)) == NULL)
 		goto fail1;
 
-	tmp = *src;
-	ZVAL_COPY(&tmp, src);
+	ZVAL_DUP(&tmp, src);
 
 	if (Z_TYPE_P(type) == IS_LONG) {
 		switch (Z_LVAL_P(type))
@@ -710,8 +704,7 @@ static int pb_dump_field_value(zval *value, long level, zend_bool only_set)
 	int dump_result;
     TSRMLS_FETCH();
 
-    ZVAL_UNDEF(&tmp);
-    ZVAL_UNDEF(&ret);
+    ZVAL_UNDEF(&ret); // call_user_function will segfault without this init
 
 	if (Z_TYPE_P(value) == IS_OBJECT) {
 		php_printf("\n");
@@ -737,8 +730,7 @@ static int pb_dump_field_value(zval *value, long level, zend_bool only_set)
 	} else if (Z_TYPE_P(value) == IS_FALSE) {
 		string_value = "false";
 	} else {
-		tmp = *value;
-		ZVAL_COPY(&tmp, value);
+		ZVAL_DUP(&tmp, value);
 		convert_to_string(&tmp);
 		string_value = Z_STRVAL(tmp);
 	}
