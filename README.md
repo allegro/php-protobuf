@@ -155,7 +155,7 @@ There might be situations you need to investigate what actual content of the giv
 
             $packed = $foo->serializeToString();
 
-            $foo->clear();
+            $foo->reset();
 
             try {
                 $foo->parseFromString($packed);
