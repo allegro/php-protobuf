@@ -1,0 +1,107 @@
+#!/usr/bin/env php
+
+<?php
+require implode(DIRECTORY_SEPARATOR, array(dirname(__DIR__), 'ProtobufCompiler', 'ProtobufParser.php'));
+
+if (!debug_backtrace()) {
+    if (!class_exists('\ProtobufMessage')) {
+
+        echo $argv[0] .
+            ' requires protobuf extension installed to run' .
+            PHP_EOL;
+
+        exit(1);
+    }
+
+    $optionError = false;
+    $useNamespaces = false;
+    $filenamePrefix = false;
+    $outputPsr = false;
+    $verbose = false;
+    $package = '';
+    $destination = '';
+
+    $iterator = new \RegexIterator(new \ArrayIterator($argv), '/^-/');
+
+    $shortOpts = "nd:vp:";
+    $longOpts = array("use-namespaces", "destination:", "filename-prefix:", "psr", "package:");
+
+    $options = getopt($shortOpts, $longOpts);
+
+    foreach ($options as $key => $value) {
+        switch ($key) {
+            case 'n':
+            case 'use-namespaces':
+            case 'package':
+                $useNamespaces = true;
+                if ($value) {
+                    $package = $value;
+                }
+                break;
+            case 'p':
+            case 'filename-prefix':
+                $filenamePrefix = $value;
+                if (strpos($value, '-') === 0) {
+                    $optionError = true;
+                }
+                break;
+            case 'd':
+            case 'destination':
+                $destination = $value;
+                break;
+            case 'psr':
+                $outputPsr = true;
+                break;
+            case 'v':
+                $verbose = true;
+                break;
+            default:
+                $optionError = true;
+                break;
+        }
+    }
+
+    $file = $argv[count($argv) - 1];
+    if (!file_exists($file) || !is_file($file)) {
+        printf($file . ' issue with proto file' . PHP_EOL);
+        $optionError = true;
+    }
+
+    if ($optionError) {
+        printf('USAGE: protoc [options] message.proto' . PHP_EOL . PHP_EOL, $argv[0]);
+        printf('  -d, --destination                 Destination folder for generated classes [default="./"]' . PHP_EOL);
+        printf('  -n, --use-namespaces              Use native PHP namespaces [default="false"]' . PHP_EOL);
+        printf('  -p, --filename-prefix [PREFIX]    Specify a prefix for generated file names [default=""]' . PHP_EOL);
+        printf('  --psr                             Output class files in a psr-4 directory structure [default="false"]' . PHP_EOL);
+        printf('  --package                         Manually define proto file package [default=""]' . PHP_EOL);
+        exit(1);
+    }
+
+    $parser = new ProtobufParser($useNamespaces);
+
+    if ($filenamePrefix) {
+        $parser->setFilenamePrefix($filenamePrefix);
+    }
+
+    if ($outputPsr) {
+        $parser->setSavePsrOutput(true);
+    }
+
+    if ($verbose) {
+        $parser->setVerbose(true);
+    }
+
+    if ($package) {
+        $parser->setPackage($package);
+    }
+
+    if ($destination) {
+        $parser->setDestination($destination);
+    }
+
+    try {
+        $parser->parse($file);
+    } catch (Exception $e) {
+        echo $e->getMessage() . PHP_EOL;
+    }
+}
