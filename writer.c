@@ -44,7 +44,7 @@ char *writer_get_pack(writer_t *writer, int *size)
 	return (char *) writer->data;
 }
 
-int writer_write_double(writer_t *writer, uint32_t field_number, double value)
+int writer_write_double(writer_t *writer, uint64_t field_number, double value)
 {
 	int64_t key;
 	fixed64_t val;
@@ -52,7 +52,7 @@ int writer_write_double(writer_t *writer, uint32_t field_number, double value)
 	if (writer_ensure_space(writer, WRITER_VARINT_SPACE + WRITER_64BIT_SPACE) != 0)
 		return -1;
 
-	key = ((uint64_t) field_number << 3 | WIRE_TYPE_64BIT);
+	key = (field_number << 3 | WIRE_TYPE_64BIT);
 
 	writer_write_varint(writer, key);
 
@@ -63,7 +63,7 @@ int writer_write_double(writer_t *writer, uint32_t field_number, double value)
 	return 0;
 }
 
-int writer_write_fixed32(writer_t *writer, uint32_t field_number, int32_t value)
+int writer_write_fixed32(writer_t *writer, uint64_t field_number, int32_t value)
 {
 	int64_t key;
 	fixed32_t val;
@@ -71,7 +71,7 @@ int writer_write_fixed32(writer_t *writer, uint32_t field_number, int32_t value)
 	if (writer_ensure_space(writer, WRITER_VARINT_SPACE + WRITER_32BIT_SPACE) != 0)
 		return -1;
 
-	key = ((uint64_t) field_number << 3 | WIRE_TYPE_32BIT);
+	key = (field_number << 3 | WIRE_TYPE_32BIT);
 
 	writer_write_varint(writer, key);
 
@@ -82,7 +82,7 @@ int writer_write_fixed32(writer_t *writer, uint32_t field_number, int32_t value)
 	return 0;
 }
 
-int writer_write_fixed64(writer_t *writer, uint32_t field_number, int64_t value)
+int writer_write_fixed64(writer_t *writer, uint64_t field_number, int64_t value)
 {
 	int64_t key;
 	fixed64_t val;
@@ -90,7 +90,7 @@ int writer_write_fixed64(writer_t *writer, uint32_t field_number, int64_t value)
 	if (writer_ensure_space(writer, WRITER_VARINT_SPACE + WRITER_64BIT_SPACE) != 0)
 		return -1;
 
-	key = ((uint64_t) field_number << 3 | WIRE_TYPE_64BIT);
+	key = (field_number << 3 | WIRE_TYPE_64BIT);
 
 	writer_write_varint(writer, key);
 
@@ -101,7 +101,7 @@ int writer_write_fixed64(writer_t *writer, uint32_t field_number, int64_t value)
 	return 0;
 }
 
-int writer_write_float(writer_t *writer, uint32_t field_number, double value)
+int writer_write_float(writer_t *writer, uint64_t field_number, double value)
 {
 	int64_t key;
 	fixed32_t val;
@@ -109,7 +109,7 @@ int writer_write_float(writer_t *writer, uint32_t field_number, double value)
 	if (writer_ensure_space(writer, WRITER_VARINT_SPACE + WRITER_32BIT_SPACE) != 0)
 		return -1;
 
-	key = ((uint64_t) field_number << 3 | WIRE_TYPE_32BIT);
+	key = (field_number << 3 | WIRE_TYPE_32BIT);
 
 	writer_write_varint(writer, key);
 
@@ -120,14 +120,14 @@ int writer_write_float(writer_t *writer, uint32_t field_number, double value)
 	return 0;
 }
 
-int writer_write_int(writer_t *writer, uint32_t field_number, int64_t value)
+int writer_write_int(writer_t *writer, uint64_t field_number, int64_t value)
 {
 	int64_t key;
 
 	if (writer_ensure_space(writer, 2 * WRITER_VARINT_SPACE) != 0)
 		return -1;
 
-	key = ((uint64_t) field_number << 3 | WIRE_TYPE_VARINT);
+	key = (field_number << 3 | WIRE_TYPE_VARINT);
 
 	writer_write_varint(writer, key);
 	writer_write_varint(writer, value);
@@ -135,14 +135,14 @@ int writer_write_int(writer_t *writer, uint32_t field_number, int64_t value)
 	return 0;
 }
 
-int writer_write_signed_int(writer_t *writer, uint32_t field_number, int64_t value)
+int writer_write_signed_int(writer_t *writer, uint64_t field_number, int64_t value)
 {
 	int64_t key;
 
 	if (writer_ensure_space(writer, 2 * WRITER_VARINT_SPACE) != 0)
 		return -1;
 
-	key = ((uint64_t) field_number << 3 | WIRE_TYPE_VARINT);
+	key = (field_number << 3 | WIRE_TYPE_VARINT);
 
 	writer_write_varint(writer, key);
 
@@ -156,14 +156,14 @@ int writer_write_signed_int(writer_t *writer, uint32_t field_number, int64_t val
 	return 0;
 }
 
-int writer_write_string(writer_t *writer, uint32_t field_number, const char *str, size_t len)
+int writer_write_string(writer_t *writer, uint64_t field_number, const char *str, size_t len)
 {
 	int64_t key;
 
 	if (writer_ensure_space(writer, 2 * WRITER_VARINT_SPACE + len) != 0)
 		return -1;
 
-	key = ((uint64_t) field_number << 3 | WIRE_TYPE_LENGTH_DELIMITED);
+	key = (field_number << 3 | WIRE_TYPE_LENGTH_DELIMITED);
 
 	writer_write_varint(writer, key);
 	writer_write_varint(writer, len);
