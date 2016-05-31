@@ -36,11 +36,20 @@
 	if (Z_IMMUTABLE_P(array)) SEPARATE_ARRAY(array); \
 	add_next_index_zval((array), (zval_p))
 
+#define IS_32_BIT (sizeof(zend_long) < sizeof(int64_t))
+
 #define ZVAL_INT64(zval, value) \
 	if ((value) > ZEND_LONG_MAX || (value) < ZEND_LONG_MIN) { \
 		ZVAL_DOUBLE(zval, (double)(value)); \
 	} else { \
 		ZVAL_LONG(zval, (zend_long)(value)); \
+	}
+
+#define Z_LVAL_INT64(zval, int64_out_p)         \
+	if (Z_TYPE_P(zval) == IS_DOUBLE) {          \
+		*int64_out_p = (int64_t)Z_DVAL_P(zval); \
+	} else {                                    \
+		*int64_out_p = (int64_t)Z_LVAL_P(zval); \
 	}
 
 enum
@@ -673,13 +682,22 @@ static int pb_assign_value(zval *this, zval *dst, zval *src, zend_ulong field_nu
 				break;
 
 			case PB_TYPE_FIXED32:
-			case PB_TYPE_INT:
-			case PB_TYPE_FIXED64:
-			case PB_TYPE_SIGNED_INT:
 			case PB_TYPE_BOOL:
 				if (Z_TYPE(tmp) != IS_LONG)
 					convert_to_explicit_type(&tmp, IS_LONG);
+				break;
 
+			case PB_TYPE_INT:
+			case PB_TYPE_FIXED64:
+			case PB_TYPE_SIGNED_INT:
+				if ((Z_TYPE(tmp) == IS_DOUBLE) && IS_32_BIT) {
+					if ((double)ZEND_LONG_MAX < Z_DVAL(tmp)) {
+						// store big value for 32bit systems as double
+						break;
+					}
+				}
+
+				convert_to_explicit_type(&tmp, IS_LONG);
 				break;
 
 			case PB_TYPE_STRING:
@@ -912,6 +930,7 @@ static int pb_serialize_field_value(zval *this, writer_t *writer, zend_ulong fie
 {
 	int r;
 	zval ret, method;
+	int64_t int64_value;
     TSRMLS_FETCH();
 
 	if (Z_TYPE_P(type) == IS_STRING) {
@@ -943,13 +962,15 @@ static int pb_serialize_field_value(zval *this, writer_t *writer, zend_ulong fie
 				r = writer_write_fixed32(writer, (uint64_t)field_number, Z_LVAL_P(value));
 				break;
 
-			case PB_TYPE_INT:
 			case PB_TYPE_BOOL:
-				r = writer_write_int(writer, (uint64_t)field_number, Z_LVAL_P(value));
+			case PB_TYPE_INT:
+				Z_LVAL_INT64(value, &int64_value);
+				r = writer_write_int(writer, (uint64_t)field_number, int64_value);
 				break;
 
 			case PB_TYPE_FIXED64:
-				r = writer_write_fixed64(writer, (uint64_t)field_number, Z_LVAL_P(value));
+				Z_LVAL_INT64(value, &int64_value);
+				r = writer_write_fixed64(writer, (uint64_t)field_number, int64_value);
 				break;
 
 			case PB_TYPE_FLOAT:
@@ -957,7 +978,8 @@ static int pb_serialize_field_value(zval *this, writer_t *writer, zend_ulong fie
 				break;
 
 			case PB_TYPE_SIGNED_INT:
-				r = writer_write_signed_int(writer, (uint64_t)field_number, Z_LVAL_P(value));
+				Z_LVAL_INT64(value, &int64_value);
+				r = writer_write_signed_int(writer, (uint64_t)field_number, int64_value);
 				break;
 
 			case PB_TYPE_STRING:
