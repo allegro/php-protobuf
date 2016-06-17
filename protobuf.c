@@ -35,6 +35,8 @@
 #define PB_PARSE_FROM_STRING_METHOD "parseFromString"
 #define PB_SERIALIZE_TO_STRING_METHOD "serializeToString"
 
+#define PB_OBJECT_READY_METHOD "objectReady"
+
 #define PB_FIELD_NAME "name"
 #define PB_FIELD_REQUIRED "required"
 #define PB_FIELD_TYPE "type"
@@ -365,6 +367,23 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 
 				if (Z_TYPE(zret) != IS_BOOL)
 					return;
+
+				//call the objectReady method on the object that was just created
+				zval zret;
+				INIT_ZVAL(name);
+				ZVAL_STRINGL(&name, PB_OBJECT_READY_METHOD, sizeof(PB_OBJECT_READY_METHOD) - 1, 0);
+
+				if (call_user_function(NULL, &value, &name, &zret, 0, NULL TSRMLS_CC) == FAILURE) {
+					return;
+				}
+
+				//abort parsing if the objectReady method returned false
+				if (Z_TYPE(zret) == IS_BOOL) {
+					if (!Z_BVAL(zret)) {
+						PB_COMPILE_ERROR("objectReady returned false while processing: %s", pb_get_field_name(getThis(), field_number));
+						return;
+					}
+				}
 			}
 		} else if (Z_TYPE_PP(field_type) == IS_LONG) {
 			if ((expected_wire_type = pb_get_wire_type(Z_LVAL_PP(field_type))) != wire_type) {

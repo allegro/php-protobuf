@@ -28,7 +28,7 @@ class ProtobufParser
     private $_hasSplTypes = false;
     private $_useNativeNamespaces = false;
 
-    private $_filenamePrefix = 'pb_proto_';
+    private $_filenamePrefix = 'pb_';
     private $_savePsrOutput = false;
 
     private $_comment;
@@ -778,6 +778,9 @@ class ProtobufParser
      */
     private function _createClassConstructor($fields, CodeStringBuffer $buffer)
     {
+        $buffer->append('private static $objectReadyCallbacks = array();');
+        $buffer->newline();
+
         $buffer->append('/* Field index constants */');
 
         foreach ($fields as $field) {
@@ -900,6 +903,47 @@ class ProtobufParser
         }
 
         $buffer->decreaseIdentation()
+            ->append('}')
+            ->newline();
+
+        $comment = new CommentStringBuffer(self::TAB, self::EOL);
+        $comment->append(
+            'Called by the parser once a member object has been fully read in'
+        )
+            ->newline()
+            ->appendParam('return', 'null');
+        $buffer->append($comment)
+            ->append('public function objectReady()')
+            ->append('{')
+            ->increaseIdentation()
+            ->append('foreach (self::$objectReadyCallbacks as $callback) {')
+            ->increaseIdentation()
+            ->append('$result = $callback($this);')
+            ->append('if ($result === false) {')
+            ->increaseIdentation()
+            ->append('return false;')
+            ->decreaseIdentation()
+            ->append('}')
+            ->decreaseIdentation()
+            ->append('}')
+            ->append('return true;')
+            ->decreaseIdentation()
+            ->append('}')
+            ->newline();
+
+        $comment = new CommentStringBuffer(self::TAB, self::EOL);
+        $comment->append(
+            'Add a callback that will be run when the object is ready'
+        )
+            ->newline()
+            ->appendParam('param', 'array $callback in the following format: array($anObject, \'someMethod\')')
+            ->appendParam('return', 'null');
+        $buffer->append($comment)
+            ->append('public static function registerObjectReadyCallback($callback)')
+            ->append('{')
+            ->increaseIdentation()
+            ->append('self::$objectReadyCallbacks[] = $callback;')
+            ->decreaseIdentation()
             ->append('}')
             ->newline();
     }
