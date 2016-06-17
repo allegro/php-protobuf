@@ -17,6 +17,9 @@ class FileDescriptor
     private $_name;
 
     /** @var string */
+    private $_compiledFilename;
+
+    /** @var string */
     private $_package;
 
     /**
@@ -137,5 +140,25 @@ class FileDescriptor
     public function setPackage($package)
     {
         $this->_package = $package;
+    }
+
+    /**
+     * Sets the relative path of the compiled file. Does not support setting
+     * all the files compiled for the psr-4 directory structure.
+     *
+     * @param string $compiled_filename
+     */
+    public function setCompiledFilename($compiledFilename) {
+        $this->_compiledFilename = $compiledFilename;
+    }
+
+    /**
+     * Gets the relative path of the compiled file. Does not support listing
+     * all the files compiled for the psr-4 directory structure.
+     *
+     * @param string $compiled_filename
+     */
+    public function getCompiledFilename() {
+        return $this->_compiledFilename;
     }
 }
