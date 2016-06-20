@@ -308,7 +308,7 @@ class ProtobufParser
         }
 
         if (!$this->getSavePsrOutput()) {
-            file_put_contents($this->getTargetDir() . $outputFile, '<?php' . PHP_EOL . $buffer);
+            file_put_contents(self::_path_join($this->getTargetDir(), $outputFile), '<?php' . PHP_EOL . $buffer);
         }
     }
 
@@ -1377,5 +1377,14 @@ class ProtobufParser
         $string = preg_replace('/\/\/.*/', '', $string);
         // now replace empty lines and whitespaces in front
         $string = preg_replace('/\\r?\\n\s*/', PHP_EOL, $string);
+    }
+
+    private static function _path_join()
+    {
+        $paths = func_get_args();
+        $mapper = function ($path) {
+            return trim($path, DIRECTORY_SEPARATOR);
+        };
+        return join(DIRECTORY_SEPARATOR, array_map($mapper, $paths));
     }
 }
