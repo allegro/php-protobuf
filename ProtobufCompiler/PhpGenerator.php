@@ -413,7 +413,10 @@ class PhpGenerator
         $pos = strrpos($typeName, '.');
         $name = self::createTypeName(substr($typeName, $pos + 1));
         if ($pos != 0) {
-            $components = explode('.', substr($typeName, 1, $pos - 1));
+            $components = array();
+            foreach (explode('.', substr($typeName, 1, $pos - 1)) as $component) {
+                $components[] = ucfirst($component);
+            }
             $prefix = implode($this->getNamespaceSeparator(), $components);
             if (!empty($prefix)) {
                 $name = $prefix . $this->getNamespaceSeparator() . $name;
