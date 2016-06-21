@@ -1,4 +1,6 @@
 <?php
+namespace ProtobufCompiler;
+
 /**
  * Helper class for generating source code comments
  */

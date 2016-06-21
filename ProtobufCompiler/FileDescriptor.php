@@ -1,4 +1,6 @@
 <?php
+namespace ProtobufCompiler;
+
 /**
  * Describes file
  */

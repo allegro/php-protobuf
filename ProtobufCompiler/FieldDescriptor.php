@@ -1,42 +1,46 @@
 <?php
+namespace ProtobufCompiler;
+
+require_once 'pb_proto_descriptor.php';
+
 /**
  * Describes field
  */
 class FieldDescriptor
 {
     private static $_scalarTypes = array(
-        'double'   => \ProtobufMessage::PB_TYPE_DOUBLE,
-        'float'    => \ProtobufMessage::PB_TYPE_FLOAT,
-        'int32'    => \ProtobufMessage::PB_TYPE_INT,
-        'int64'    => \ProtobufMessage::PB_TYPE_INT,
-        'uint32'   => \ProtobufMessage::PB_TYPE_INT,
-        'uint64'   => \ProtobufMessage::PB_TYPE_INT,
-        'sint32'   => \ProtobufMessage::PB_TYPE_SIGNED_INT,
-        'sint64'   => \ProtobufMessage::PB_TYPE_SIGNED_INT,
-        'fixed32'  => \ProtobufMessage::PB_TYPE_FIXED32,
-        'fixed64'  => \ProtobufMessage::PB_TYPE_FIXED64,
-        'sfixed32' => \ProtobufMessage::PB_TYPE_FIXED32,
-        'sfixed64' => \ProtobufMessage::PB_TYPE_FIXED64,
-        'bool'     => \ProtobufMessage::PB_TYPE_BOOL,
-        'string'   => \ProtobufMessage::PB_TYPE_STRING,
-        'bytes'    => \ProtobufMessage::PB_TYPE_STRING);
+        \FieldDescriptorProto_Type::TYPE_DOUBLE   => \ProtobufMessage::PB_TYPE_DOUBLE,
+        \FieldDescriptorProto_Type::TYPE_FLOAT    => \ProtobufMessage::PB_TYPE_FLOAT,
+        \FieldDescriptorProto_Type::TYPE_INT32    => \ProtobufMessage::PB_TYPE_INT,
+        \FieldDescriptorProto_Type::TYPE_INT64    => \ProtobufMessage::PB_TYPE_INT,
+        \FieldDescriptorProto_Type::TYPE_UINT32   => \ProtobufMessage::PB_TYPE_INT,
+        \FieldDescriptorProto_Type::TYPE_UINT64   => \ProtobufMessage::PB_TYPE_INT,
+        \FieldDescriptorProto_Type::TYPE_SINT32   => \ProtobufMessage::PB_TYPE_SIGNED_INT,
+        \FieldDescriptorProto_Type::TYPE_SINT64   => \ProtobufMessage::PB_TYPE_SIGNED_INT,
+        \FieldDescriptorProto_Type::TYPE_FIXED32  => \ProtobufMessage::PB_TYPE_FIXED32,
+        \FieldDescriptorProto_Type::TYPE_FIXED64  => \ProtobufMessage::PB_TYPE_FIXED64,
+        \FieldDescriptorProto_Type::TYPE_SFIXED32 => \ProtobufMessage::PB_TYPE_FIXED32,
+        \FieldDescriptorProto_Type::TYPE_SFIXED64 => \ProtobufMessage::PB_TYPE_FIXED64,
+        \FieldDescriptorProto_Type::TYPE_BOOL     => \ProtobufMessage::PB_TYPE_BOOL,
+        \FieldDescriptorProto_Type::TYPE_STRING   => \ProtobufMessage::PB_TYPE_STRING,
+        \FieldDescriptorProto_Type::TYPE_BYTES    => \ProtobufMessage::PB_TYPE_STRING);
 
     private static $_scalarNativeTypes = array(
-        'double'   => 'float',
-        'float'    => 'float',
-        'int32'    => 'int',
-        'int64'    => 'int',
-        'uint32'   => 'int',
-        'uint64'   => 'int',
-        'sint32'   => 'int',
-        'sint64'   => 'int',
-        'fixed32'  => 'int',
-        'fixed64'  => 'int',
-        'sfixed32' => 'int',
-        'sfixed64' => 'int',
-        'bool'     => 'bool',
-        'string'   => 'string',
-        'bytes'    => 'string'
+        \FieldDescriptorProto_Type::TYPE_DOUBLE   => 'float',
+        \FieldDescriptorProto_Type::TYPE_FLOAT    => 'float',
+        \FieldDescriptorProto_Type::TYPE_INT32    => 'int',
+        \FieldDescriptorProto_Type::TYPE_INT64    => 'int',
+        \FieldDescriptorProto_Type::TYPE_UINT32   => 'int',
+        \FieldDescriptorProto_Type::TYPE_UINT64   => 'int',
+        \FieldDescriptorProto_Type::TYPE_SINT32   => 'int',
+        \FieldDescriptorProto_Type::TYPE_SINT64   => 'int',
+        \FieldDescriptorProto_Type::TYPE_FIXED32  => 'int',
+        \FieldDescriptorProto_Type::TYPE_FIXED64  => 'int',
+        \FieldDescriptorProto_Type::TYPE_SFIXED32 => 'int',
+        \FieldDescriptorProto_Type::TYPE_SFIXED64 => 'int',
+        \FieldDescriptorProto_Type::TYPE_BOOL     => 'bool',
+        \FieldDescriptorProto_Type::TYPE_STRING   => 'string',
+        \FieldDescriptorProto_Type::TYPE_BYTES    => 'string'
     );
 
     private $_default;
@@ -46,6 +50,7 @@ class FieldDescriptor
     private $_number;
     private $_type;
     private $_typeDescriptor = null;
+    private $_typeName = null;
 
     /**
      * Returns default value
@@ -147,6 +152,11 @@ class FieldDescriptor
         }
     }
 
+    public function getTypeName2()
+    {
+        return $this->_typeName;
+    }
+
     /**
      * Returns true if is native type
      *
@@ -184,7 +194,7 @@ class FieldDescriptor
      */
     public function isRepeated()
     {
-        return $this->_label == FieldLabel::REPEATED;
+        return $this->_label == \FieldDescriptorProto_Label::LABEL_REPEATED;
     }
 
     /**
@@ -194,7 +204,7 @@ class FieldDescriptor
      */
     public function isRequired()
     {
-        return $this->_label == FieldLabel::REQUIRED;
+        return $this->_label == \FieldDescriptorProto_Label::LABEL_REQUIRED;
     }
 
     /**
@@ -214,7 +224,7 @@ class FieldDescriptor
      */
     public function isOptional()
     {
-        return $this->_label == FieldLabel::OPTIONAL;
+        return $this->_label == \FieldDescriptorProto_Label::LABEL_OPTIONAL;
     }
 
     /**
@@ -299,5 +309,17 @@ class FieldDescriptor
     public function setTypeDescriptor($typeDescriptor)
     {
         $this->_typeDescriptor = $typeDescriptor;
+    }
+
+    /**
+     * Sets type name
+     *
+     * @param string $typeName Type name
+     *
+     * @return null
+     */
+    public function setTypeName($typeName)
+    {
+        $this->_typeName = $typeName;
     }
 }
