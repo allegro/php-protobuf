@@ -50,9 +50,7 @@ class FieldDescriptor
     private $_default;
     private $_label;
     private $_name;
-    private $_namespace = null;
     private $_number;
-    private $_type;
     private $_type;
     private $_typeName = null;
 
@@ -106,16 +104,6 @@ class FieldDescriptor
     {
         $chunks = preg_split('/[^a-z0-9]/is', $this->getName());
         return implode('_', array_map('strtoupper', $chunks));
-    }
-
-    /**
-     * Returns namespace
-     *
-     * @return string
-     */
-    public function getNamespace()
-    {
-        return $this->_namespace;
     }
 
     /**
@@ -239,18 +227,6 @@ class FieldDescriptor
     public function setName($name)
     {
         $this->_name = $name;
-    }
-
-    /**
-     * Sets namespace
-     *
-     * @param string $namespace Namespace
-     *
-     * @return null
-     */
-    public function setNamespace($namespace)
-    {
-        $this->_namespace = $namespace;
     }
 
     /**
