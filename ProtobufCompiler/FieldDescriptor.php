@@ -8,7 +8,7 @@ require_once 'pb_proto_descriptor.php';
  */
 class FieldDescriptor
 {
-    private static $_scalarTypes = array(
+    private static $_scalarInternalTypesByProtobufType = array(
         \FieldDescriptorProto_Type::TYPE_DOUBLE   => \ProtobufMessage::PB_TYPE_DOUBLE,
         \FieldDescriptorProto_Type::TYPE_FLOAT    => \ProtobufMessage::PB_TYPE_FLOAT,
         \FieldDescriptorProto_Type::TYPE_INT32    => \ProtobufMessage::PB_TYPE_INT,
@@ -23,24 +23,28 @@ class FieldDescriptor
         \FieldDescriptorProto_Type::TYPE_SFIXED64 => \ProtobufMessage::PB_TYPE_FIXED64,
         \FieldDescriptorProto_Type::TYPE_BOOL     => \ProtobufMessage::PB_TYPE_BOOL,
         \FieldDescriptorProto_Type::TYPE_STRING   => \ProtobufMessage::PB_TYPE_STRING,
-        \FieldDescriptorProto_Type::TYPE_BYTES    => \ProtobufMessage::PB_TYPE_STRING);
+        \FieldDescriptorProto_Type::TYPE_BYTES    => \ProtobufMessage::PB_TYPE_STRING,
+        \FieldDescriptorProto_Type::TYPE_ENUM     => \ProtobufMessage::PB_TYPE_INT,
+    );
 
-    private static $_scalarNativeTypes = array(
-        \FieldDescriptorProto_Type::TYPE_DOUBLE   => 'float',
-        \FieldDescriptorProto_Type::TYPE_FLOAT    => 'float',
-        \FieldDescriptorProto_Type::TYPE_INT32    => 'int',
-        \FieldDescriptorProto_Type::TYPE_INT64    => 'int',
-        \FieldDescriptorProto_Type::TYPE_UINT32   => 'int',
-        \FieldDescriptorProto_Type::TYPE_UINT64   => 'int',
-        \FieldDescriptorProto_Type::TYPE_SINT32   => 'int',
-        \FieldDescriptorProto_Type::TYPE_SINT64   => 'int',
-        \FieldDescriptorProto_Type::TYPE_FIXED32  => 'int',
-        \FieldDescriptorProto_Type::TYPE_FIXED64  => 'int',
-        \FieldDescriptorProto_Type::TYPE_SFIXED32 => 'int',
-        \FieldDescriptorProto_Type::TYPE_SFIXED64 => 'int',
-        \FieldDescriptorProto_Type::TYPE_BOOL     => 'bool',
+    private static $_phpTypesByProtobufType = array(
+        \FieldDescriptorProto_Type::TYPE_DOUBLE   => 'double',
+        \FieldDescriptorProto_Type::TYPE_FLOAT    => 'double',
+        \FieldDescriptorProto_Type::TYPE_INT32    => 'integer',
+        \FieldDescriptorProto_Type::TYPE_INT64    => 'integer',
+        \FieldDescriptorProto_Type::TYPE_UINT32   => 'integer',
+        \FieldDescriptorProto_Type::TYPE_UINT64   => 'integer',
+        \FieldDescriptorProto_Type::TYPE_SINT32   => 'integer',
+        \FieldDescriptorProto_Type::TYPE_SINT64   => 'integer',
+        \FieldDescriptorProto_Type::TYPE_FIXED32  => 'integer',
+        \FieldDescriptorProto_Type::TYPE_FIXED64  => 'integer',
+        \FieldDescriptorProto_Type::TYPE_SFIXED32 => 'integer',
+        \FieldDescriptorProto_Type::TYPE_SFIXED64 => 'integer',
+        \FieldDescriptorProto_Type::TYPE_BOOL     => 'boolean',
         \FieldDescriptorProto_Type::TYPE_STRING   => 'string',
-        \FieldDescriptorProto_Type::TYPE_BYTES    => 'string'
+        \FieldDescriptorProto_Type::TYPE_BYTES    => 'string',
+        \FieldDescriptorProto_Type::TYPE_ENUM     => 'integer',
+        \FieldDescriptorProto_Type::TYPE_MESSAGE  => 'object'
     );
 
     private $_default;
@@ -49,7 +53,7 @@ class FieldDescriptor
     private $_namespace = null;
     private $_number;
     private $_type;
-    private $_typeDescriptor = null;
+    private $_type;
     private $_typeName = null;
 
     /**
@@ -129,42 +133,28 @@ class FieldDescriptor
      *
      * @return int
      */
-    public function getScalarType()
+    public function getScalarInternalType()
     {
-        return self::$_scalarTypes[strtolower($this->_type)];
+        return self::$_scalarInternalTypesByProtobufType[$this->_type];
     }
 
     /**
      * Returns PHP type
      *
-     * @return string
+     * @return string|null
      */
-    public function getTypeName()
+    public function getPhpType()
     {
-        if (isset(self::$_scalarNativeTypes[strtolower($this->_type)])) {
-            return self::$_scalarNativeTypes[strtolower($this->_type)];
+        if (isset(self::$_phpTypesByProtobufType[$this->_type])) {
+            return self::$_phpTypesByProtobufType[$this->_type];
         } else {
-            if ($this->_typeDescriptor instanceof \EnumDescriptor) {
-                return 'int';
-            } else {
-                return $this->_type;
-            }
+            return null;
         }
     }
 
-    public function getTypeName2()
+    public function getTypeName()
     {
         return $this->_typeName;
-    }
-
-    /**
-     * Returns true if is native type
-     *
-     * @return bool
-     */
-    public function isScalarType()
-    {
-        return isset(self::$_scalarNativeTypes[strtolower($this->_type)]);
     }
 
     /**
@@ -175,16 +165,6 @@ class FieldDescriptor
     public function getType()
     {
         return $this->_type;
-    }
-
-    /**
-     * Returns type descriptor
-     *
-     * @return string
-     */
-    public function getTypeDescriptor()
-    {
-        return $this->_typeDescriptor;
     }
 
     /**
@@ -208,16 +188,6 @@ class FieldDescriptor
     }
 
     /**
-     * Returns true if is scalar
-     *
-     * @return bool
-     */
-    public function isProtobufScalarType()
-    {
-        return isset(self::$_scalarTypes[strtolower($this->_type)]);
-    }
-
-    /**
      * Returns true if is optional
      *
      * @return bool
@@ -225,6 +195,14 @@ class FieldDescriptor
     public function isOptional()
     {
         return $this->_label == \FieldDescriptorProto_Label::LABEL_OPTIONAL;
+    }
+
+    /**
+     * Returns true if a field is an enum
+     */
+    public function isEnum()
+    {
+        return $this->_type == \FieldDescriptorProto_Type::TYPE_ENUM;
     }
 
     /**
@@ -297,18 +275,6 @@ class FieldDescriptor
     public function setType($type)
     {
         $this->_type = $type;
-    }
-
-    /**
-     * Sets type descriptor
-     *
-     * @param int $typeDescriptor Type descriptor
-     *
-     * @return null
-     */
-    public function setTypeDescriptor($typeDescriptor)
-    {
-        $this->_typeDescriptor = $typeDescriptor;
     }
 
     /**

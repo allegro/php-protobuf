@@ -3,19 +3,6 @@ namespace ProtobufCompiler;
 
 require_once 'pb_proto_plugin.php';
 
-//require_once '../../ProtobufCompiler/DescriptorInterface.php';
-//require_once '../../ProtobufCompiler/MessageDescriptor.php';
-//require_once '../../ProtobufCompiler/FileDescriptor.php';
-//require_once '../../ProtobufCompiler/FieldDescriptor.php';
-//require_once '../../ProtobufCompiler/FieldLabel.php';
-//require_once '../../ProtobufCompiler/EnumDescriptor.php';
-//require_once '../../ProtobufCompiler/EnumValueDescriptor.php';
-//require_once 'CodeStringBuffer.php';
-//require_once 'CommentStringBuffer.php';
-//require_once 'FileDescriptor.php';
-//require_once 'MessageDescriptor.php';
-//require_once 'FieldDescriptor.php';
-
 class PhpGenerator
 {
     const NAMESPACE_SEPARATOR = '_';
@@ -167,36 +154,44 @@ class PhpGenerator
         $fileDescriptor = new FileDescriptor($fileDescriptorProto->getName());
         $fileDescriptor->setPackage($fileDescriptorProto->getPackage());
         foreach ($fileDescriptorProto->getMessageType() as $descriptorProto) {
-            $messageDescriptor = new MessageDescriptor($descriptorProto->getName(), $fileDescriptor);
-            foreach ($descriptorProto->getField() as $fieldDescriptorProto) {
-                $fieldDescriptor = new FieldDescriptor();
-                $fieldDescriptor->setName($fieldDescriptorProto->getName());
-                $fieldDescriptor->setDefault($fieldDescriptorProto->getDefaultValue());
-                $fieldDescriptor->setLabel($fieldDescriptorProto->getLabel());
-                // TODO $fieldDescriptor->setNamespace()
-                $fieldDescriptor->setNumber($fieldDescriptorProto->getNumber());
-                $fieldDescriptor->setType($fieldDescriptorProto->getType());
-                $fieldDescriptor->setTypeName($fieldDescriptorProto->getTypeName());
-                fputs(STDERR, $fieldDescriptorProto->getTypeName() . PHP_EOL);
-                $messageDescriptor->addField($fieldDescriptor);
-
-                foreach ($fileDescriptorProto->getEnumType() as $enumDescriptorProto) {
-                    $messageDescriptor->addEnum($this->_buildEnumDescriptor($enumDescriptorProto, $fileDescriptor, $messageDescriptor));
-                }
-            }
-            $fileDescriptor->addMessage($messageDescriptor);
+            $this->_addMessageDescriptor($descriptorProto, $fileDescriptor);
         }
-        $this->_resolveNamespaces($fileDescriptor);
+        foreach ($fileDescriptorProto->getEnumType() as $enumDescriptorProto) {
+            $this->_addEnumDescriptor($enumDescriptorProto, $fileDescriptor);
+        }
         return $fileDescriptor;
     }
+
+    private function _addMessageDescriptor(\DescriptorProto $descriptorProto, FileDescriptor $fileDescriptor, MessageDescriptor $messageDescriptor=null)
+    {
+        $messageDescriptor = new MessageDescriptor($descriptorProto->getName(), $fileDescriptor, $messageDescriptor);
+
+        foreach ($descriptorProto->getEnumType() as $enumDescriptorProto) {
+            $this->_addEnumDescriptor($enumDescriptorProto, $fileDescriptor, $messageDescriptor);
+        }
+
+        foreach ($descriptorProto->getNestedType() as $nestedDescriptorProto) {
+            $this->_addMessageDescriptor($nestedDescriptorProto, $fileDescriptor, $messageDescriptor);
+        }
+
+        foreach ($descriptorProto->getField() as $fieldDescriptorProto) {
+            $fieldDescriptor = new FieldDescriptor();
+            $fieldDescriptor->setName($fieldDescriptorProto->getName());
+            $fieldDescriptor->setDefault($fieldDescriptorProto->getDefaultValue());
+            $fieldDescriptor->setLabel($fieldDescriptorProto->getLabel());
+            $fieldDescriptor->setNumber($fieldDescriptorProto->getNumber());
+            $fieldDescriptor->setType($fieldDescriptorProto->getType());
+            $fieldDescriptor->setTypeName($fieldDescriptorProto->getTypeName());
+            $messageDescriptor->addField($fieldDescriptor);
+        }
+    }
     
-    private function _buildEnumDescriptor(\EnumDescriptorProto $enumDescriptorProto, FileDescriptor $fileDescriptor, MessageDescriptor $messageDescriptor) {
+    private function _addEnumDescriptor(\EnumDescriptorProto $enumDescriptorProto, FileDescriptor $fileDescriptor, MessageDescriptor $messageDescriptor=null) {
         $enumDescriptor = new EnumDescriptor($enumDescriptorProto->getName(), $fileDescriptor, $messageDescriptor);
         foreach ($enumDescriptorProto->getValue() as $valueDescriptorProto) {
             $enumValueDescriptor = new EnumValueDescriptor($valueDescriptorProto->getName(), $valueDescriptorProto->getNumber());
             $enumDescriptor->addValue($enumValueDescriptor);
         }
-        return $enumDescriptor;
     }
 
     /**
@@ -278,7 +273,7 @@ class PhpGenerator
             $namespaceName = $this->_createNamesepaceName($descriptor);
             $buffer->append('namespace ' . $namespaceName . ' {');
         } else {
-            $name = $this->_createClassName($descriptor);
+            $name = $this->_createClassNameFromDescriptor($descriptor);
         }
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -333,7 +328,7 @@ class PhpGenerator
             $namespaceName = $this->_createNamespaceName($descriptor);
             $buffer->append('namespace ' . $namespaceName . ' {');
         } else {
-            $name = $this->_createClassName($descriptor);
+            $name = $this->_createClassNameFromDescriptor($descriptor);
         }
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -347,6 +342,7 @@ class PhpGenerator
         $buffer->append($comment);
 
         if ($this->_hasSplTypes) {
+            // TODO the SplEnum class is extended but field values are still stored as integers
             $buffer->append('final class ' . $name .' extends \SplEnum')
                 ->append('{')
                 ->increaseIdentation();
@@ -477,7 +473,7 @@ class PhpGenerator
      *
      * @return string
      */
-    private function _createClassName(DescriptorInterface $descriptor)
+    private function _createClassNameFromDescriptor(DescriptorInterface $descriptor)
     {
         $name = self::createTypeName($descriptor->getName());
 
@@ -486,6 +482,32 @@ class PhpGenerator
             $name = $prefix . $this->getNamespaceSeparator() . $name;
             if ($this->_useNativeNamespaces) {
                 $name = self::NAMESPACE_SEPARATOR_NATIVE . $name;
+            }
+        }
+
+        return $name;
+    }
+
+    /**
+     * Generates class name for given type name
+     *
+     * @param string $typeName Type name
+     *
+     * @return string
+     */
+    private function _createClassNameFromTypeName($typeName)
+    {
+        // TODO can name be without .?
+        $pos = strrpos($typeName, '.');
+        $name = self::createTypeName(substr($typeName, $pos + 1));
+        if ($pos != 0) {
+            $components = explode('.', substr($typeName, 1, $pos - 1));
+            $prefix = implode($this->getNamespaceSeparator(), $components);
+            if (!empty($prefix)) {
+                $name = $prefix . $this->getNamespaceSeparator() . $name;
+                if ($this->_useNativeNamespaces) {
+                    $name = self::NAMESPACE_SEPARATOR_NATIVE . $name;
+                }
             }
         }
 
@@ -598,12 +620,11 @@ class PhpGenerator
      */
     private function _getType(FieldDescriptor $field)
     {
-        if ($field->isProtobufScalarType()) {
-            return $field->getScalarType();
-        } else if ($field->getTypeDescriptor() instanceof EnumDescriptor) {
-            return \ProtobufMessage::PB_TYPE_INT;
+        // TODO make this condition nicer
+        if ($field->getPhpType() == "object" || $field->isEnum()) {
+            return $this->_createClassNameFromTypeName($field->getTypeName());
         } else {
-            return $this->_createClassName($field->getTypeDescriptor());
+            return $field->getScalarInternalType();
         }
     }
 
@@ -650,11 +671,12 @@ class PhpGenerator
     private function _describeRepeatedField(
         FieldDescriptor $field, CodeStringBuffer $buffer
     ) {
-        if ($field->isProtobufScalarType() || $field->getTypeDescriptor() instanceof EnumDescriptor) {
-            $typeName = $field->getTypeName();
+        $phpType = $field->getPhpType();
+        if ($phpType != 'object') {
+            $typeName = $phpType;
             $argumentClass = '';
         } else {
-            $typeName = $this->_createClassName($field->getTypeDescriptor());
+            $typeName = $this->_createClassNameFromTypeName($field->getTypeName());
             $argumentClass = $typeName . ' ';
         }
 
@@ -781,11 +803,12 @@ class PhpGenerator
     private function _describeSingleField(
         FieldDescriptor $field, CodeStringBuffer $buffer
     ) {
-        if ($field->isProtobufScalarType() || $field->getTypeDescriptor() instanceof EnumDescriptor) {
-            $typeName = $field->getTypeName();
+        $phpType = $field->getPhpType();
+        if ($phpType != 'object') {
+            $typeName = $phpType;
             $argumentClass = '';
         } else {
-            $typeName = $this->_createClassName($field->getTypeDescriptor());
+            $typeName = $this->_createClassNameFromTypeName($field->getTypeName());
             $argumentClass = $typeName . ' ';
         }
 
@@ -917,21 +940,19 @@ class PhpGenerator
 
             if (!is_null($field->getDefault())) {
                 if ($type == \ProtobufMessage::PB_TYPE_STRING) {
+                    // TODO is addslashes enought?
                     $buffer->append(
                         '\'default\' => \'' .
-                        addslashes($field->getDefault()) . '\', '
+                        addslashes($field->getDefault()) . '\','
+                    );
+                } else if ($field->isEnum()) {
+                    $buffer->append(
+                        '\'default\' => ' . $type . '::' . $field->getDefault() . ','
                     );
                 } else {
-                    if ($field->isProtobufScalarType()) {
-                        $buffer->append(
-                            '\'default\' => ' . $field->getDefault() . ', '
-                        );
-                    } else {
-                        $className = $this->_createClassName($field->getTypeDescriptor());
-                        $buffer->append(
-                            '\'default\' => ' . $className . '::' . $field->getDefault() . ', '
-                        );
-                    }
+                    $buffer->append(
+                        '\'default\' => ' . $field->getDefault() . ','
+                    );
                 }
             }
 
@@ -989,25 +1010,15 @@ class PhpGenerator
             ->increaseIdentation();
 
         foreach ($fields as $field) {
-            $type = $this->_getType($field);
-
             if ($field->isRepeated()) {
                 $buffer->append(
                     '$this->values[self::' . $field->getConstName() . '] = array();'
                 );
-            } else if ($field->isOptional() && !is_null($field->getDefault())) {
-                if ($field->isProtobufScalarType()) {
-                    $buffer->append(
-                        '$this->values[self::' . $field->getConstName() . '] = ' .
-                        $field->getDefault() . ';'
-                    );
-                } else {
-                    $className = $this->_createClassName($field->getTypeDescriptor());
-                    $buffer->append(
-                        '$this->values[self::' . $field->getConstName() . '] = ' .
-                        $className . '::' . $field->getDefault() . ';'
-                    );
-                }
+            } else if (!is_null($field->getDefault())) {
+                $buffer->append(
+                    '$this->values[self::' . $field->getConstName() . '] = ' .
+                    'self::$fields[self::' . $field->getConstName() . '][\'default\'];'
+                );
             } else {
                 $buffer->append(
                     '$this->values[self::' . $field->getConstName() . '] = null;'
@@ -1261,7 +1272,7 @@ class PhpGenerator
 
             $namespace = $field->getNamespace();
 
-            $typeName = $field->getTypeName2();
+            $typeName = $field->getTypeName();
             if (is_null($namespace)) {
                 if (($type = $descriptor->findType($typeName)) !== false) {
                     $field->setTypeDescriptor($type);
