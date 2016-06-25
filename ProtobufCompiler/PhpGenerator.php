@@ -5,92 +5,18 @@ require_once 'pb_proto_plugin.php';
 
 class PhpGenerator
 {
-    const NAMESPACE_SEPARATOR = '_';
-    const NAMESPACE_SEPARATOR_NATIVE = '\\';
-
-    private $_namespaces = array();
+    const CLASS_NAME_SEPARATOR = '_';
+    const PHP_NAMESPACE_SEPARATOR = '\\';
+    const PB_NAMESPACE_SEPARATOR = '.';
 
     const TAB = '    ';
     const EOL = PHP_EOL;
 
     private $_hasSplTypes = false;
-    // TODO what about native namespaces support?
-    private $_useNativeNamespaces = false;
 
-    private $_filenamePrefix = 'pb_proto_';
-    private $_savePsrOutput = false;
-
-    private $_comment;
-
-    private $_targetDir = './';
-
-    public function __construct($useNativeNamespaces = null)
+    public function __construct()
     {
         $this->_hasSplTypes = extension_loaded('SPL_Types');
-        $this->_useNativeNamespaces = (boolean)$useNativeNamespaces;
-    }
-
-    /**
-     * Returns namespaces
-     *
-     * @return array
-     */
-    public function getNamespaces()
-    {
-        return $this->_namespaces;
-    }
-
-    /**
-     * Returns namespace separator
-     *
-     * @return array
-     */
-    public function getNamespaceSeparator()
-    {
-        return $this->_useNativeNamespaces
-            ? self::NAMESPACE_SEPARATOR_NATIVE : self::NAMESPACE_SEPARATOR;
-    }
-
-    /**
-     * Creates package name based on proto package name value
-     *
-     * @param string $name Package name
-     *
-     * @return string
-     */
-    public function createPackageName($name)
-    {
-        $components = explode('.', $name);
-        $name = '';
-
-        foreach ($components as $component) {
-            if (strlen($component) > 0) {
-                $name .= $this->getNamespaceSeparator() . ucfirst($component);
-            }
-        }
-
-        return trim($name, $this->getNamespaceSeparator());
-    }
-
-    /**
-     * Created type name based on proto type name
-     *
-     * @param string $name Type name
-     *
-     * @return string
-     */
-    public static function createTypeName($name)
-    {
-        $components = explode('_', $name);
-        $name = '';
-
-        foreach ($components as $component) {
-            if (strlen($component) > 0) {
-                $name .= ucfirst($component);
-            }
-        }
-
-        return $name;
     }
 
     /**
@@ -102,14 +28,13 @@ class PhpGenerator
         $response = new \CodeGeneratorResponse();
         $fileDescriptors = $this->_buildFileDescriptors($request->getProtoFile());
         foreach ($fileDescriptors as $fileDescriptor) {
-            $name = $this->_createOutputFilename($fileDescriptor->getName());
-            $content = $this->_generateFileContent($fileDescriptor);
+            $this->_generateFiles($fileDescriptor, function($className, $namespaceName, $content) use ($response) {
+                $file = new \CodeGeneratorResponse_File();
+                $file->setName(PhpGenerator::_createClassFilename($className, $namespaceName));
+                $file->setContent('<?php' . PHP_EOL . $content);
 
-            $file = new \CodeGeneratorResponse_File();
-            $file->setName($name);
-            $file->setContent($content);
-
-            $response->appendFile($file);
+                $response->appendFile($file);
+            });
         }
         return $response;
     }
@@ -138,12 +63,19 @@ class PhpGenerator
     {
         $typeDescriptorsByTypeName = array();
         foreach ($files as $file) {
+            $package = $file->getPackage();
+            if ($package) {
+                $prefix = self::PB_NAMESPACE_SEPARATOR . $package;
+            } else {
+                $prefix = '';
+            }
+
             foreach ($file->getMessages() as $messageDescriptor) {
-                $this->_buildFieldTypeDescriptorsByTypeNAme('.' . $file->getPackage(), $messageDescriptor, $typeDescriptorsByTypeName);
+                $this->_buildFieldTypeDescriptorsByTypeName($prefix, $messageDescriptor, $typeDescriptorsByTypeName);
             }
 
             foreach ($file->getEnums() as $enumDescriptor) {
-                $this->_buildFieldTypeDescriptorsByTypeNAme('.' . $file->getPackage(), $enumDescriptor, $typeDescriptorsByTypeName);
+                $this->_buildFieldTypeDescriptorsByTypeName($prefix, $enumDescriptor, $typeDescriptorsByTypeName);
             }
         }
 
@@ -186,13 +118,13 @@ class PhpGenerator
      *
      * @return null
      */
-    private function _buildFieldTypeDescriptorsByTypeNAme($prefix, $descriptor, array &$typeDescriptorsByTypeName)
+    private function _buildFieldTypeDescriptorsByTypeName($prefix, $descriptor, array &$typeDescriptorsByTypeName)
     {
-        $typeName = $prefix . '.' . $descriptor->getName();
+        $typeName = $prefix . self::PB_NAMESPACE_SEPARATOR . $descriptor->getName();
         $typeDescriptorsByTypeName[$typeName] = $descriptor;
         if ($descriptor instanceof MessageDescriptor) {
             foreach ($descriptor->getNested() as $nestedDescriptor) {
-                $this->_buildFieldTypeDescriptorsByTypeNAme($typeName, $nestedDescriptor, $typeDescriptorsByTypeName);
+                $this->_buildFieldTypeDescriptorsByTypeName($typeName, $nestedDescriptor, $typeDescriptorsByTypeName);
             }
         }
     }
@@ -248,11 +180,12 @@ class PhpGenerator
     }
 
     /**
-     * @param $file FileDescriptor
+     * @param FileDescriptor $file
      *
-     * @return string
+     * @return null
      */
-    private function _generateFileContent($file) {
+    private function _createFileComment($file)
+    {
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
         $date = strftime("%Y-%m-%d %H:%M:%S");
         $comment->append('Auto generated from ' . basename($file->getName()) . ' at ' . $date);
@@ -261,72 +194,54 @@ class PhpGenerator
             $comment->newline()
                 ->append($file->getPackage() . ' package');
         }
+        return $comment;
+    }
 
-        if ($this->getSavePsrOutput()) {
-            $this->_comment = $comment;
-        }
-
-        $buffer = new CodeStringBuffer(self::TAB, self::EOL);
-        $buffer->append($comment);
-
+    /**
+     * @param FileDescriptor $file
+     * @param callable       $createClass
+     *
+     * @return string
+     */
+    private function _generateFiles($file, $createClass)
+    {
         foreach ($file->getEnums() as $descriptor) {
-            $this->_createEnum($descriptor, $buffer);
+            $this->_createEnum($descriptor, $createClass);
         }
 
         foreach ($file->getMessages() as $descriptor) {
-            $this->_createClass($descriptor, $buffer);
+            $this->_createClass($descriptor, $createClass);
         }
-
-        $requiresString = '';
-
-        foreach ($file->getDependencies() as $dependency) {
-            $requiresString .= sprintf(
-                'require_once \'%s\';',
-                $this->_createOutputFilename($dependency->getName())
-            );
-        }
-
-        if ($this->_useNativeNamespaces && !empty($requiresString)) {
-            $requiresString = 'namespace {' . PHP_EOL . $requiresString . PHP_EOL . '}';
-        }
-
-        $buffer->append($requiresString);
-
-        return '<?php' . PHP_EOL . $buffer;
     }
 
     /**
      * Generates class description and write it to buffer
      *
-     * @param MessageDescriptor $descriptor Message descriptor
-     * @param CodeStringBuffer  $buffer     Buffer to write code to
+     * @param MessageDescriptor $descriptor
+     * @param callable          $createClass
      *
      * @return null
      */
     private function _createClass(
-        MessageDescriptor $descriptor, CodeStringBuffer $buffer
+        MessageDescriptor $descriptor, $createClass
     ) {
-        if ($this->getSavePsrOutput()) {
-            $buffer = new CodeStringBuffer(self::TAB, self::EOL);
-            $buffer->append($this->_comment);
-        }
-
         foreach ($descriptor->getEnums() as $enum) {
-            $this->_createEnum($enum, $buffer);
+            $this->_createEnum($enum, $createClass);
         }
 
         foreach ($descriptor->getNested() as $nested) {
-            $this->_createClass($nested, $buffer);
+            $this->_createClass($nested, $createClass);
         }
 
+        $buffer = new CodeStringBuffer(self::TAB, self::EOL);
+        $buffer->append($this->_createFileComment($descriptor->getFile()));
         $buffer->newline();
 
-        if ($this->_useNativeNamespaces) {
-            $name = self::createTypeName($descriptor->getName());
-            $namespaceName = $this->_createNamesepaceName($descriptor);
+        $namespaceName = $this->_createNamespaceName($descriptor);
+        if ($namespaceName) {
             $buffer->append('namespace ' . $namespaceName . ' {');
         } else {
-            $name = $this->_createClassNameFromDescriptor($descriptor);
+            $buffer->append('namespace {');
         }
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -339,7 +254,8 @@ class PhpGenerator
 
         $buffer->append($comment);
 
-        $buffer->append('class ' . $name . ' extends \ProtobufMessage')
+        $className = $this->_createClassName($descriptor);
+        $buffer->append('class ' . $className . ' extends \ProtobufMessage')
             ->append('{')
             ->increaseIdentation();
 
@@ -349,39 +265,32 @@ class PhpGenerator
         $buffer->decreaseIdentation()
             ->append('}');
 
-        if ($this->_useNativeNamespaces) {
-            $buffer->append('}');
-        }
+        $buffer->append('}');
 
-        if ($this->getSavePsrOutput()) {
-            $this->_createFilePsr($name, $namespaceName, $buffer);
-        }
+        $createClass($className, $namespaceName, $buffer);
     }
 
     /**
      * Creates enum description
      *
-     * @param EnumDescriptor   $descriptor Enum descriptor
-     * @param CodeStringBuffer $buffer     Buffer to write code to
+     * @param EnumDescriptor $descriptor  Enum descriptor
+     * @param callable       $createClass
      *
      * @return null
      */
     private function _createEnum(
-        EnumDescriptor $descriptor, CodeStringBuffer $buffer
+        EnumDescriptor $descriptor, $createClass
     ) {
-        if ($this->getSavePsrOutput()) {
-            $buffer = new CodeStringBuffer(self::TAB, self::EOL);
-            $buffer->append($this->_comment);
-        } else {
-            $buffer->newline();
-        }
+        $buffer = new CodeStringBuffer(self::TAB, self::EOL);
+        $buffer->append($this->_createFileComment($descriptor->getFile()));
+        $buffer->newline();
 
-        if ($this->_useNativeNamespaces) {
-            $name = self::createTypeName($descriptor->getName());
-            $namespaceName = $this->_createNamespaceName($descriptor);
+        $className = $this->_createClassName($descriptor);
+        $namespaceName = $this->_createNamespaceName($descriptor);
+        if ($namespaceName) {
             $buffer->append('namespace ' . $namespaceName . ' {');
         } else {
-            $name = $this->_createClassNameFromDescriptor($descriptor);
+            $buffer->append('namespace {');
         }
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -396,11 +305,11 @@ class PhpGenerator
 
         if ($this->_hasSplTypes) {
             // TODO the SplEnum class is extended but field values are still stored as integers
-            $buffer->append('final class ' . $name .' extends \SplEnum')
+            $buffer->append('final class ' . $className .' extends \SplEnum')
                 ->append('{')
                 ->increaseIdentation();
         } else {
-            $buffer->append('final class ' . $name)
+            $buffer->append('final class ' . $className)
                 ->append('{')
                 ->increaseIdentation();
         }
@@ -410,23 +319,9 @@ class PhpGenerator
         $buffer->decreaseIdentation()
             ->append('}');
 
-        if ($this->_useNativeNamespaces) {
-            $buffer->append('}');
-        }
-        if ($this->getSavePsrOutput()) {
-            $this->_createFilePsr($name, $namespaceName, $buffer);
-        }
-    }
+        $buffer->append('}');
 
-    private function _createFilePsr($outputFile, $namespace, $buffer)
-    {
-        $path = $this->getTargetDir() . str_replace('\\', '/', $namespace  .'/');
-
-        if (!file_exists($path)) {
-            mkdir($path, 0755, true);
-        }
-
-        file_put_contents($path . $outputFile . '.php', '<?php' . PHP_EOL . $buffer);
+        $createClass($className, $namespaceName, $buffer);
     }
 
     /**
@@ -434,28 +329,45 @@ class PhpGenerator
      *
      * @param DescriptorInterface $descriptor Descriptor
      *
-     * @return string
+     * @return string|null
      */
     private function _createNamespaceName(DescriptorInterface $descriptor)
     {
+        $package = $descriptor->getFile()->getPackage();
+        if (!$package) {
+            return null;
+        }
+
+        $packageComponents = explode(self::PB_NAMESPACE_SEPARATOR, $package);
         $namespace = array();
 
-        $containing = $descriptor->getContaining();
+        foreach ($packageComponents as $packageComponent) {
+            $namespace[] = implode(array_map('ucfirst', explode('_', $packageComponent)));
+        }
 
+        return implode(self::PHP_NAMESPACE_SEPARATOR, $namespace);
+    }
+
+    /**
+     * Generates class name for given descriptor
+     *
+     * @param DescriptorInterface $descriptor Descriptor
+     *
+     * @return string
+     */
+    private function _createClassName(DescriptorInterface $descriptor)
+    {
+        $components = array($descriptor->getName());
+
+        $containing = $descriptor->getContaining();
         while (!is_null($containing)) {
-            $namespace[] = self::createTypeName($containing->getName());
+            $components[] = $containing->getName();
             $containing = $containing->getContaining();
         }
 
-        $package = $descriptor->getFile()->getPackage();
+        $components = array_reverse($components);
 
-        if (!empty($package)) {
-            $namespace[] = $this->createPackageName($package);
-        }
-
-        $namespace = array_reverse($namespace);
-
-        $name = implode($this->getNamespaceSeparator(), $namespace);
+        $name = implode(self::CLASS_NAME_SEPARATOR, $components);
 
         return $name;
     }
@@ -467,93 +379,36 @@ class PhpGenerator
      *
      * @return string
      */
-    private function _createClassNameFromDescriptor(DescriptorInterface $descriptor)
+    private function _createFullyQualifiedClassName(DescriptorInterface $descriptor)
     {
-        $name = self::createTypeName($descriptor->getName());
-
-        $prefix = $this->_createNamespaceName($descriptor);
-        if (!empty($prefix)) {
-            $name = $prefix . $this->getNamespaceSeparator() . $name;
-            if ($this->_useNativeNamespaces) {
-                $name = self::NAMESPACE_SEPARATOR_NATIVE . $name;
-            }
+        $className = $this->_createClassName($descriptor);
+        $namespaceName = $this->_createNamespaceName($descriptor);
+        if ($namespaceName) {
+            $name = self::PHP_NAMESPACE_SEPARATOR . $namespaceName . self::PHP_NAMESPACE_SEPARATOR . $className;
+        } else {
+            $name = self::PHP_NAMESPACE_SEPARATOR . $className;
         }
-
         return $name;
     }
 
     /**
-     * Generates filename for given source filename
+     * Generates filename for given class
      *
-     * @param string $sourceFilename Filename
-     *
-     * @return string
-     */
-    private function _createOutputFilename($sourceFilename)
-    {
-        $pathInfo = pathinfo($sourceFilename);
-
-        return $this->getFilenamePrefix() . $pathInfo['filename'] . '.php';
-    }
-
-    /**
-     * Sets filename prefix
-     *
-     * @param string $prefix
-     */
-    public function setFilenamePrefix($prefix)
-    {
-        $this->_filenamePrefix = $prefix;
-    }
-
-    /**
-     * Gets filename prefix
+     * @param string $className
+     * @param string $namespaceName
      *
      * @return string
-     */
-    public function getFilenamePrefix()
-    {
-        return $this->_filenamePrefix;
-    }
-
-    /**
-     * Sets flag for directory based file layout vs single file
      *
-     * @param bool $psrOutput
      */
-    public function setSavePsrOutput($psrOutput)
+    // TODO it shouldn't be public
+    public static function _createClassFilename($className, $namespaceName)
     {
-        $this->_savePsrOutput = $psrOutput;
-    }
-
-    /**
-     * Gets flag for directory based file layout vs single file
-     *
-     * @return bool
-     */
-    public function getSavePsrOutput()
-    {
-        return $this->_savePsrOutput;
-    }
-
-    /**
-     * Sets the directory to save output
-     *
-     * @param $targetDir
-     */
-    public function setTargetDir($targetDir)
-    {
-        $this->_targetDir = $targetDir;
-    }
-
-    /**
-     * Gets the directory to save the output
-     *
-     * @return string
-     */
-    public function getTargetDir()
-    {
-        return $this->_targetDir;
+        if ($namespaceName) {
+            $baseName = str_replace(self::PHP_NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, $namespaceName . self::PHP_NAMESPACE_SEPARATOR . $className);
+        } else {
+            $baseName = $className;
+        }
+        return $baseName . '.php';
     }
 
     /**
@@ -590,7 +445,7 @@ class PhpGenerator
     {
         // TODO make this condition nicer
         if ($field->getPhpType() == "object" || $field->isEnum()) {
-            return $this->_createClassNameFromDescriptor($field->getTypeDescriptor());
+            return $this->_createFullyQualifiedClassName($field->getTypeDescriptor());
         } else {
             return $field->getScalarInternalType();
         }
@@ -644,7 +499,7 @@ class PhpGenerator
             $typeName = $phpType;
             $argumentClass = '';
         } else {
-            $typeName = $this->_createClassNameFromDescriptor($field->getTypeDescriptor());
+            $typeName = $this->_createFullyQualifiedClassName($field->getTypeDescriptor());
             $argumentClass = $typeName . ' ';
         }
 
@@ -703,7 +558,7 @@ class PhpGenerator
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
         $comment->append('Returns \'' . $field->getName() . '\' iterator')
             ->newline()
-            ->appendParam('return', 'ArrayIterator');
+            ->appendParam('return', '\ArrayIterator');
 
         $buffer->newline()
             ->append($comment)
@@ -776,7 +631,7 @@ class PhpGenerator
             $typeName = $phpType;
             $argumentClass = '';
         } else {
-            $typeName = $this->_createClassNameFromDescriptor($field->getTypeDescriptor());
+            $typeName = $this->_createFullyQualifiedClassName($field->getTypeDescriptor());
             $argumentClass = $typeName . ' ';
         }
 
@@ -954,9 +809,7 @@ class PhpGenerator
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
         $comment->append(
             'Constructs new message container and clears its internal state'
-        )
-            ->newline()
-            ->appendParam('return', 'null');
+        );
 
         $buffer->append($comment)
             ->append('public function __construct()')
