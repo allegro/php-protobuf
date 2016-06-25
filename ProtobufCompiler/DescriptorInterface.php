@@ -13,7 +13,7 @@ interface DescriptorInterface
     /**
      * Returns parent message
      *
-     * @return string
+     * @return DescriptorInterface
      */
     public function getContaining();
 

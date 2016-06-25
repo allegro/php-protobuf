@@ -52,6 +52,7 @@ class FieldDescriptor
     private $_name;
     private $_number;
     private $_type;
+    private $_typeDescriptor = null;
     private $_typeName = null;
 
     /**
@@ -140,6 +141,21 @@ class FieldDescriptor
         }
     }
 
+    /**
+     * Returns type descriptor
+     *
+     * @return DescriptorInterface
+     */
+    public function getTypeDescriptor()
+    {
+        return $this->_typeDescriptor;
+    }
+
+    /**
+     * Returns type name
+     *
+     * @return string|null
+     */
     public function getTypeName()
     {
         return $this->_typeName;
@@ -251,6 +267,18 @@ class FieldDescriptor
     public function setType($type)
     {
         $this->_type = $type;
+    }
+
+    /**
+     * Sets type descriptor
+     *
+     * @param DescriptorInterface $typeDescriptor
+     *
+     * @return null
+     */
+    public function setTypeDescriptor($typeDescriptor)
+    {
+        $this->_typeDescriptor = $typeDescriptor;
     }
 
     /**

@@ -100,9 +100,8 @@ class PhpGenerator
      */
     public function generate(\CodeGeneratorRequest $request) {
         $response = new \CodeGeneratorResponse();
-        foreach ($request->getProtoFile() as $fileDescriptorProto) {
-            $fileDescriptor = $this->_buildFileDescriptor($fileDescriptorProto);
-
+        $fileDescriptors = $this->_buildFileDescriptors($request->getProtoFile());
+        foreach ($fileDescriptors as $fileDescriptor) {
             $name = $this->_createOutputFilename($fileDescriptor->getName());
             $content = $this->_generateFileContent($fileDescriptor);
 
@@ -113,6 +112,89 @@ class PhpGenerator
             $response->appendFile($file);
         }
         return $response;
+    }
+
+    /**
+     * @param \FileDescriptorProto[] $fileDescriptorProtos
+     *
+     * @return array
+     */
+    private function _buildFileDescriptors($fileDescriptorProtos)
+    {
+        $fileDescriptors = array();
+        foreach ($fileDescriptorProtos as $fileDescriptorProto) {
+            $fileDescriptors[] = $this->_buildFileDescriptor($fileDescriptorProto);
+        }
+        $this->_resolveFieldTypeDescriptors($fileDescriptors);
+        return $fileDescriptors;
+    }
+
+    /**
+     * @param FileDescriptor[] $files
+     *
+     * @return null
+     */
+    private function _resolveFieldTypeDescriptors(array $files)
+    {
+        $typeDescriptorsByTypeName = array();
+        foreach ($files as $file) {
+            foreach ($file->getMessages() as $messageDescriptor) {
+                $this->_buildFieldTypeDescriptorsByTypeNAme('.' . $file->getPackage(), $messageDescriptor, $typeDescriptorsByTypeName);
+            }
+
+            foreach ($file->getEnums() as $enumDescriptor) {
+                $this->_buildFieldTypeDescriptorsByTypeNAme('.' . $file->getPackage(), $enumDescriptor, $typeDescriptorsByTypeName);
+            }
+        }
+
+        foreach ($files as $file) {
+            foreach ($file->getMessages() as $messageDescriptor) {
+                $this->_resolveMessageFieldTypes($messageDescriptor, $typeDescriptorsByTypeName);
+            }
+        }
+    }
+
+    /**
+     * @param MessageDescriptor $messageDescriptor
+     * @param array             $typeDescriptorsByTypeName
+     *
+     * @return null
+     */
+    private function _resolveMessageFieldTypes($messageDescriptor, array $typeDescriptorsByTypeName)
+    {
+        foreach ($messageDescriptor->getFields() as $fieldDescriptor) {
+            $typeName = $fieldDescriptor->getTypeName();
+            if ($typeName) {
+                $typeDescriptor = $typeDescriptorsByTypeName[$typeName];
+                if ($typeDescriptor) {
+                    $fieldDescriptor->setTypeDescriptor($typeDescriptorsByTypeName[$typeName]);
+                } else {
+                    fputs(STDERR, 'Failed to resolve ' . $typeName . ' type' . PHP_EOL);
+                }
+            }
+        }
+
+        foreach ($messageDescriptor->getNested() as $nestedDescriptor) {
+            $this->_resolveMessageFieldTypes($nestedDescriptor, $typeDescriptorsByTypeName);
+        }
+    }
+
+    /**
+     * @param string                           $prefix
+     * @param MessageDescriptor|EnumDescriptor $descriptor
+     * @param array                            $typeDescriptorsByTypeName
+     *
+     * @return null
+     */
+    private function _buildFieldTypeDescriptorsByTypeNAme($prefix, $descriptor, array &$typeDescriptorsByTypeName)
+    {
+        $typeName = $prefix . '.' . $descriptor->getName();
+        $typeDescriptorsByTypeName[$typeName] = $descriptor;
+        if ($descriptor instanceof MessageDescriptor) {
+            foreach ($descriptor->getNested() as $nestedDescriptor) {
+                $this->_buildFieldTypeDescriptorsByTypeNAme($typeName, $nestedDescriptor, $typeDescriptorsByTypeName);
+            }
+        }
     }
 
     /**
@@ -401,35 +483,6 @@ class PhpGenerator
     }
 
     /**
-     * Generates class name for given type name
-     *
-     * @param string $typeName Type name
-     *
-     * @return string
-     */
-    private function _createClassNameFromTypeName($typeName)
-    {
-        // TODO can name be without .?
-        $pos = strrpos($typeName, '.');
-        $name = self::createTypeName(substr($typeName, $pos + 1));
-        if ($pos != 0) {
-            $components = array();
-            foreach (explode('.', substr($typeName, 1, $pos - 1)) as $component) {
-                $components[] = ucfirst($component);
-            }
-            $prefix = implode($this->getNamespaceSeparator(), $components);
-            if (!empty($prefix)) {
-                $name = $prefix . $this->getNamespaceSeparator() . $name;
-                if ($this->_useNativeNamespaces) {
-                    $name = self::NAMESPACE_SEPARATOR_NATIVE . $name;
-                }
-            }
-        }
-
-        return $name;
-    }
-
-    /**
      * Generates filename for given source filename
      *
      * @param string $sourceFilename Filename
@@ -537,7 +590,7 @@ class PhpGenerator
     {
         // TODO make this condition nicer
         if ($field->getPhpType() == "object" || $field->isEnum()) {
-            return $this->_createClassNameFromTypeName($field->getTypeName());
+            return $this->_createClassNameFromDescriptor($field->getTypeDescriptor());
         } else {
             return $field->getScalarInternalType();
         }
@@ -591,7 +644,7 @@ class PhpGenerator
             $typeName = $phpType;
             $argumentClass = '';
         } else {
-            $typeName = $this->_createClassNameFromTypeName($field->getTypeName());
+            $typeName = $this->_createClassNameFromDescriptor($field->getTypeDescriptor());
             $argumentClass = $typeName . ' ';
         }
 
@@ -723,7 +776,7 @@ class PhpGenerator
             $typeName = $phpType;
             $argumentClass = '';
         } else {
-            $typeName = $this->_createClassNameFromTypeName($field->getTypeName());
+            $typeName = $this->_createClassNameFromDescriptor($field->getTypeDescriptor());
             $argumentClass = $typeName . ' ';
         }
 
