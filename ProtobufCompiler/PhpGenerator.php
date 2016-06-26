@@ -130,6 +130,9 @@ class PhpGenerator
         $typeName = $prefix . self::PB_NAMESPACE_SEPARATOR . $descriptor->getName();
         $typeDescriptorsByTypeName[$typeName] = $descriptor;
         if ($descriptor instanceof MessageDescriptor) {
+            foreach ($descriptor->getEnums() as $enumDescriptor) {
+                $this->_buildFieldTypeDescriptorsByTypeName($typeName, $enumDescriptor, $typeDescriptorsByTypeName);
+            }
             foreach ($descriptor->getNested() as $nestedDescriptor) {
                 $this->_buildFieldTypeDescriptorsByTypeName($typeName, $nestedDescriptor, $typeDescriptorsByTypeName);
             }
