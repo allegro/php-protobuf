@@ -1,5 +1,5 @@
 <?php
-namespace ProtobufCompiler;
+namespace Allegro\Protobuf\Compiler;
 
 /**
  * Helper class for generating source code

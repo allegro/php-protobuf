@@ -1,5 +1,5 @@
 <?php
-namespace ProtobufCompiler;
+namespace Allegro\Protobuf\Compiler;
 
 /**
  * Describes field labes

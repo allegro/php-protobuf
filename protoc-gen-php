@@ -1,2 +1,0 @@
-#!/bin/bash
-php protoc-gen-php.php $@

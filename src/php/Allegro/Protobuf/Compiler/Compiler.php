@@ -1,10 +1,10 @@
 <?php
+namespace Allegro\Protobuf\Compiler;
 
-namespace ProtobufCompiler;
+use Google\Protobuf\Compiler\CodeGeneratorRequest;
 
-require_once "pb_proto_plugin.php";
-
-require_once __DIR__ . '/../vendor/autoload.php';
+// TODO is it portable?
+require_once __DIR__ . '/../../../../../vendor/autoload.php';
 
 class Compiler
 {
@@ -19,7 +19,7 @@ class Compiler
     {
         if ($this->hasStdin()) {
             $data = file_get_contents('php://stdin');
-            $request = new \CodeGeneratorRequest();
+            $request = new CodeGeneratorRequest();
             // TODO handle parse error
             $request->parseFromString($data);
             $generator = new PhpGenerator();

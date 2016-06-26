@@ -1,7 +1,12 @@
 <?php
-namespace ProtobufCompiler;
+namespace Allegro\Protobuf\Compiler;
 
-require_once 'pb_proto_plugin.php';
+use Google\Protobuf\Compiler\CodeGeneratorRequest;
+use Google\Protobuf\Compiler\CodeGeneratorResponse;
+use Google\Protobuf\Compiler\CodeGeneratorResponse_File;
+use Google\Protobuf\Compiler\DescriptorProto;
+use Google\Protobuf\Compiler\EnumDescriptorProto;
+use Google\Protobuf\Compiler\FileDescriptorProto;
 
 class PhpGenerator
 {
@@ -21,22 +26,22 @@ class PhpGenerator
     }
 
     /**
-     * @param \CodeGeneratorRequest $request
+     * @param CodeGeneratorRequest $request
      *
-     * @return \CodeGeneratorResponse
+     * @return CodeGeneratorResponse
      */
-    public function generate(\CodeGeneratorRequest $request) {
+    public function generate(CodeGeneratorRequest $request) {
         $this->customArguments = array();
         $parameter = $request->getParameter();
         if ($parameter) {
             parse_str($parameter, $this->customArguments);
         }
 
-        $response = new \CodeGeneratorResponse();
+        $response = new CodeGeneratorResponse();
         $fileDescriptors = $this->_buildFileDescriptors($request->getProtoFile());
         foreach ($fileDescriptors as $fileDescriptor) {
             $this->_generateFiles($fileDescriptor, function($className, $namespaceName, $content) use ($response) {
-                $file = new \CodeGeneratorResponse_File();
+                $file = new CodeGeneratorResponse_File();
                 $file->setName(PhpGenerator::_createClassFilename($className, $namespaceName));
                 $file->setContent('<?php' . PHP_EOL . $content);
 
@@ -47,7 +52,7 @@ class PhpGenerator
     }
 
     /**
-     * @param \FileDescriptorProto[] $fileDescriptorProtos
+     * @param FileDescriptorProto[] $fileDescriptorProtos
      *
      * @return array
      */
@@ -140,11 +145,11 @@ class PhpGenerator
     }
 
     /**
-     * @param \FileDescriptorProto $fileDescriptorProto
+     * @param FileDescriptorProto $fileDescriptorProto
      *
      * @return FileDescriptor
      */
-    private function _buildFileDescriptor(\FileDescriptorProto $fileDescriptorProto)
+    private function _buildFileDescriptor(FileDescriptorProto $fileDescriptorProto)
     {
         $fileDescriptor = new FileDescriptor($fileDescriptorProto->getName());
         $fileDescriptor->setPackage($fileDescriptorProto->getPackage());
@@ -157,7 +162,7 @@ class PhpGenerator
         return $fileDescriptor;
     }
 
-    private function _addMessageDescriptor(\DescriptorProto $descriptorProto, FileDescriptor $fileDescriptor, MessageDescriptor $messageDescriptor=null)
+    private function _addMessageDescriptor(DescriptorProto $descriptorProto, FileDescriptor $fileDescriptor, MessageDescriptor $messageDescriptor=null)
     {
         $messageDescriptor = new MessageDescriptor($descriptorProto->getName(), $fileDescriptor, $messageDescriptor);
 
@@ -181,7 +186,7 @@ class PhpGenerator
         }
     }
     
-    private function _addEnumDescriptor(\EnumDescriptorProto $enumDescriptorProto, FileDescriptor $fileDescriptor, MessageDescriptor $messageDescriptor=null) {
+    private function _addEnumDescriptor(EnumDescriptorProto $enumDescriptorProto, FileDescriptor $fileDescriptor, MessageDescriptor $messageDescriptor=null) {
         $enumDescriptor = new EnumDescriptor($enumDescriptorProto->getName(), $fileDescriptor, $messageDescriptor);
         foreach ($enumDescriptorProto->getValue() as $valueDescriptorProto) {
             $enumValueDescriptor = new EnumValueDescriptor($valueDescriptorProto->getName(), $valueDescriptorProto->getNumber());
@@ -446,23 +451,6 @@ class PhpGenerator
         array_reverse($path);
 
         return implode("/", $path);
-    }
-
-    /**
-     * Generates type name for given descriptor
-     *
-     * @param FieldDescriptor $field Field descriptor
-     *
-     * @return string
-     */
-    private function _getType(FieldDescriptor $field)
-    {
-        // TODO make this condition nicer
-        if ($field->getPhpType() == "object" || $field->isEnum()) {
-            return $this->_createFullyQualifiedClassName($field->getTypeDescriptor());
-        } else {
-            return $field->getScalarInternalType();
-        }
     }
 
     /**
@@ -770,7 +758,11 @@ class PhpGenerator
             ->increaseIdentation();
 
         foreach ($fields as $field) {
-            $type = $this->_getType($field);
+            if ($field->getPhpType() == "object") {
+                $type = $this->_createFullyQualifiedClassName($field->getTypeDescriptor());
+            } else {
+                $type = $field->getScalarInternalType();
+            }
 
             $buffer->append('self::' . $field->getConstName() . ' => array(')
                 ->increaseIdentation();
@@ -783,8 +775,9 @@ class PhpGenerator
                         addslashes($field->getDefault()) . '\','
                     );
                 } else if ($field->isEnum()) {
+                    $className = $this->_createFullyQualifiedClassName($field->getTypeDescriptor());
                     $buffer->append(
-                        '\'default\' => ' . $type . '::' . $field->getDefault() . ','
+                        '\'default\' => ' . $className . '::' . $field->getDefault() . ','
                     );
                 } else {
                     $buffer->append(

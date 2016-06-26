@@ -1,5 +1,5 @@
 <?php
-namespace ProtobufCompiler;
+namespace Allegro\Protobuf\Compiler;
 
 /**
  * MessageDescriptor encapsulates protobuf message description

@@ -2,19 +2,17 @@
 <?php
 spl_autoload_register(function($class)
     {
-        $prefix = 'ProtobufCompiler\\';
-        if (strpos($class, $prefix) === 0)
+        $filename = implode(DIRECTORY_SEPARATOR, array(__DIR__, 'src', 'php', str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php'));
+        if (file_exists($filename))
         {
-            $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-            $class = __DIR__ . DIRECTORY_SEPARATOR . $class;
-            include($class . '.php');
+            include($filename);
             return true;
         }
         return false;
     }
 );
 
-use ProtobufCompiler\Compiler;
+use Allegro\Protobuf\Compiler\Compiler;
 
 $compiler = new Compiler();
 $compiler->run(__FILE__);
