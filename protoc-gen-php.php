@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 spl_autoload_register(function($class)
     {
@@ -16,4 +17,4 @@ spl_autoload_register(function($class)
 use ProtobufCompiler\Compiler;
 
 $compiler = new Compiler();
-$compiler->run();
+$compiler->run(__FILE__);

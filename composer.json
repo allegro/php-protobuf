@@ -1,0 +1,5 @@
+{
+    "require": {
+        "pear/console_commandline": "^1.2"
+    }
+}

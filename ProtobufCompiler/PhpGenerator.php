@@ -13,6 +13,7 @@ class PhpGenerator
     const EOL = PHP_EOL;
 
     private $_hasSplTypes = false;
+    private $customArguments;
 
     public function __construct()
     {
@@ -25,6 +26,12 @@ class PhpGenerator
      * @return \CodeGeneratorResponse
      */
     public function generate(\CodeGeneratorRequest $request) {
+        $this->customArguments = array();
+        $parameter = $request->getParameter();
+        if ($parameter) {
+            parse_str($parameter, $this->customArguments);
+        }
+
         $response = new \CodeGeneratorResponse();
         $fileDescriptors = $this->_buildFileDescriptors($request->getProtoFile());
         foreach ($fileDescriptors as $fileDescriptor) {
@@ -333,6 +340,10 @@ class PhpGenerator
      */
     private function _createNamespaceName(DescriptorInterface $descriptor)
     {
+        if (isset($this->customArguments['options']['namespace'])) {
+            return $this->customArguments['options']['namespace'];
+        }
+
         $package = $descriptor->getFile()->getPackage();
         if (!$package) {
             return null;

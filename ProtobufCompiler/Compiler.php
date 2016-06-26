@@ -2,19 +2,198 @@
 
 namespace ProtobufCompiler;
 
-require_once 'PhpGenerator.php';
-
 require_once "pb_proto_plugin.php";
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class Compiler
 {
-    public function run() {
-        $data = file_get_contents('php://stdin');
-        $request = new \CodeGeneratorRequest();
-        // TODO handle parse error
-        $request->parseFromString($data);
-        $generator = new PhpGenerator();
-        $response = $generator->generate($request);
-        echo $response->serializeToString();
+    const MINIMUM_PROTOC_VERSION = '2.3.0';
+
+    /**
+     * @param string $pluginExecutable
+     *
+     * @return null
+     */
+    public function run($pluginExecutable)
+    {
+        if ($this->hasStdin()) {
+            $data = file_get_contents('php://stdin');
+            $request = new \CodeGeneratorRequest();
+            // TODO handle parse error
+            $request->parseFromString($data);
+            $generator = new PhpGenerator();
+            $response = $generator->generate($request);
+            echo $response->serializeToString();
+        } else {
+            $this->runProtoc($pluginExecutable);
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasStdin()
+    {
+        $stdin = fopen('php://stdin', 'r');
+        $read = array($stdin);
+        $write = null;
+        $except = null;
+        $ret = stream_select($read, $write, $except, 0);
+        fclose($stdin);
+        return $ret == 1;
+    }
+
+    /**
+     * @return \Console_CommandLine_Result
+     */
+    private function parseArguments()
+    {
+        $parser = new \Console_CommandLine();
+
+        $parser->addOption('out', array(
+            'short_name'    => '-o',
+            'long_name'     => '--out',
+            'action'        => 'StoreString',
+            'default'       => './',
+            'description'   => 'The destination directory for generated files (defaults to the current directory).',
+        ));
+
+        $parser->addOption('proto_path', array(
+            'short_name'    => '-I',
+            'long_name'     => '--proto_path',
+            'action'        => 'StoreArray',
+            'multiple'      => true,
+            'description'   => 'The directory in which to search for imports.',
+        ));
+
+        $parser->addOption('protoc', array(
+            'long_name'     => '--protoc',
+            'action'        => 'StoreString',
+            'default'       => 'protoc',
+            'description'   => 'The protoc compiler executable path.',
+        ));
+
+        $parser->addOption('define', array(
+            'short_name'    => '-D',
+            'long_name'     => '--define',
+            'action'        => 'StoreArray',
+            'multiple'      => true,
+            'description'   => 'Define a generator option (i.e. -Dnamespace=Foo\Bar\Baz).',
+        ));
+
+        $parser->addArgument('file', array(
+            'multiple'      => true,
+            'description'   => 'Proto files.',
+        ));
+
+        try {
+            $result = $parser->parse();
+            return $result;
+        } catch (\Exception $e) {
+            $parser->displayError($e->getMessage());
+            exit(1);
+        }
+    }
+
+    /**
+     * @param string $pluginExecutable
+     *
+     * @return null
+     */
+    private function runProtoc($pluginExecutable)
+    {
+        $result = $this->parseArguments();
+
+        $protocExecutable = $result->options['protoc'];
+        $this->checkProtoc($protocExecutable);
+
+        $cmd[] = $protocExecutable;
+        $cmd[] = '--plugin=protoc-gen-php=' . escapeshellarg($pluginExecutable);
+
+        if ($result->options['proto_path']) {
+            foreach ($result->options['proto_path'] as $protoPath) {
+                $protoPath = realpath($protoPath);
+                $cmd[] = '--proto_path=' . escapeshellarg($protoPath);
+            }
+        }
+
+        $customArgs = $this->buildCustomArguments($result);
+        $cmd[] = '--php_out=' . escapeshellarg($customArgs . ':' . $result->options['out']);
+
+        foreach ($result->args['file'] as $file) {
+            $cmd[] = escapeshellarg($file);
+        }
+
+        $cmdStr = implode(' ', $cmd);
+        passthru($cmdStr, $return);
+
+        if ($return !== 0) {
+            $this->log('');
+            $this->log('ERROR: protoc exited with an exit status (' . $return . ') when executed with: ');
+            $this->log('  ' . implode(" \\\n    ", $cmd));
+            exit($return);
+        }
+    }
+
+    /**
+     * @param string $protocExecutable
+     *
+     * @return null
+     */
+    private function checkProtoc($protocExecutable)
+    {
+        exec("$protocExecutable --version", $output, $return);
+
+        if (0 !== $return && 1 !== $return) {
+            $this->log('ERROR: Unable to find the protoc command.');
+            $this->log('       Please make sure it\'s installed and available in the path.');
+            exit(1);
+        }
+
+        if (!preg_match('/[0-9\.]+/', $output[0], $m)) {
+            $this->log('ERROR: Unable to get protoc command version.');
+            $this->log('       Please make sure it\'s installed and available in the path.');
+            exit(1);
+        }
+
+        if (version_compare($m[0], self::MINIMUM_PROTOC_VERSION) < 0) {
+            $this->log('ERROR: The protoc command in your system is too old.');
+            $this->log('       Minimum required version is ' . self::MINIMUM_PROTOC_VERSION . ' but found ' . $m[0]);
+            exit(1);
+        }
+    }
+
+    /**
+     * @param \Console_CommandLine_Result $result
+     *
+     * @return array
+     */
+    private function buildCustomArguments($result)
+    {
+        $args = array();
+        if ($result->options['define']) {
+            $args['options'] = array();
+            foreach($result->options['define'] as $define) {
+                $parts = explode('=', $define);
+                $parts = array_filter(array_map('trim', $parts));
+                if (count($parts) == 1) {
+                    $parts[1] = 1;
+                }
+                $args['options'][$parts[0]] = $parts[1];
+            }
+        }
+
+        return http_build_query($args, '', '&');
+    }
+
+    /**
+     * @param string $message
+     * 
+     * @return null
+     */
+    private function log($message)
+    {
+        fputs(STDERR,$message . PHP_EOL);
     }
 }
