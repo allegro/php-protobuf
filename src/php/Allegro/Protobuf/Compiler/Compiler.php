@@ -20,8 +20,13 @@ class Compiler
         if ($this->hasStdin()) {
             $data = file_get_contents('php://stdin');
             $request = new CodeGeneratorRequest();
-            // TODO handle parse error
-            $request->parseFromString($data);
+            try {
+                $request->parseFromString($data);
+            } catch (\Exception $ex) {
+                $this->log('ERROR: Unable to parse a message passed by protoc.');
+                $this->log('       ' . $ex->getMessage() . '.');
+                exit(1);
+            }
             $generator = new PhpGenerator();
             $response = $generator->generate($request);
             echo $response->serializeToString();
