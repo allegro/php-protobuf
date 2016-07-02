@@ -165,7 +165,7 @@ class FieldDescriptor
     /**
      * Returns type
      *
-     * @return type
+     * @return int
      */
     public function getType()
     {

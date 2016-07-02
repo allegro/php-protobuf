@@ -45,15 +45,17 @@ class PhpGenerator
         };
 
         $response = new CodeGeneratorResponse();
+        $createClass = function ($className, $namespaceName, $content) use ($response, $createClassFilename) {
+            $file = new CodeGeneratorResponse_File();
+            $file->setName($createClassFilename($className, $namespaceName));
+            $file->setContent('<?php' . PHP_EOL . $content);
+
+            $response->appendFile($file);
+        };
+
         $fileDescriptors = $this->_buildFileDescriptors($request->getProtoFile());
         foreach ($fileDescriptors as $fileDescriptor) {
-            $this->_generateFiles($fileDescriptor, function($className, $namespaceName, $content) use ($response, $createClassFilename) {
-                $file = new CodeGeneratorResponse_File();
-                $file->setName($createClassFilename($className, $namespaceName));
-                $file->setContent('<?php' . PHP_EOL . $content);
-
-                $response->appendFile($file);
-            });
+            $this->_generateFiles($fileDescriptor, $createClass);
         }
         return $response;
     }
@@ -61,9 +63,9 @@ class PhpGenerator
     /**
      * @param FileDescriptorProto[] $fileDescriptorProtos
      *
-     * @return array
+     * @return FileDescriptor[]
      */
-    private function _buildFileDescriptors($fileDescriptorProtos)
+    private function _buildFileDescriptors(array $fileDescriptorProtos)
     {
         $fileDescriptors = array();
         foreach ($fileDescriptorProtos as $fileDescriptorProto) {
@@ -169,8 +171,16 @@ class PhpGenerator
         return $fileDescriptor;
     }
 
-    private function _addMessageDescriptor(DescriptorProto $descriptorProto, FileDescriptor $fileDescriptor, MessageDescriptor $messageDescriptor=null)
-    {
+    /**
+     * @param DescriptorProto        $descriptorProto
+     * @param FileDescriptor         $fileDescriptor
+     * @param MessageDescriptor|null $messageDescriptor
+     *
+     * @return null
+     */
+    private function _addMessageDescriptor(
+        DescriptorProto $descriptorProto, FileDescriptor $fileDescriptor, MessageDescriptor $messageDescriptor = null
+    ) {
         $messageDescriptor = new MessageDescriptor($descriptorProto->getName(), $fileDescriptor, $messageDescriptor);
 
         foreach ($descriptorProto->getEnumType() as $enumDescriptorProto) {
@@ -192,8 +202,17 @@ class PhpGenerator
             $messageDescriptor->addField($fieldDescriptor);
         }
     }
-    
-    private function _addEnumDescriptor(EnumDescriptorProto $enumDescriptorProto, FileDescriptor $fileDescriptor, MessageDescriptor $messageDescriptor=null) {
+
+    /**
+     * @param EnumDescriptorProto    $enumDescriptorProto
+     * @param FileDescriptor         $fileDescriptor
+     * @param MessageDescriptor|null $messageDescriptor
+     *
+     * @return null
+     */
+    private function _addEnumDescriptor(
+        EnumDescriptorProto $enumDescriptorProto, FileDescriptor $fileDescriptor, MessageDescriptor $messageDescriptor = null
+    ) {
         $enumDescriptor = new EnumDescriptor($enumDescriptorProto->getName(), $fileDescriptor, $messageDescriptor);
         foreach ($enumDescriptorProto->getValue() as $valueDescriptorProto) {
             $enumValueDescriptor = new EnumValueDescriptor($valueDescriptorProto->getName(), $valueDescriptorProto->getNumber());
@@ -204,9 +223,9 @@ class PhpGenerator
     /**
      * @param FileDescriptor $file
      *
-     * @return null
+     * @return CommentStringBuffer
      */
-    private function _createFileComment($file)
+    private function _createFileComment(FileDescriptor $file)
     {
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
         $date = strftime("%Y-%m-%d %H:%M:%S");
@@ -223,7 +242,7 @@ class PhpGenerator
      * @param FileDescriptor $file
      * @param callable       $createClass
      *
-     * @return string
+     * @return null
      */
     private function _generateFiles($file, $createClass)
     {
@@ -237,8 +256,6 @@ class PhpGenerator
     }
 
     /**
-     * Generates class description and write it to buffer
-     *
      * @param MessageDescriptor $descriptor
      * @param callable          $createClass
      *
@@ -293,9 +310,7 @@ class PhpGenerator
     }
 
     /**
-     * Creates enum description
-     *
-     * @param EnumDescriptor $descriptor  Enum descriptor
+     * @param EnumDescriptor $descriptor
      * @param callable       $createClass
      *
      * @return null
@@ -340,9 +355,7 @@ class PhpGenerator
     }
 
     /**
-     * Generates namespace name for given descriptor
-     *
-     * @param DescriptorInterface $descriptor Descriptor
+     * @param DescriptorInterface $descriptor
      *
      * @return string|null
      */
@@ -368,9 +381,7 @@ class PhpGenerator
     }
 
     /**
-     * Generates class name for given descriptor
-     *
-     * @param DescriptorInterface $descriptor Descriptor
+     * @param DescriptorInterface $descriptor
      *
      * @return string
      */
@@ -392,8 +403,6 @@ class PhpGenerator
     }
 
     /**
-     * Generates class name for given descriptor
-     *
      * @param DescriptorInterface $descriptor Descriptor
      *
      * @return string
@@ -414,7 +423,7 @@ class PhpGenerator
      * Creates embedded message path composed of ancestor messages
      * seperated by slash "/". If message has no ancestor returns empty string.
      *
-     * @param DescriptorInterface $descriptor message descriptor
+     * @param DescriptorInterface $descriptor
      *
      * @return string
      */
@@ -434,15 +443,12 @@ class PhpGenerator
     }
 
     /**
-     * Generates class body for given field descriptors list and
-     * writes it to buffer
-     *
-     * @param array            $fields Array of FieldDescriptors
-     * @param CodeStringBuffer $buffer Buffer to write code to
+     * @param FieldDescriptor[] $fields
+     * @param CodeStringBuffer  $buffer
      *
      * @return null
      */
-    private function _createClassBody($fields, CodeStringBuffer $buffer)
+    private function _createClassBody(array $fields, CodeStringBuffer $buffer)
     {
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
 
@@ -466,16 +472,13 @@ class PhpGenerator
     }
 
     /**
-     * Describes repeated field
-     *
-     * @param FieldDescriptor  $field  Field descriptor
-     * @param CodeStringBuffer $buffer Buffer to write to
+     * @param FieldDescriptor  $field
+     * @param CodeStringBuffer $buffer
      *
      * @return null
      */
-    private function _describeRepeatedField(
-        FieldDescriptor $field, CodeStringBuffer $buffer
-    ) {
+    private function _describeRepeatedField(FieldDescriptor $field, CodeStringBuffer $buffer)
+    {
         $phpType = $field->getPhpType();
         if ($phpType != 'object') {
             $typeName = $phpType;
@@ -598,16 +601,13 @@ class PhpGenerator
     }
 
     /**
-     * Describes non-repeated field descriptor
-     *
-     * @param FieldDescriptor  $field  Field descriptor
-     * @param CodeStringBuffer $buffer Buffer to write code to
+     * @param FieldDescriptor  $field
+     * @param CodeStringBuffer $buffer
      *
      * @return null
      */
-    private function _describeSingleField(
-        FieldDescriptor $field, CodeStringBuffer $buffer
-    ) {
+    private function _describeSingleField(FieldDescriptor $field, CodeStringBuffer $buffer)
+    {
         $phpType = $field->getPhpType();
         if ($phpType != 'object') {
             $typeName = $phpType;
@@ -664,16 +664,13 @@ class PhpGenerator
     }
 
     /**
-     * Generates enum class definition
-     *
-     * @param array            $enums  Enums descriptors list
-     * @param CodeStringBuffer $buffer Buffer to write code
+     * @param EnumValueDescriptor[] $enums
+     * @param CodeStringBuffer      $buffer
      *
      * @return null
      */
-    private function _createEnumClassDefinition(
-        array $enums, CodeStringBuffer $buffer
-    ) {
+    private function _createEnumClassDefinition(array $enums, CodeStringBuffer $buffer)
+    {
         foreach ($enums as $enum) {
             $buffer->append(
                 'const ' . $enum->getName() . ' = ' . $enum->getValue() . ';'
@@ -707,14 +704,12 @@ class PhpGenerator
     }
 
     /**
-     * Generates class constructor and params list
-     *
-     * @param FieldDescriptor[] $fields Field descriptors list
-     * @param CodeStringBuffer  $buffer Code buffer to write to
+     * @param FieldDescriptor[] $fields
+     * @param CodeStringBuffer  $buffer
      *
      * @return null
      */
-    private function _createClassConstructor($fields, CodeStringBuffer $buffer)
+    private function _createClassConstructor(array $fields, CodeStringBuffer $buffer)
     {
         $buffer->append('/* Field index constants */');
 

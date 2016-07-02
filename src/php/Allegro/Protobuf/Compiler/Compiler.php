@@ -199,6 +199,6 @@ class Compiler
      */
     private function log($message)
     {
-        fputs(STDERR,$message . PHP_EOL);
+        fputs(STDERR, $message . PHP_EOL);
     }
 }
