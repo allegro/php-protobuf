@@ -758,7 +758,8 @@ class PhpGenerator
             ->increaseIdentation();
 
         foreach ($fields as $field) {
-            if ($field->getPhpType() == "object") {
+            $phpType = $field->getPhpType();
+            if ($phpType == 'object') {
                 $type = $this->_createFullyQualifiedClassName($field->getTypeDescriptor());
             } else {
                 $type = $field->getScalarInternalType();
@@ -768,21 +769,23 @@ class PhpGenerator
                 ->increaseIdentation();
 
             if (!is_null($field->getDefault())) {
-                if ($type == \ProtobufMessage::PB_TYPE_STRING) {
-                    // TODO is addslashes enought?
-                    $buffer->append(
-                        '\'default\' => \'' .
-                        addslashes($field->getDefault()) . '\','
-                    );
-                } else if ($field->isEnum()) {
+                if ($field->isEnum()) {
                     $className = $this->_createFullyQualifiedClassName($field->getTypeDescriptor());
                     $buffer->append(
                         '\'default\' => ' . $className . '::' . $field->getDefault() . ','
                     );
                 } else {
-                    $buffer->append(
-                        '\'default\' => ' . $field->getDefault() . ','
-                    );
+                    if ($phpType == 'string') {
+                        // TODO is addslashes enought?
+                        $buffer->append(
+                            '\'default\' => \'' .
+                            addslashes($field->getDefault()) . '\','
+                        );
+                    }  else {
+                        $buffer->append(
+                            '\'default\' => ' . $field->getDefault() . ','
+                        );
+                    }
                 }
             }
 
@@ -799,10 +802,10 @@ class PhpGenerator
                 $buffer->append('\'repeated\' => true,');
             }
 
-            if (is_int($type)) {
-                $buffer->append('\'type\' => ' . $type . ',');
-            } else {
+            if ($phpType == 'object') {
                 $buffer->append('\'type\' => \'' . $type . '\'');
+            } else {
+                $buffer->append('\'type\' => ' . $type . ',');
             }
 
             $buffer->decreaseIdentation();

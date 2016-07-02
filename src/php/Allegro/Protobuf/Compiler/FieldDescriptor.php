@@ -10,22 +10,22 @@ use Google\Protobuf\Compiler\FieldDescriptorProto_Type;
 class FieldDescriptor
 {
     private static $_scalarInternalTypesByProtobufType = array(
-        FieldDescriptorProto_Type::TYPE_DOUBLE   => \ProtobufMessage::PB_TYPE_DOUBLE,
-        FieldDescriptorProto_Type::TYPE_FLOAT    => \ProtobufMessage::PB_TYPE_FLOAT,
-        FieldDescriptorProto_Type::TYPE_INT32    => \ProtobufMessage::PB_TYPE_INT,
-        FieldDescriptorProto_Type::TYPE_INT64    => \ProtobufMessage::PB_TYPE_INT,
-        FieldDescriptorProto_Type::TYPE_UINT32   => \ProtobufMessage::PB_TYPE_INT,
-        FieldDescriptorProto_Type::TYPE_UINT64   => \ProtobufMessage::PB_TYPE_INT,
-        FieldDescriptorProto_Type::TYPE_SINT32   => \ProtobufMessage::PB_TYPE_SIGNED_INT,
-        FieldDescriptorProto_Type::TYPE_SINT64   => \ProtobufMessage::PB_TYPE_SIGNED_INT,
-        FieldDescriptorProto_Type::TYPE_FIXED32  => \ProtobufMessage::PB_TYPE_FIXED32,
-        FieldDescriptorProto_Type::TYPE_FIXED64  => \ProtobufMessage::PB_TYPE_FIXED64,
-        FieldDescriptorProto_Type::TYPE_SFIXED32 => \ProtobufMessage::PB_TYPE_FIXED32,
-        FieldDescriptorProto_Type::TYPE_SFIXED64 => \ProtobufMessage::PB_TYPE_FIXED64,
-        FieldDescriptorProto_Type::TYPE_BOOL     => \ProtobufMessage::PB_TYPE_BOOL,
-        FieldDescriptorProto_Type::TYPE_STRING   => \ProtobufMessage::PB_TYPE_STRING,
-        FieldDescriptorProto_Type::TYPE_BYTES    => \ProtobufMessage::PB_TYPE_STRING,
-        FieldDescriptorProto_Type::TYPE_ENUM     => \ProtobufMessage::PB_TYPE_INT,
+        FieldDescriptorProto_Type::TYPE_DOUBLE   => '\ProtobufMessage::PB_TYPE_DOUBLE',
+        FieldDescriptorProto_Type::TYPE_FLOAT    => '\ProtobufMessage::PB_TYPE_FLOAT',
+        FieldDescriptorProto_Type::TYPE_INT32    => '\ProtobufMessage::PB_TYPE_INT',
+        FieldDescriptorProto_Type::TYPE_INT64    => '\ProtobufMessage::PB_TYPE_INT',
+        FieldDescriptorProto_Type::TYPE_UINT32   => '\ProtobufMessage::PB_TYPE_INT',
+        FieldDescriptorProto_Type::TYPE_UINT64   => '\ProtobufMessage::PB_TYPE_INT',
+        FieldDescriptorProto_Type::TYPE_SINT32   => '\ProtobufMessage::PB_TYPE_SIGNED_INT',
+        FieldDescriptorProto_Type::TYPE_SINT64   => '\ProtobufMessage::PB_TYPE_SIGNED_INT',
+        FieldDescriptorProto_Type::TYPE_FIXED32  => '\ProtobufMessage::PB_TYPE_FIXED32',
+        FieldDescriptorProto_Type::TYPE_FIXED64  => '\ProtobufMessage::PB_TYPE_FIXED64',
+        FieldDescriptorProto_Type::TYPE_SFIXED32 => '\ProtobufMessage::PB_TYPE_FIXED32',
+        FieldDescriptorProto_Type::TYPE_SFIXED64 => '\ProtobufMessage::PB_TYPE_FIXED64',
+        FieldDescriptorProto_Type::TYPE_BOOL     => '\ProtobufMessage::PB_TYPE_BOOL',
+        FieldDescriptorProto_Type::TYPE_STRING   => '\ProtobufMessage::PB_TYPE_STRING',
+        FieldDescriptorProto_Type::TYPE_BYTES    => '\ProtobufMessage::PB_TYPE_STRING',
+        FieldDescriptorProto_Type::TYPE_ENUM     => '\ProtobufMessage::PB_TYPE_INT',
     );
 
     private static $_phpTypesByProtobufType = array(
@@ -207,7 +207,7 @@ class FieldDescriptor
      */
     public function isEnum()
     {
-        return $this->_type == \FieldDescriptorProto_Type::TYPE_ENUM;
+        return $this->_type == FieldDescriptorProto_Type::TYPE_ENUM;
     }
 
     /**
