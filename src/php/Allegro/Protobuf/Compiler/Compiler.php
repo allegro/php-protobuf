@@ -127,7 +127,7 @@ class Compiler
         $cmd[] = '--php_out=' . escapeshellarg($customArgs . ':' . $result->options['out']);
 
         foreach ($result->args['file'] as $file) {
-            $cmd[] = escapeshellarg($file);
+            $cmd[] = escapeshellarg(realpath($file));
         }
 
         $cmdStr = implode(' ', $cmd);
