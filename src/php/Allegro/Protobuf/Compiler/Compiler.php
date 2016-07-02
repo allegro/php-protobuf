@@ -3,9 +3,6 @@ namespace Allegro\Protobuf\Compiler;
 
 use Google\Protobuf\Compiler\CodeGeneratorRequest;
 
-// TODO is it portable?
-require_once __DIR__ . '/../../../../../vendor/autoload.php';
-
 class Compiler
 {
     const MINIMUM_PROTOC_VERSION = '2.3.0';
