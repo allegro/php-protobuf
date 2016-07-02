@@ -126,7 +126,6 @@ class Compiler
 
         if ($result->options['proto_path']) {
             foreach ($result->options['proto_path'] as $protoPath) {
-                $protoPath = realpath($protoPath);
                 $cmd[] = '--proto_path=' . escapeshellarg($protoPath);
             }
         }
@@ -135,7 +134,7 @@ class Compiler
         $cmd[] = '--php_out=' . escapeshellarg($customArgs . ':' . $result->options['out']);
 
         foreach ($result->args['file'] as $file) {
-            $cmd[] = escapeshellarg(realpath($file));
+            $cmd[] = escapeshellarg($file);
         }
 
         $cmdStr = implode(' ', $cmd);
