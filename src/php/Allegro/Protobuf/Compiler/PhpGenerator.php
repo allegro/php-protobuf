@@ -31,12 +31,25 @@ class PhpGenerator
             parse_str($parameter, $this->customArguments);
         }
 
+        $createClassFilename = function ($className, $namespaceName) {
+            if ($namespaceName) {
+                $baseName = str_replace(
+                    PhpGenerator::PHP_NAMESPACE_SEPARATOR,
+                    DIRECTORY_SEPARATOR,
+                    $namespaceName . PhpGenerator::PHP_NAMESPACE_SEPARATOR . $className
+                );
+            } else {
+                $baseName = $className;
+            }
+            return $baseName . '.php';
+        };
+
         $response = new CodeGeneratorResponse();
         $fileDescriptors = $this->_buildFileDescriptors($request->getProtoFile());
         foreach ($fileDescriptors as $fileDescriptor) {
-            $this->_generateFiles($fileDescriptor, function($className, $namespaceName, $content) use ($response) {
+            $this->_generateFiles($fileDescriptor, function($className, $namespaceName, $content) use ($response, $createClassFilename) {
                 $file = new CodeGeneratorResponse_File();
-                $file->setName(PhpGenerator::_createClassFilename($className, $namespaceName));
+                $file->setName($createClassFilename($className, $namespaceName));
                 $file->setContent('<?php' . PHP_EOL . $content);
 
                 $response->appendFile($file);
@@ -395,26 +408,6 @@ class PhpGenerator
             $name = self::PHP_NAMESPACE_SEPARATOR . $className;
         }
         return $name;
-    }
-
-    /**
-     * Generates filename for given class
-     *
-     * @param string $className
-     * @param string $namespaceName
-     *
-     * @return string
-     *
-     */
-    // TODO it shouldn't be public
-    public static function _createClassFilename($className, $namespaceName)
-    {
-        if ($namespaceName) {
-            $baseName = str_replace(self::PHP_NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, $namespaceName . self::PHP_NAMESPACE_SEPARATOR . $className);
-        } else {
-            $baseName = $className;
-        }
-        return $baseName . '.php';
     }
 
     /**
