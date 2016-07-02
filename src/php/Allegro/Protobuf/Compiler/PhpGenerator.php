@@ -17,13 +17,7 @@ class PhpGenerator
     const TAB = '    ';
     const EOL = PHP_EOL;
 
-    private $_hasSplTypes = false;
     private $customArguments;
-
-    public function __construct()
-    {
-        $this->_hasSplTypes = extension_loaded('SPL_Types');
-    }
 
     /**
      * @param CodeGeneratorRequest $request
@@ -318,16 +312,9 @@ class PhpGenerator
 
         $buffer->append($comment);
 
-        if ($this->_hasSplTypes) {
-            // TODO the SplEnum class is extended but field values are still stored as integers
-            $buffer->append('final class ' . $className .' extends \SplEnum')
-                ->append('{')
-                ->increaseIdentation();
-        } else {
-            $buffer->append('final class ' . $className)
-                ->append('{')
-                ->increaseIdentation();
-        }
+        $buffer->append('final class ' . $className)
+            ->append('{')
+            ->increaseIdentation();
 
         $this->_createEnumClassDefinition($descriptor->getValues(), $buffer);
 
@@ -711,22 +698,16 @@ class PhpGenerator
             ->append('public function getEnumValues()')
             ->append('{');
 
-        if ($this->_hasSplTypes) {
-            $buffer->increaseIdentation()
-                ->append('return $this->getConstList(false);');
-        } else {
-            $buffer->append('return array(', false, 1)
-                ->increaseIdentation()
-                ->increaseIdentation();
+        $buffer->append('return array(', false, 1)
+            ->increaseIdentation()
+            ->increaseIdentation();
 
-            foreach ($enums as $enum) {
-                $buffer->append('\'' . $enum->getName() . '\' => self::' . $enum->getName() . ',');
-            }
-
-            $buffer->decreaseIdentation()
-                ->append(');');
-
+        foreach ($enums as $enum) {
+            $buffer->append('\'' . $enum->getName() . '\' => self::' . $enum->getName() . ',');
         }
+
+        $buffer->decreaseIdentation()
+            ->append(');');
 
         $buffer->decreaseIdentation()
             ->append('}');
@@ -776,7 +757,6 @@ class PhpGenerator
                     );
                 } else {
                     if ($phpType == 'string') {
-                        // TODO is addslashes enought?
                         $buffer->append(
                             '\'default\' => \'' .
                             addslashes($field->getDefault()) . '\','
