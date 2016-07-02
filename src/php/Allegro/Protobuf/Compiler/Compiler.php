@@ -31,8 +31,19 @@ class Compiler
             $response = $generator->generate($request);
             echo $response->serializeToString();
         } else {
+            if ($this->isWin()) {
+                $pluginExecutable = substr($pluginExecutable, 0, -3) . 'bat';
+            }
             $this->runProtoc($pluginExecutable);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    private function isWin()
+    {
+        return 'WIN' === strtoupper(substr(PHP_OS, 0, 3));
     }
 
     /**
