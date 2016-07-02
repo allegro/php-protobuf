@@ -1,6 +1,19 @@
 #!/usr/bin/env php
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
+$composerAutoload = __DIR__ . '/vendor/autoload.php';
+
+if (!file_exists($composerAutoload)) {
+    fputs(STDERR, 'ERROR: The dependencies are not installed.' . PHP_EOL);
+    fputs(STDERR, '       Run "composer install" in order to install them.' . PHP_EOL);
+    exit(1);
+}
+
+if (!extension_loaded('protobuf')) {
+    fputs(STDERR, 'ERROR: protobuf module is not installed.' . PHP_EOL);
+    exit(1);
+}
+
+require_once $composerAutoload;
 
 spl_autoload_register(function($class)
     {
