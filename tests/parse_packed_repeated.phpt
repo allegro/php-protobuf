@@ -4,7 +4,7 @@ Protocol Buffers packed repeated field parsing
 <?php require 'skipif.inc' ?>
 --FILE--
 <?php
-require 'test.inc';
+require 'Foo.php';
 
 $expected = new Foo();
 $expected->appendRepeatedField(1);

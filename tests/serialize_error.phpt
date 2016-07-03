@@ -4,7 +4,7 @@ Protocol Buffers serializeToString() throws Exception if required field not set
 <?php require 'skipif.inc' ?>
 --FILE--
 <?php
-require 'test.inc';
+require 'Foo.php';
 
 $bar = new Bar();
 

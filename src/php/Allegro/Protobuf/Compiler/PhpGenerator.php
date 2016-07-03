@@ -199,6 +199,10 @@ class PhpGenerator
             $fieldDescriptor->setNumber($fieldDescriptorProto->getNumber());
             $fieldDescriptor->setType($fieldDescriptorProto->getType());
             $fieldDescriptor->setTypeName($fieldDescriptorProto->getTypeName());
+            $options = $fieldDescriptorProto->getOptions();
+            if ($options) {
+                $fieldDescriptor->setPacked($options->getPacked());
+            }
             $messageDescriptor->addField($fieldDescriptor);
         }
     }
@@ -774,6 +778,12 @@ class PhpGenerator
                 $buffer->append('\'type\' => \'' . $type . '\'');
             } else {
                 $buffer->append('\'type\' => ' . $type . ',');
+            }
+
+            if ($field->isPacked()) {
+                $buffer->append(
+                    '\'packed\' => true'
+                );
             }
 
             $buffer->decreaseIdentation();

@@ -52,6 +52,7 @@ class FieldDescriptor
     private $_label;
     private $_name;
     private $_number;
+    private $_packed;
     private $_type;
     private $_typeDescriptor = null;
     private $_typeName = null;
@@ -126,6 +127,14 @@ class FieldDescriptor
     public function getScalarInternalType()
     {
         return self::$_scalarInternalTypesByProtobufType[$this->_type];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPacked()
+    {
+        return $this->_packed;
     }
 
     /**
@@ -256,6 +265,16 @@ class FieldDescriptor
     public function setNumber($number)
     {
         $this->_number = $number;
+    }
+
+    /**
+     * @param bool $packed
+     *
+     * @return null
+     */
+    public function setPacked($packed)
+    {
+        $this->_packed = $packed;
     }
 
     /**

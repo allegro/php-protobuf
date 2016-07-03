@@ -4,7 +4,7 @@ Protocol Buffers repeated field accessors
 <?php require 'skipif.inc' ?>
 --FILE--
 <?php
-require 'test.inc';
+require 'Foo.php';
 
 function check_repeated($foo, $expected)
 {

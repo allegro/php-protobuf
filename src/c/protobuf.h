@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+// TODO should it be moved elsewhere?
+#define PB_FOREACH(iter, hash) \
+	for (zend_hash_internal_pointer_reset_ex((hash), (iter)); zend_hash_has_more_elements_ex((hash), (iter)) == SUCCESS; zend_hash_move_forward_ex((hash), (iter)))
+
 enum
 {
 	WIRE_TYPE_VARINT = 0,

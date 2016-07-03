@@ -24,8 +24,6 @@
 	zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "%s: compile error - " #message, Z_OBJCE_P(this)->name, __VA_ARGS__)
 #define PB_CONSTANT(name) \
 	zend_declare_class_constant_long(pb_entry, #name, sizeof(#name) - 1, name TSRMLS_CC)
-#define PB_FOREACH(iter, hash) \
-	for (zend_hash_internal_pointer_reset_ex((hash), (iter)); zend_hash_has_more_elements_ex((hash), (iter)) == SUCCESS; zend_hash_move_forward_ex((hash), (iter)))
 #define PB_PARSE_ERROR(message, ...) \
 	PB_PARSE_ERROR_EX(getThis(), message, __VA_ARGS__)
 #define PB_PARSE_ERROR_EX(this, message, ...) \
@@ -38,6 +36,7 @@
 #define PB_SERIALIZE_TO_STRING_METHOD "serializeToString"
 
 #define PB_FIELD_NAME "name"
+#define PB_FIELD_PACKED "packed"
 #define PB_FIELD_REQUIRED "required"
 #define PB_FIELD_TYPE "type"
 #define PB_VALUES_PROPERTY "values"
@@ -70,6 +69,7 @@ static zval **pb_get_value(zval *this, zval **values, uint32_t field_number);
 static zval **pb_get_values(zval *this);
 static int pb_parse_field_value(zval *this, reader_t *reader, long field_number, long field_type, zval *value);
 static int pb_serialize_field_value(zval *this, writer_t *writer, uint32_t field_number, zval **type, zval **value);
+static int pb_serialize_packed_field(zval *this, writer_t *writer, long field_number, long field_type, zval *values);
 
 static ulong PB_FIELD_TYPE_HASH;
 static ulong PB_VALUES_PROPERTY_HASH;
@@ -413,10 +413,10 @@ PHP_METHOD(ProtobufMessage, serializeToString)
 {
 	writer_t writer;
 	char *pack;
-	int pack_size;
+	size_t pack_size;
 	ulong field_number;
 	HashPosition i, j;
-	zval **array, **field_descriptor, *field_descriptors, **required, **type, **value, **values;
+	zval **array, **field_descriptor, *field_descriptors, **packed, **required, **type, **value, **values;
 
 	if ((field_descriptors = pb_get_field_descriptors(getThis())) == NULL)
 		return;
@@ -452,12 +452,17 @@ PHP_METHOD(ProtobufMessage, serializeToString)
 		}
 
 		if (Z_TYPE_PP(value) == IS_ARRAY) {
-
 			array = value;
-			PB_FOREACH(&j, Z_ARRVAL_PP(array)) {
-				zend_hash_get_current_data_ex(Z_ARRVAL_PP(array), (void **) &value, &j);
-				if (pb_serialize_field_value(getThis(), &writer, field_number, type, value) != 0)
+
+			if (zend_hash_find(Z_ARRVAL_PP(field_descriptor), PB_FIELD_PACKED, sizeof(PB_FIELD_PACKED), (void **) &packed) != FAILURE && Z_BVAL_PP(packed)) {
+				if (pb_serialize_packed_field(getThis(), &writer, field_number, Z_LVAL_PP(type), *array) != 0)
 					goto fail;
+			} else {
+				PB_FOREACH(&j, Z_ARRVAL_PP(array)) {
+					zend_hash_get_current_data_ex(Z_ARRVAL_PP(array), (void **) &value, &j);
+					if (pb_serialize_field_value(getThis(), &writer, field_number, type, value) != 0)
+						goto fail;
+				}
 			}
 		} else if (pb_serialize_field_value(getThis(), &writer, field_number, type, value) != 0)
 			goto fail;
@@ -986,4 +991,43 @@ static int pb_serialize_field_value(zval *this, writer_t *writer, uint32_t field
 	}
 
 	return 0;
+}
+
+static int pb_serialize_packed_field(zval *this, writer_t *writer, long field_number, long field_type, zval *values)
+{
+	int ret = 0;
+
+	switch (field_type)
+	{
+		case PB_TYPE_DOUBLE:
+			ret = writer_write_packed_double(writer, field_number, values);
+			break;
+
+		case PB_TYPE_FIXED32:
+			ret = writer_write_packed_fixed32(writer, field_number, values);
+			break;
+
+		case PB_TYPE_FIXED64:
+			ret = writer_write_packed_fixed64(writer, field_number, values);
+			break;
+
+		case PB_TYPE_FLOAT:
+			ret = writer_write_packed_float(writer, field_number, values);
+			break;
+
+		case PB_TYPE_SIGNED_INT:
+			ret = writer_write_packed_signed_int(writer, field_number, values);
+			break;
+
+		case PB_TYPE_INT:
+		case PB_TYPE_BOOL:
+			ret = writer_write_packed_int(writer, field_number, values);
+			break;
+
+		default:
+			PB_COMPILE_ERROR_EX(this, "unexpected '%s' type %d for packed field in field descriptor", pb_get_field_name(this, field_number), field_type);
+			return -1;
+	}
+
+	return ret;
 }

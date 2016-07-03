@@ -4,7 +4,7 @@ Protocol Buffers simple field serialization
 <?php require 'skipif.inc' ?>
 --FILE--
 <?php
-require 'test.inc';
+require 'Foo.php';
 
 function serialize_field($field, $value)
 {
