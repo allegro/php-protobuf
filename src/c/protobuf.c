@@ -27,7 +27,9 @@
 #define PB_FOREACH(iter, hash) \
 	for (zend_hash_internal_pointer_reset_ex((hash), (iter)); zend_hash_has_more_elements_ex((hash), (iter)) == SUCCESS; zend_hash_move_forward_ex((hash), (iter)))
 #define PB_PARSE_ERROR(message, ...) \
-	zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "%s: parse error - " #message, getThis(), __VA_ARGS__)
+	PB_PARSE_ERROR_EX(getThis(), message, __VA_ARGS__)
+#define PB_PARSE_ERROR_EX(this, message, ...) \
+	zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "%s: parse error - " #message, this, __VA_ARGS__)
 
 #define PB_RESET_METHOD "reset"
 #define PB_DUMP_METHOD "dump"
@@ -66,6 +68,7 @@ static int pb_get_wire_type(int field_type);
 static const char *pb_get_wire_type_name(int wire_type);
 static zval **pb_get_value(zval *this, zval **values, uint32_t field_number);
 static zval **pb_get_values(zval *this);
+static int pb_parse_field_value(zval *this, reader_t *reader, long field_number, long field_type, zval *value);
 static int pb_serialize_field_value(zval *this, writer_t *writer, uint32_t field_number, zval **type, zval **value);
 
 static ulong PB_FIELD_TYPE_HASH;
@@ -256,10 +259,10 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 {
 	char *pack, *str, *subpack;
 	zend_class_entry **sub_ce;
-	reader_t reader;
+	reader_t reader, packed_reader;
 	uint8_t wire_type;
 	uint32_t field_number;
-	int expected_wire_type, str_size, pack_size, subpack_size, ret;
+	int expected_wire_type, str_size, pack_size, subpack_size, ret, field_repeated;
 	zval arg, *args, **field_descriptor, **field_type, *field_descriptors, name, **old_value, *value = NULL, **values, zret;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &pack, &pack_size) == FAILURE)
@@ -320,7 +323,8 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 		if ((old_value = pb_get_value(getThis(), values, field_number)) == NULL)
 			return;
 
-		if (Z_TYPE_PP(old_value) == IS_ARRAY) {
+		field_repeated = (Z_TYPE_PP(old_value) == IS_ARRAY);
+		if (field_repeated) {
 			ALLOC_INIT_ZVAL(value);
 			add_next_index_zval(*old_value, value);
 		} else
@@ -367,61 +371,34 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 					return;
 			}
 		} else if (Z_TYPE_PP(field_type) == IS_LONG) {
-			if ((expected_wire_type = pb_get_wire_type(Z_LVAL_PP(field_type))) != wire_type) {
-				PB_PARSE_ERROR("'%s' field wire type is %s but should be %s", pb_get_field_name(getThis(), field_number), pb_get_wire_type_name(wire_type), pb_get_wire_type_name(expected_wire_type));
-				return;
-			}
-
-			switch (Z_LVAL_PP(field_type))
-			{
-				case PB_TYPE_DOUBLE:
-					Z_TYPE_P(value) = IS_DOUBLE;
-					ret = reader_read_double(&reader, &Z_DVAL_P(value));
-					break;
-
-				case PB_TYPE_FIXED32:
-					Z_TYPE_P(value) = IS_LONG;
-					ret = reader_read_fixed32(&reader, &Z_LVAL_P(value));
-					break;
-
-				case PB_TYPE_FIXED64:
-					Z_TYPE_P(value) = IS_LONG;
-					ret = reader_read_fixed64(&reader, &Z_LVAL_P(value));
-					break;
-
-				case PB_TYPE_FLOAT:
-					Z_TYPE_P(value) = IS_DOUBLE;
-					ret = reader_read_float(&reader, &Z_DVAL_P(value));
-					break;
-
-				case PB_TYPE_INT:
-					Z_TYPE_P(value) = IS_LONG;
-					ret = reader_read_int(&reader, &Z_LVAL_P(value));
-					break;
-
-				case PB_TYPE_BOOL:
-					Z_TYPE_P(value) = IS_BOOL;
-					ret = reader_read_int(&reader, &Z_LVAL_P(value));
-					break;
-
-				case PB_TYPE_SIGNED_INT:
-					Z_TYPE_P(value) = IS_LONG;
-					ret = reader_read_signed_int(&reader, &Z_LVAL_P(value));
-					break;
-
-				case PB_TYPE_STRING:
-					if ((ret = reader_read_string(&reader, &str, &str_size)) == 0)
-						ZVAL_STRINGL(value, str, str_size, 1);
-					break;
-
-				default:
-					PB_COMPILE_ERROR("unexpected '%s' field type %d in field descriptor", pb_get_field_name(getThis(), field_number), Z_LVAL_PP(field_type));
+			expected_wire_type = pb_get_wire_type(Z_LVAL_PP(field_type));
+			if (field_repeated && wire_type == WIRE_TYPE_LENGTH_DELIMITED && expected_wire_type != WIRE_TYPE_LENGTH_DELIMITED) {
+				if (reader_read_string(&reader, &str, &str_size) != 0) {
+					PB_PARSE_ERROR("parse '%s' field fail", pb_get_field_name(getThis(), field_number));
 					return;
-			}
+				}
 
-			if (ret != 0) {
-				PB_PARSE_ERROR("parse '%s' field fail", pb_get_field_name(getThis(), field_number));
-				return;
+				reader_init(&packed_reader, str, str_size);
+
+				while (reader_has_more(&packed_reader)) {
+					if (value == NULL) {
+						ALLOC_INIT_ZVAL(value);
+						add_next_index_zval(*old_value, value);
+					}
+					if (pb_parse_field_value(getThis(), &packed_reader, field_number, Z_LVAL_PP(field_type), value) != 0) {
+						return;
+					}
+					value = NULL;
+				}
+			} else {
+				if (expected_wire_type != wire_type) {
+					PB_PARSE_ERROR("'%s' field wire type is %s but should be %s", pb_get_field_name(getThis(), field_number), pb_get_wire_type_name(wire_type), pb_get_wire_type_name(expected_wire_type));
+					return;
+				}
+
+				if (pb_parse_field_value(getThis(), &reader, field_number, Z_LVAL_PP(field_type), value) != 0) {
+					return;
+				}
 			}
 		} else {
 			PB_COMPILE_ERROR("unexpected %s type of '%s' field type in field descriptor", zend_get_type_by_const(Z_TYPE_PP(field_type)), pb_get_field_name(getThis(), field_number));
@@ -624,7 +601,7 @@ ZEND_GET_MODULE(protobuf)
 static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_number)
 {
 	zval **field_descriptor, *field_descriptors, tmp, **type;
-    TSRMLS_FETCH();
+	TSRMLS_FETCH();
 
 	if ((field_descriptors = pb_get_field_descriptors(this)) == NULL)
 		goto fail0;
@@ -689,7 +666,7 @@ static int pb_dump_field_value(zval **value, long level, zend_bool only_set)
 {
 	const char *string_value;
 	zval tmp, ret, arg0, arg1, *args[2];
-    TSRMLS_FETCH();
+	TSRMLS_FETCH();
 
 	INIT_ZVAL(tmp);
 
@@ -744,7 +721,7 @@ static int pb_dump_field_value(zval **value, long level, zend_bool only_set)
 static zval **pb_get_field_descriptor(zval *this, zval *field_descriptors, uint32_t field_number)
 {
 	zval **field_descriptor = NULL;
-    TSRMLS_FETCH();
+	TSRMLS_FETCH();
 
 	if (zend_hash_index_find(Z_ARRVAL_P(field_descriptors), field_number, (void **) &field_descriptor) == FAILURE)
 		PB_COMPILE_ERROR_EX(this, "missing %u field descriptor", field_number);
@@ -755,7 +732,7 @@ static zval **pb_get_field_descriptor(zval *this, zval *field_descriptors, uint3
 static zval **pb_get_field_type(zval *this, zval **field_descriptor, uint32_t field_number)
 {
 	zval **field_type;
-    TSRMLS_FETCH();
+	TSRMLS_FETCH();
 
 	if (zend_hash_quick_find(Z_ARRVAL_PP(field_descriptor), PB_FIELD_TYPE, sizeof(PB_FIELD_TYPE), PB_FIELD_TYPE_HASH, (void **) &field_type) == FAILURE)
 		PB_COMPILE_ERROR_EX(this, "missing '%s' field type property in field descriptor", pb_get_field_name(this, field_number));
@@ -766,7 +743,7 @@ static zval **pb_get_field_type(zval *this, zval **field_descriptor, uint32_t fi
 static zval *pb_get_field_descriptors(zval *this)
 {
 	zval *descriptors, method;
-    TSRMLS_FETCH();
+	TSRMLS_FETCH();
 
 	INIT_ZVAL(method);
 	ZVAL_STRINGL(&method, PB_FIELDS_METHOD, sizeof(PB_FIELDS_METHOD) - 1, 0);
@@ -781,7 +758,7 @@ static zval *pb_get_field_descriptors(zval *this)
 static const char *pb_get_field_name(zval *this, uint32_t field_number)
 {
 	zval **field_descriptor, *field_descriptors, **field_name, *this_ptr;
-    TSRMLS_FETCH();
+	TSRMLS_FETCH();
 
 	this_ptr = this;
 
@@ -866,7 +843,7 @@ static const char *pb_get_wire_type_name(int wire_type)
 static zval **pb_get_value(zval *this, zval **values, uint32_t field_number)
 {
 	zval **value = NULL;
-    TSRMLS_FETCH();
+	TSRMLS_FETCH();
 
 	if (zend_hash_index_find(Z_ARRVAL_PP(values), field_number, (void **) &value) == FAILURE)
 		PB_COMPILE_ERROR_EX(this, "missing %u field value", field_number);
@@ -877,18 +854,77 @@ static zval **pb_get_value(zval *this, zval **values, uint32_t field_number)
 static zval **pb_get_values(zval *this)
 {
 	zval **values = NULL;
-    TSRMLS_FETCH();
+	TSRMLS_FETCH();
 
 	zend_hash_quick_find(Z_OBJPROP_P(this), PB_VALUES_PROPERTY, sizeof(PB_VALUES_PROPERTY), PB_VALUES_PROPERTY_HASH, (void **) &values);
 
 	return values;
 }
 
+static int pb_parse_field_value(zval *this, reader_t *reader, long field_number, long field_type, zval *value)
+{
+	int ret, str_size;
+	char *str;
+
+	switch (field_type)
+	{
+		case PB_TYPE_DOUBLE:
+			Z_TYPE_P(value) = IS_DOUBLE;
+			ret = reader_read_double(reader, &Z_DVAL_P(value));
+			break;
+
+		case PB_TYPE_FIXED32:
+			Z_TYPE_P(value) = IS_LONG;
+			ret = reader_read_fixed32(reader, &Z_LVAL_P(value));
+			break;
+
+		case PB_TYPE_FIXED64:
+			Z_TYPE_P(value) = IS_LONG;
+			ret = reader_read_fixed64(reader, &Z_LVAL_P(value));
+			break;
+
+		case PB_TYPE_FLOAT:
+			Z_TYPE_P(value) = IS_DOUBLE;
+			ret = reader_read_float(reader, &Z_DVAL_P(value));
+			break;
+
+		case PB_TYPE_INT:
+			Z_TYPE_P(value) = IS_LONG;
+			ret = reader_read_int(reader, &Z_LVAL_P(value));
+			break;
+
+		case PB_TYPE_BOOL:
+			Z_TYPE_P(value) = IS_BOOL;
+			ret = reader_read_int(reader, &Z_LVAL_P(value));
+			break;
+
+		case PB_TYPE_SIGNED_INT:
+			Z_TYPE_P(value) = IS_LONG;
+			ret = reader_read_signed_int(reader, &Z_LVAL_P(value));
+			break;
+
+		case PB_TYPE_STRING:
+			if ((ret = reader_read_string(reader, &str, &str_size)) == 0)
+				ZVAL_STRINGL(value, str, str_size, 1);
+			break;
+
+		default:
+			PB_COMPILE_ERROR_EX(this, "unexpected '%s' field type %d in field descriptor", pb_get_field_name(this, field_number), field_type);
+			return -1;
+	}
+
+	if (ret != 0) {
+		PB_PARSE_ERROR_EX(this, "parse '%s' field fail", pb_get_field_name(this, field_number));
+	}
+
+	return ret;
+}
+
 static int pb_serialize_field_value(zval *this, writer_t *writer, uint32_t field_number, zval **type, zval **value)
 {
 	int r;
 	zval ret, method;
-    TSRMLS_FETCH();
+	TSRMLS_FETCH();
 
 	if (Z_TYPE_PP(type) == IS_STRING) {
 		INIT_ZVAL(method);
