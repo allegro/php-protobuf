@@ -58,7 +58,35 @@ class PhpGenerator
         foreach ($fileDescriptors as $fileDescriptor) {
             $this->_generateFiles($fileDescriptor, $createClass);
         }
+
+        foreach ($request->getProtoFile() as $fileDescriptorProto) {
+            if ($this->_containMapEntryMessage($fileDescriptorProto->getMessageType())) {
+                Logger::warn('The maps are not fully supported (https://github.com/allegro/php-protobuf/issues/73)');
+                break;
+            }
+        }
+
         return $response;
+    }
+
+    /**
+     * @param DescriptorProto[] $descriptorProtos
+     *
+     * @return boolean
+     */
+    private function _containMapEntryMessage($descriptorProtos) {
+        foreach ($descriptorProtos as $descriptorProto) {
+            $messageOptions = $descriptorProto->getOptions();
+            if ($messageOptions && $messageOptions->getMapEntry()) {
+                return true;
+            }
+
+            if ($this->_containMapEntryMessage($descriptorProto->getNestedType())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
