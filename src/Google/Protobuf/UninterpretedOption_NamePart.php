@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * NamePart message embedded in UninterpretedOption message
  */
@@ -18,12 +20,12 @@ class UninterpretedOption_NamePart extends \ProtobufMessage
         self::NAME_PART => array(
             'name' => 'name_part',
             'required' => true,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::IS_EXTENSION => array(
             'name' => 'is_extension',
             'required' => true,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
     );
 

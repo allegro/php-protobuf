@@ -1,35 +1,31 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
- * Annotation message embedded in GeneratedCodeInfo message
+ * ExtensionRange message embedded in DescriptorProto message
  */
-class GeneratedCodeInfo_Annotation extends \ProtobufMessage
+class DescriptorProto_ExtensionRange extends \ProtobufMessage
 {
     /* Field index constants */
-    const SOURCE_FILE = 2;
-    const BEGIN = 3;
-    const END = 4;
+    const START = 1;
+    const END = 2;
 
     /* @var array Field descriptors */
     protected static $fields = array(
-        self::SOURCE_FILE => array(
-            'name' => 'source_file',
+        self::START => array(
+            'name' => 'start',
             'required' => false,
-            'type' => 7,
-        ),
-        self::BEGIN => array(
-            'name' => 'begin',
-            'required' => false,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::END => array(
             'name' => 'end',
             'required' => false,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
     );
 
@@ -48,8 +44,7 @@ class GeneratedCodeInfo_Annotation extends \ProtobufMessage
      */
     public function reset()
     {
-        $this->values[self::SOURCE_FILE] = null;
-        $this->values[self::BEGIN] = null;
+        $this->values[self::START] = null;
         $this->values[self::END] = null;
     }
 
@@ -64,47 +59,25 @@ class GeneratedCodeInfo_Annotation extends \ProtobufMessage
     }
 
     /**
-     * Sets value of 'source_file' property
-     *
-     * @param string $value Property value
-     *
-     * @return null
-     */
-    public function setSourceFile($value)
-    {
-        return $this->set(self::SOURCE_FILE, $value);
-    }
-
-    /**
-     * Returns value of 'source_file' property
-     *
-     * @return string
-     */
-    public function getSourceFile()
-    {
-        return $this->get(self::SOURCE_FILE);
-    }
-
-    /**
-     * Sets value of 'begin' property
+     * Sets value of 'start' property
      *
      * @param integer $value Property value
      *
      * @return null
      */
-    public function setBegin($value)
+    public function setStart($value)
     {
-        return $this->set(self::BEGIN, $value);
+        return $this->set(self::START, $value);
     }
 
     /**
-     * Returns value of 'begin' property
+     * Returns value of 'start' property
      *
      * @return integer
      */
-    public function getBegin()
+    public function getStart()
     {
-        return $this->get(self::BEGIN);
+        return $this->get(self::START);
     }
 
     /**

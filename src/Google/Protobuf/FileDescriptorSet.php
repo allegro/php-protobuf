@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * FileDescriptorSet message
  */
@@ -17,7 +19,7 @@ class FileDescriptorSet extends \ProtobufMessage
         self::FILE => array(
             'name' => 'file',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\FileDescriptorProto'
+            'type' => '\Google\Protobuf\FileDescriptorProto'
         ),
     );
 
@@ -52,11 +54,11 @@ class FileDescriptorSet extends \ProtobufMessage
     /**
      * Appends value to 'file' list
      *
-     * @param \Google\Protobuf\Compiler\FileDescriptorProto $value Value to append
+     * @param \Google\Protobuf\FileDescriptorProto $value Value to append
      *
      * @return null
      */
-    public function appendFile(\Google\Protobuf\Compiler\FileDescriptorProto $value)
+    public function appendFile(\Google\Protobuf\FileDescriptorProto $value)
     {
         return $this->append(self::FILE, $value);
     }
@@ -74,7 +76,7 @@ class FileDescriptorSet extends \ProtobufMessage
     /**
      * Returns 'file' list
      *
-     * @return \Google\Protobuf\Compiler\FileDescriptorProto[]
+     * @return \Google\Protobuf\FileDescriptorProto[]
      */
     public function getFile()
     {
@@ -96,7 +98,7 @@ class FileDescriptorSet extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\FileDescriptorProto
+     * @return \Google\Protobuf\FileDescriptorProto
      */
     public function getFileAt($offset)
     {

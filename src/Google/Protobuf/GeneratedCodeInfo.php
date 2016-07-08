@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * GeneratedCodeInfo message
  */
@@ -17,7 +19,7 @@ class GeneratedCodeInfo extends \ProtobufMessage
         self::ANNOTATION => array(
             'name' => 'annotation',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\GeneratedCodeInfo_Annotation'
+            'type' => '\Google\Protobuf\GeneratedCodeInfo_Annotation'
         ),
     );
 
@@ -52,11 +54,11 @@ class GeneratedCodeInfo extends \ProtobufMessage
     /**
      * Appends value to 'annotation' list
      *
-     * @param \Google\Protobuf\Compiler\GeneratedCodeInfo_Annotation $value Value to append
+     * @param \Google\Protobuf\GeneratedCodeInfo_Annotation $value Value to append
      *
      * @return null
      */
-    public function appendAnnotation(\Google\Protobuf\Compiler\GeneratedCodeInfo_Annotation $value)
+    public function appendAnnotation(\Google\Protobuf\GeneratedCodeInfo_Annotation $value)
     {
         return $this->append(self::ANNOTATION, $value);
     }
@@ -74,7 +76,7 @@ class GeneratedCodeInfo extends \ProtobufMessage
     /**
      * Returns 'annotation' list
      *
-     * @return \Google\Protobuf\Compiler\GeneratedCodeInfo_Annotation[]
+     * @return \Google\Protobuf\GeneratedCodeInfo_Annotation[]
      */
     public function getAnnotation()
     {
@@ -96,7 +98,7 @@ class GeneratedCodeInfo extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\GeneratedCodeInfo_Annotation
+     * @return \Google\Protobuf\GeneratedCodeInfo_Annotation
      */
     public function getAnnotationAt($offset)
     {

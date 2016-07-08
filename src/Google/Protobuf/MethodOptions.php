@@ -1,13 +1,15 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
- * ServiceOptions message
+ * MethodOptions message
  */
-class ServiceOptions extends \ProtobufMessage
+class MethodOptions extends \ProtobufMessage
 {
     /* Field index constants */
     const DEPRECATED = 33;
@@ -19,12 +21,12 @@ class ServiceOptions extends \ProtobufMessage
             'default' => false,
             'name' => 'deprecated',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::UNINTERPRETED_OPTION => array(
             'name' => 'uninterpreted_option',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\UninterpretedOption'
+            'type' => '\Google\Protobuf\UninterpretedOption'
         ),
     );
 
@@ -82,11 +84,11 @@ class ServiceOptions extends \ProtobufMessage
     /**
      * Appends value to 'uninterpreted_option' list
      *
-     * @param \Google\Protobuf\Compiler\UninterpretedOption $value Value to append
+     * @param \Google\Protobuf\UninterpretedOption $value Value to append
      *
      * @return null
      */
-    public function appendUninterpretedOption(\Google\Protobuf\Compiler\UninterpretedOption $value)
+    public function appendUninterpretedOption(\Google\Protobuf\UninterpretedOption $value)
     {
         return $this->append(self::UNINTERPRETED_OPTION, $value);
     }
@@ -104,7 +106,7 @@ class ServiceOptions extends \ProtobufMessage
     /**
      * Returns 'uninterpreted_option' list
      *
-     * @return \Google\Protobuf\Compiler\UninterpretedOption[]
+     * @return \Google\Protobuf\UninterpretedOption[]
      */
     public function getUninterpretedOption()
     {
@@ -126,7 +128,7 @@ class ServiceOptions extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\UninterpretedOption
+     * @return \Google\Protobuf\UninterpretedOption
      */
     public function getUninterpretedOptionAt($offset)
     {

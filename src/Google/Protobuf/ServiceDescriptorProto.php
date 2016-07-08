@@ -1,17 +1,19 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
- * EnumDescriptorProto message
+ * ServiceDescriptorProto message
  */
-class EnumDescriptorProto extends \ProtobufMessage
+class ServiceDescriptorProto extends \ProtobufMessage
 {
     /* Field index constants */
     const NAME = 1;
-    const VALUE = 2;
+    const METHOD = 2;
     const OPTIONS = 3;
 
     /* @var array Field descriptors */
@@ -19,17 +21,17 @@ class EnumDescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
-        self::VALUE => array(
-            'name' => 'value',
+        self::METHOD => array(
+            'name' => 'method',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\EnumValueDescriptorProto'
+            'type' => '\Google\Protobuf\MethodDescriptorProto'
         ),
         self::OPTIONS => array(
             'name' => 'options',
             'required' => false,
-            'type' => '\Google\Protobuf\Compiler\EnumOptions'
+            'type' => '\Google\Protobuf\ServiceOptions'
         ),
     );
 
@@ -49,7 +51,7 @@ class EnumDescriptorProto extends \ProtobufMessage
     public function reset()
     {
         $this->values[self::NAME] = null;
-        $this->values[self::VALUE] = array();
+        $this->values[self::METHOD] = array();
         $this->values[self::OPTIONS] = null;
     }
 
@@ -86,77 +88,77 @@ class EnumDescriptorProto extends \ProtobufMessage
     }
 
     /**
-     * Appends value to 'value' list
+     * Appends value to 'method' list
      *
-     * @param \Google\Protobuf\Compiler\EnumValueDescriptorProto $value Value to append
-     *
-     * @return null
-     */
-    public function appendValue(\Google\Protobuf\Compiler\EnumValueDescriptorProto $value)
-    {
-        return $this->append(self::VALUE, $value);
-    }
-
-    /**
-     * Clears 'value' list
+     * @param \Google\Protobuf\MethodDescriptorProto $value Value to append
      *
      * @return null
      */
-    public function clearValue()
+    public function appendMethod(\Google\Protobuf\MethodDescriptorProto $value)
     {
-        return $this->clear(self::VALUE);
+        return $this->append(self::METHOD, $value);
     }
 
     /**
-     * Returns 'value' list
+     * Clears 'method' list
      *
-     * @return \Google\Protobuf\Compiler\EnumValueDescriptorProto[]
+     * @return null
      */
-    public function getValue()
+    public function clearMethod()
     {
-        return $this->get(self::VALUE);
+        return $this->clear(self::METHOD);
     }
 
     /**
-     * Returns 'value' iterator
+     * Returns 'method' list
+     *
+     * @return \Google\Protobuf\MethodDescriptorProto[]
+     */
+    public function getMethod()
+    {
+        return $this->get(self::METHOD);
+    }
+
+    /**
+     * Returns 'method' iterator
      *
      * @return \ArrayIterator
      */
-    public function getValueIterator()
+    public function getMethodIterator()
     {
-        return new \ArrayIterator($this->get(self::VALUE));
+        return new \ArrayIterator($this->get(self::METHOD));
     }
 
     /**
-     * Returns element from 'value' list at given offset
+     * Returns element from 'method' list at given offset
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\EnumValueDescriptorProto
+     * @return \Google\Protobuf\MethodDescriptorProto
      */
-    public function getValueAt($offset)
+    public function getMethodAt($offset)
     {
-        return $this->get(self::VALUE, $offset);
+        return $this->get(self::METHOD, $offset);
     }
 
     /**
-     * Returns count of 'value' list
+     * Returns count of 'method' list
      *
      * @return int
      */
-    public function getValueCount()
+    public function getMethodCount()
     {
-        return $this->count(self::VALUE);
+        return $this->count(self::METHOD);
     }
 
     /**
      * Sets value of 'options' property
      *
-     * @param \Google\Protobuf\Compiler\EnumOptions $value Property value
+     * @param \Google\Protobuf\ServiceOptions $value Property value
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\Compiler\EnumOptions $value)
+    public function setOptions(\Google\Protobuf\ServiceOptions $value)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -164,7 +166,7 @@ class EnumDescriptorProto extends \ProtobufMessage
     /**
      * Returns value of 'options' property
      *
-     * @return \Google\Protobuf\Compiler\EnumOptions
+     * @return \Google\Protobuf\ServiceOptions
      */
     public function getOptions()
     {

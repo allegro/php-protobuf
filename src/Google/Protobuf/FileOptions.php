@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * FileOptions message
  */
@@ -31,86 +33,86 @@ class FileOptions extends \ProtobufMessage
         self::JAVA_PACKAGE => array(
             'name' => 'java_package',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::JAVA_OUTER_CLASSNAME => array(
             'name' => 'java_outer_classname',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::JAVA_MULTIPLE_FILES => array(
             'default' => false,
             'name' => 'java_multiple_files',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::JAVA_GENERATE_EQUALS_AND_HASH => array(
             'default' => false,
             'name' => 'java_generate_equals_and_hash',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::JAVA_STRING_CHECK_UTF8 => array(
             'default' => false,
             'name' => 'java_string_check_utf8',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::OPTIMIZE_FOR => array(
-            'default' => \Google\Protobuf\Compiler\FileOptions_OptimizeMode::SPEED,
+            'default' => \Google\Protobuf\FileOptions_OptimizeMode::SPEED,
             'name' => 'optimize_for',
             'required' => false,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::GO_PACKAGE => array(
             'name' => 'go_package',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::CC_GENERIC_SERVICES => array(
             'default' => false,
             'name' => 'cc_generic_services',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::JAVA_GENERIC_SERVICES => array(
             'default' => false,
             'name' => 'java_generic_services',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::PY_GENERIC_SERVICES => array(
             'default' => false,
             'name' => 'py_generic_services',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::DEPRECATED => array(
             'default' => false,
             'name' => 'deprecated',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::CC_ENABLE_ARENAS => array(
             'default' => false,
             'name' => 'cc_enable_arenas',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::OBJC_CLASS_PREFIX => array(
             'name' => 'objc_class_prefix',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::CSHARP_NAMESPACE => array(
             'name' => 'csharp_namespace',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::UNINTERPRETED_OPTION => array(
             'name' => 'uninterpreted_option',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\UninterpretedOption'
+            'type' => '\Google\Protobuf\UninterpretedOption'
         ),
     );
 
@@ -467,11 +469,11 @@ class FileOptions extends \ProtobufMessage
     /**
      * Appends value to 'uninterpreted_option' list
      *
-     * @param \Google\Protobuf\Compiler\UninterpretedOption $value Value to append
+     * @param \Google\Protobuf\UninterpretedOption $value Value to append
      *
      * @return null
      */
-    public function appendUninterpretedOption(\Google\Protobuf\Compiler\UninterpretedOption $value)
+    public function appendUninterpretedOption(\Google\Protobuf\UninterpretedOption $value)
     {
         return $this->append(self::UNINTERPRETED_OPTION, $value);
     }
@@ -489,7 +491,7 @@ class FileOptions extends \ProtobufMessage
     /**
      * Returns 'uninterpreted_option' list
      *
-     * @return \Google\Protobuf\Compiler\UninterpretedOption[]
+     * @return \Google\Protobuf\UninterpretedOption[]
      */
     public function getUninterpretedOption()
     {
@@ -511,7 +513,7 @@ class FileOptions extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\UninterpretedOption
+     * @return \Google\Protobuf\UninterpretedOption
      */
     public function getUninterpretedOptionAt($offset)
     {

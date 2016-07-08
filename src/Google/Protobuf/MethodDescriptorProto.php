@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * MethodDescriptorProto message
  */
@@ -22,34 +24,34 @@ class MethodDescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::INPUT_TYPE => array(
             'name' => 'input_type',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::OUTPUT_TYPE => array(
             'name' => 'output_type',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::OPTIONS => array(
             'name' => 'options',
             'required' => false,
-            'type' => '\Google\Protobuf\Compiler\MethodOptions'
+            'type' => '\Google\Protobuf\MethodOptions'
         ),
         self::CLIENT_STREAMING => array(
             'default' => false,
             'name' => 'client_streaming',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::SERVER_STREAMING => array(
             'default' => false,
             'name' => 'server_streaming',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
     );
 
@@ -155,11 +157,11 @@ class MethodDescriptorProto extends \ProtobufMessage
     /**
      * Sets value of 'options' property
      *
-     * @param \Google\Protobuf\Compiler\MethodOptions $value Property value
+     * @param \Google\Protobuf\MethodOptions $value Property value
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\Compiler\MethodOptions $value)
+    public function setOptions(\Google\Protobuf\MethodOptions $value)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -167,7 +169,7 @@ class MethodDescriptorProto extends \ProtobufMessage
     /**
      * Returns value of 'options' property
      *
-     * @return \Google\Protobuf\Compiler\MethodOptions
+     * @return \Google\Protobuf\MethodOptions
      */
     public function getOptions()
     {

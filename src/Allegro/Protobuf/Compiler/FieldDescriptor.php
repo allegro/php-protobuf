@@ -1,8 +1,8 @@
 <?php
 namespace Allegro\Protobuf\Compiler;
 
-use Google\Protobuf\Compiler\FieldDescriptorProto_Label;
-use Google\Protobuf\Compiler\FieldDescriptorProto_Type;
+use Google\Protobuf\FieldDescriptorProto_Label;
+use Google\Protobuf\FieldDescriptorProto_Type;
 
 /**
  * Describes field

@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * UninterpretedOption message
  */
@@ -23,37 +25,37 @@ class UninterpretedOption extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\UninterpretedOption_NamePart'
+            'type' => '\Google\Protobuf\UninterpretedOption_NamePart'
         ),
         self::IDENTIFIER_VALUE => array(
             'name' => 'identifier_value',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::POSITIVE_INT_VALUE => array(
             'name' => 'positive_int_value',
             'required' => false,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::NEGATIVE_INT_VALUE => array(
             'name' => 'negative_int_value',
             'required' => false,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::DOUBLE_VALUE => array(
             'name' => 'double_value',
             'required' => false,
-            'type' => 1,
+            'type' => \ProtobufMessage::PB_TYPE_DOUBLE,
         ),
         self::STRING_VALUE => array(
             'name' => 'string_value',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::AGGREGATE_VALUE => array(
             'name' => 'aggregate_value',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
     );
 
@@ -94,11 +96,11 @@ class UninterpretedOption extends \ProtobufMessage
     /**
      * Appends value to 'name' list
      *
-     * @param \Google\Protobuf\Compiler\UninterpretedOption_NamePart $value Value to append
+     * @param \Google\Protobuf\UninterpretedOption_NamePart $value Value to append
      *
      * @return null
      */
-    public function appendName(\Google\Protobuf\Compiler\UninterpretedOption_NamePart $value)
+    public function appendName(\Google\Protobuf\UninterpretedOption_NamePart $value)
     {
         return $this->append(self::NAME, $value);
     }
@@ -116,7 +118,7 @@ class UninterpretedOption extends \ProtobufMessage
     /**
      * Returns 'name' list
      *
-     * @return \Google\Protobuf\Compiler\UninterpretedOption_NamePart[]
+     * @return \Google\Protobuf\UninterpretedOption_NamePart[]
      */
     public function getName()
     {
@@ -138,7 +140,7 @@ class UninterpretedOption extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\UninterpretedOption_NamePart
+     * @return \Google\Protobuf\UninterpretedOption_NamePart
      */
     public function getNameAt($offset)
     {

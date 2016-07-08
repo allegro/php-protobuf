@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * DescriptorProto message
  */
@@ -26,52 +28,52 @@ class DescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::FIELD => array(
             'name' => 'field',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\FieldDescriptorProto'
+            'type' => '\Google\Protobuf\FieldDescriptorProto'
         ),
         self::EXTENSION => array(
             'name' => 'extension',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\FieldDescriptorProto'
+            'type' => '\Google\Protobuf\FieldDescriptorProto'
         ),
         self::NESTED_TYPE => array(
             'name' => 'nested_type',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\DescriptorProto'
+            'type' => '\Google\Protobuf\DescriptorProto'
         ),
         self::ENUM_TYPE => array(
             'name' => 'enum_type',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\EnumDescriptorProto'
+            'type' => '\Google\Protobuf\EnumDescriptorProto'
         ),
         self::EXTENSION_RANGE => array(
             'name' => 'extension_range',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\DescriptorProto_ExtensionRange'
+            'type' => '\Google\Protobuf\DescriptorProto_ExtensionRange'
         ),
         self::ONEOF_DECL => array(
             'name' => 'oneof_decl',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\OneofDescriptorProto'
+            'type' => '\Google\Protobuf\OneofDescriptorProto'
         ),
         self::OPTIONS => array(
             'name' => 'options',
             'required' => false,
-            'type' => '\Google\Protobuf\Compiler\MessageOptions'
+            'type' => '\Google\Protobuf\MessageOptions'
         ),
         self::RESERVED_RANGE => array(
             'name' => 'reserved_range',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\DescriptorProto_ReservedRange'
+            'type' => '\Google\Protobuf\DescriptorProto_ReservedRange'
         ),
         self::RESERVED_NAME => array(
             'name' => 'reserved_name',
             'repeated' => true,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
     );
 
@@ -137,11 +139,11 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'field' list
      *
-     * @param \Google\Protobuf\Compiler\FieldDescriptorProto $value Value to append
+     * @param \Google\Protobuf\FieldDescriptorProto $value Value to append
      *
      * @return null
      */
-    public function appendField(\Google\Protobuf\Compiler\FieldDescriptorProto $value)
+    public function appendField(\Google\Protobuf\FieldDescriptorProto $value)
     {
         return $this->append(self::FIELD, $value);
     }
@@ -159,7 +161,7 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Returns 'field' list
      *
-     * @return \Google\Protobuf\Compiler\FieldDescriptorProto[]
+     * @return \Google\Protobuf\FieldDescriptorProto[]
      */
     public function getField()
     {
@@ -181,7 +183,7 @@ class DescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\FieldDescriptorProto
+     * @return \Google\Protobuf\FieldDescriptorProto
      */
     public function getFieldAt($offset)
     {
@@ -201,11 +203,11 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'extension' list
      *
-     * @param \Google\Protobuf\Compiler\FieldDescriptorProto $value Value to append
+     * @param \Google\Protobuf\FieldDescriptorProto $value Value to append
      *
      * @return null
      */
-    public function appendExtension(\Google\Protobuf\Compiler\FieldDescriptorProto $value)
+    public function appendExtension(\Google\Protobuf\FieldDescriptorProto $value)
     {
         return $this->append(self::EXTENSION, $value);
     }
@@ -223,7 +225,7 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Returns 'extension' list
      *
-     * @return \Google\Protobuf\Compiler\FieldDescriptorProto[]
+     * @return \Google\Protobuf\FieldDescriptorProto[]
      */
     public function getExtension()
     {
@@ -245,7 +247,7 @@ class DescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\FieldDescriptorProto
+     * @return \Google\Protobuf\FieldDescriptorProto
      */
     public function getExtensionAt($offset)
     {
@@ -265,11 +267,11 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'nested_type' list
      *
-     * @param \Google\Protobuf\Compiler\DescriptorProto $value Value to append
+     * @param \Google\Protobuf\DescriptorProto $value Value to append
      *
      * @return null
      */
-    public function appendNestedType(\Google\Protobuf\Compiler\DescriptorProto $value)
+    public function appendNestedType(\Google\Protobuf\DescriptorProto $value)
     {
         return $this->append(self::NESTED_TYPE, $value);
     }
@@ -287,7 +289,7 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Returns 'nested_type' list
      *
-     * @return \Google\Protobuf\Compiler\DescriptorProto[]
+     * @return \Google\Protobuf\DescriptorProto[]
      */
     public function getNestedType()
     {
@@ -309,7 +311,7 @@ class DescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\DescriptorProto
+     * @return \Google\Protobuf\DescriptorProto
      */
     public function getNestedTypeAt($offset)
     {
@@ -329,11 +331,11 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'enum_type' list
      *
-     * @param \Google\Protobuf\Compiler\EnumDescriptorProto $value Value to append
+     * @param \Google\Protobuf\EnumDescriptorProto $value Value to append
      *
      * @return null
      */
-    public function appendEnumType(\Google\Protobuf\Compiler\EnumDescriptorProto $value)
+    public function appendEnumType(\Google\Protobuf\EnumDescriptorProto $value)
     {
         return $this->append(self::ENUM_TYPE, $value);
     }
@@ -351,7 +353,7 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Returns 'enum_type' list
      *
-     * @return \Google\Protobuf\Compiler\EnumDescriptorProto[]
+     * @return \Google\Protobuf\EnumDescriptorProto[]
      */
     public function getEnumType()
     {
@@ -373,7 +375,7 @@ class DescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\EnumDescriptorProto
+     * @return \Google\Protobuf\EnumDescriptorProto
      */
     public function getEnumTypeAt($offset)
     {
@@ -393,11 +395,11 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'extension_range' list
      *
-     * @param \Google\Protobuf\Compiler\DescriptorProto_ExtensionRange $value Value to append
+     * @param \Google\Protobuf\DescriptorProto_ExtensionRange $value Value to append
      *
      * @return null
      */
-    public function appendExtensionRange(\Google\Protobuf\Compiler\DescriptorProto_ExtensionRange $value)
+    public function appendExtensionRange(\Google\Protobuf\DescriptorProto_ExtensionRange $value)
     {
         return $this->append(self::EXTENSION_RANGE, $value);
     }
@@ -415,7 +417,7 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Returns 'extension_range' list
      *
-     * @return \Google\Protobuf\Compiler\DescriptorProto_ExtensionRange[]
+     * @return \Google\Protobuf\DescriptorProto_ExtensionRange[]
      */
     public function getExtensionRange()
     {
@@ -437,7 +439,7 @@ class DescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\DescriptorProto_ExtensionRange
+     * @return \Google\Protobuf\DescriptorProto_ExtensionRange
      */
     public function getExtensionRangeAt($offset)
     {
@@ -457,11 +459,11 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'oneof_decl' list
      *
-     * @param \Google\Protobuf\Compiler\OneofDescriptorProto $value Value to append
+     * @param \Google\Protobuf\OneofDescriptorProto $value Value to append
      *
      * @return null
      */
-    public function appendOneofDecl(\Google\Protobuf\Compiler\OneofDescriptorProto $value)
+    public function appendOneofDecl(\Google\Protobuf\OneofDescriptorProto $value)
     {
         return $this->append(self::ONEOF_DECL, $value);
     }
@@ -479,7 +481,7 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Returns 'oneof_decl' list
      *
-     * @return \Google\Protobuf\Compiler\OneofDescriptorProto[]
+     * @return \Google\Protobuf\OneofDescriptorProto[]
      */
     public function getOneofDecl()
     {
@@ -501,7 +503,7 @@ class DescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\OneofDescriptorProto
+     * @return \Google\Protobuf\OneofDescriptorProto
      */
     public function getOneofDeclAt($offset)
     {
@@ -521,11 +523,11 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Sets value of 'options' property
      *
-     * @param \Google\Protobuf\Compiler\MessageOptions $value Property value
+     * @param \Google\Protobuf\MessageOptions $value Property value
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\Compiler\MessageOptions $value)
+    public function setOptions(\Google\Protobuf\MessageOptions $value)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -533,7 +535,7 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Returns value of 'options' property
      *
-     * @return \Google\Protobuf\Compiler\MessageOptions
+     * @return \Google\Protobuf\MessageOptions
      */
     public function getOptions()
     {
@@ -543,11 +545,11 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'reserved_range' list
      *
-     * @param \Google\Protobuf\Compiler\DescriptorProto_ReservedRange $value Value to append
+     * @param \Google\Protobuf\DescriptorProto_ReservedRange $value Value to append
      *
      * @return null
      */
-    public function appendReservedRange(\Google\Protobuf\Compiler\DescriptorProto_ReservedRange $value)
+    public function appendReservedRange(\Google\Protobuf\DescriptorProto_ReservedRange $value)
     {
         return $this->append(self::RESERVED_RANGE, $value);
     }
@@ -565,7 +567,7 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Returns 'reserved_range' list
      *
-     * @return \Google\Protobuf\Compiler\DescriptorProto_ReservedRange[]
+     * @return \Google\Protobuf\DescriptorProto_ReservedRange[]
      */
     public function getReservedRange()
     {
@@ -587,7 +589,7 @@ class DescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\DescriptorProto_ReservedRange
+     * @return \Google\Protobuf\DescriptorProto_ReservedRange
      */
     public function getReservedRangeAt($offset)
     {

@@ -1,6 +1,8 @@
 <?php
 /**
- * Auto generated from plugin.proto at 2016-06-26 19:19:31
+ * Auto generated from plugin.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf.compiler package
  */
 
 namespace Google\Protobuf\Compiler {
@@ -19,17 +21,17 @@ class CodeGeneratorRequest extends \ProtobufMessage
         self::FILE_TO_GENERATE => array(
             'name' => 'file_to_generate',
             'repeated' => true,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::PARAMETER => array(
             'name' => 'parameter',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::PROTO_FILE => array(
             'name' => 'proto_file',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\FileDescriptorProto'
+            'type' => '\Google\Protobuf\FileDescriptorProto'
         ),
     );
 
@@ -152,11 +154,11 @@ class CodeGeneratorRequest extends \ProtobufMessage
     /**
      * Appends value to 'proto_file' list
      *
-     * @param \Google\Protobuf\Compiler\FileDescriptorProto $value Value to append
+     * @param \Google\Protobuf\FileDescriptorProto $value Value to append
      *
      * @return null
      */
-    public function appendProtoFile(\Google\Protobuf\Compiler\FileDescriptorProto $value)
+    public function appendProtoFile(\Google\Protobuf\FileDescriptorProto $value)
     {
         return $this->append(self::PROTO_FILE, $value);
     }
@@ -174,7 +176,7 @@ class CodeGeneratorRequest extends \ProtobufMessage
     /**
      * Returns 'proto_file' list
      *
-     * @return \Google\Protobuf\Compiler\FileDescriptorProto[]
+     * @return \Google\Protobuf\FileDescriptorProto[]
      */
     public function getProtoFile()
     {
@@ -196,7 +198,7 @@ class CodeGeneratorRequest extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\FileDescriptorProto
+     * @return \Google\Protobuf\FileDescriptorProto
      */
     public function getProtoFileAt($offset)
     {

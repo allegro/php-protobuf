@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * EnumValueDescriptorProto message
  */
@@ -19,17 +21,17 @@ class EnumValueDescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::NUMBER => array(
             'name' => 'number',
             'required' => false,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::OPTIONS => array(
             'name' => 'options',
             'required' => false,
-            'type' => '\Google\Protobuf\Compiler\EnumValueOptions'
+            'type' => '\Google\Protobuf\EnumValueOptions'
         ),
     );
 
@@ -110,11 +112,11 @@ class EnumValueDescriptorProto extends \ProtobufMessage
     /**
      * Sets value of 'options' property
      *
-     * @param \Google\Protobuf\Compiler\EnumValueOptions $value Property value
+     * @param \Google\Protobuf\EnumValueOptions $value Property value
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\Compiler\EnumValueOptions $value)
+    public function setOptions(\Google\Protobuf\EnumValueOptions $value)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -122,7 +124,7 @@ class EnumValueDescriptorProto extends \ProtobufMessage
     /**
      * Returns value of 'options' property
      *
-     * @return \Google\Protobuf\Compiler\EnumValueOptions
+     * @return \Google\Protobuf\EnumValueOptions
      */
     public function getOptions()
     {

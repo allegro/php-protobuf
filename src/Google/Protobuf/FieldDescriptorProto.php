@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * FieldDescriptorProto message
  */
@@ -26,52 +28,52 @@ class FieldDescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::NUMBER => array(
             'name' => 'number',
             'required' => false,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::LABEL => array(
             'name' => 'label',
             'required' => false,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::TYPE => array(
             'name' => 'type',
             'required' => false,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::TYPE_NAME => array(
             'name' => 'type_name',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::EXTENDEE => array(
             'name' => 'extendee',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::DEFAULT_VALUE => array(
             'name' => 'default_value',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::ONEOF_INDEX => array(
             'name' => 'oneof_index',
             'required' => false,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::JSON_NAME => array(
             'name' => 'json_name',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::OPTIONS => array(
             'name' => 'options',
             'required' => false,
-            'type' => '\Google\Protobuf\Compiler\FieldOptions'
+            'type' => '\Google\Protobuf\FieldOptions'
         ),
     );
 
@@ -313,11 +315,11 @@ class FieldDescriptorProto extends \ProtobufMessage
     /**
      * Sets value of 'options' property
      *
-     * @param \Google\Protobuf\Compiler\FieldOptions $value Property value
+     * @param \Google\Protobuf\FieldOptions $value Property value
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\Compiler\FieldOptions $value)
+    public function setOptions(\Google\Protobuf\FieldOptions $value)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -325,7 +327,7 @@ class FieldDescriptorProto extends \ProtobufMessage
     /**
      * Returns value of 'options' property
      *
-     * @return \Google\Protobuf\Compiler\FieldOptions
+     * @return \Google\Protobuf\FieldOptions
      */
     public function getOptions()
     {

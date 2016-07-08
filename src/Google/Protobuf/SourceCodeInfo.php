@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * SourceCodeInfo message
  */
@@ -17,7 +19,7 @@ class SourceCodeInfo extends \ProtobufMessage
         self::LOCATION => array(
             'name' => 'location',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\SourceCodeInfo_Location'
+            'type' => '\Google\Protobuf\SourceCodeInfo_Location'
         ),
     );
 
@@ -52,11 +54,11 @@ class SourceCodeInfo extends \ProtobufMessage
     /**
      * Appends value to 'location' list
      *
-     * @param \Google\Protobuf\Compiler\SourceCodeInfo_Location $value Value to append
+     * @param \Google\Protobuf\SourceCodeInfo_Location $value Value to append
      *
      * @return null
      */
-    public function appendLocation(\Google\Protobuf\Compiler\SourceCodeInfo_Location $value)
+    public function appendLocation(\Google\Protobuf\SourceCodeInfo_Location $value)
     {
         return $this->append(self::LOCATION, $value);
     }
@@ -74,7 +76,7 @@ class SourceCodeInfo extends \ProtobufMessage
     /**
      * Returns 'location' list
      *
-     * @return \Google\Protobuf\Compiler\SourceCodeInfo_Location[]
+     * @return \Google\Protobuf\SourceCodeInfo_Location[]
      */
     public function getLocation()
     {
@@ -96,7 +98,7 @@ class SourceCodeInfo extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\SourceCodeInfo_Location
+     * @return \Google\Protobuf\SourceCodeInfo_Location
      */
     public function getLocationAt($offset)
     {

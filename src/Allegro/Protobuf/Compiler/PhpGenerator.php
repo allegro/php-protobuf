@@ -4,9 +4,9 @@ namespace Allegro\Protobuf\Compiler;
 use Google\Protobuf\Compiler\CodeGeneratorRequest;
 use Google\Protobuf\Compiler\CodeGeneratorResponse;
 use Google\Protobuf\Compiler\CodeGeneratorResponse_File;
-use Google\Protobuf\Compiler\DescriptorProto;
-use Google\Protobuf\Compiler\EnumDescriptorProto;
-use Google\Protobuf\Compiler\FileDescriptorProto;
+use Google\Protobuf\DescriptorProto;
+use Google\Protobuf\EnumDescriptorProto;
+use Google\Protobuf\FileDescriptorProto;
 
 class PhpGenerator
 {

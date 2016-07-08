@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * MessageOptions message
  */
@@ -22,29 +24,29 @@ class MessageOptions extends \ProtobufMessage
             'default' => false,
             'name' => 'message_set_wire_format',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::NO_STANDARD_DESCRIPTOR_ACCESSOR => array(
             'default' => false,
             'name' => 'no_standard_descriptor_accessor',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::DEPRECATED => array(
             'default' => false,
             'name' => 'deprecated',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::MAP_ENTRY => array(
             'name' => 'map_entry',
             'required' => false,
-            'type' => 8,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::UNINTERPRETED_OPTION => array(
             'name' => 'uninterpreted_option',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\UninterpretedOption'
+            'type' => '\Google\Protobuf\UninterpretedOption'
         ),
     );
 
@@ -171,11 +173,11 @@ class MessageOptions extends \ProtobufMessage
     /**
      * Appends value to 'uninterpreted_option' list
      *
-     * @param \Google\Protobuf\Compiler\UninterpretedOption $value Value to append
+     * @param \Google\Protobuf\UninterpretedOption $value Value to append
      *
      * @return null
      */
-    public function appendUninterpretedOption(\Google\Protobuf\Compiler\UninterpretedOption $value)
+    public function appendUninterpretedOption(\Google\Protobuf\UninterpretedOption $value)
     {
         return $this->append(self::UNINTERPRETED_OPTION, $value);
     }
@@ -193,7 +195,7 @@ class MessageOptions extends \ProtobufMessage
     /**
      * Returns 'uninterpreted_option' list
      *
-     * @return \Google\Protobuf\Compiler\UninterpretedOption[]
+     * @return \Google\Protobuf\UninterpretedOption[]
      */
     public function getUninterpretedOption()
     {
@@ -215,7 +217,7 @@ class MessageOptions extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\UninterpretedOption
+     * @return \Google\Protobuf\UninterpretedOption
      */
     public function getUninterpretedOptionAt($offset)
     {

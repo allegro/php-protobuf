@@ -1,6 +1,8 @@
 <?php
 /**
- * Auto generated from plugin.proto at 2016-06-26 19:19:31
+ * Auto generated from plugin.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf.compiler package
  */
 
 namespace Google\Protobuf\Compiler {
@@ -18,7 +20,7 @@ class CodeGeneratorResponse extends \ProtobufMessage
         self::ERROR => array(
             'name' => 'error',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::FILE => array(
             'name' => 'file',

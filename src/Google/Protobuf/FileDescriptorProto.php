@@ -1,9 +1,11 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-06-26 19:19:31
+ * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ *
+ * google.protobuf package
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf {
 /**
  * FileDescriptorProto message
  */
@@ -28,62 +30,62 @@ class FileDescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::PACKAGE => array(
             'name' => 'package',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::DEPENDENCY => array(
             'name' => 'dependency',
             'repeated' => true,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::PUBLIC_DEPENDENCY => array(
             'name' => 'public_dependency',
             'repeated' => true,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::WEAK_DEPENDENCY => array(
             'name' => 'weak_dependency',
             'repeated' => true,
-            'type' => 5,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::MESSAGE_TYPE => array(
             'name' => 'message_type',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\DescriptorProto'
+            'type' => '\Google\Protobuf\DescriptorProto'
         ),
         self::ENUM_TYPE => array(
             'name' => 'enum_type',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\EnumDescriptorProto'
+            'type' => '\Google\Protobuf\EnumDescriptorProto'
         ),
         self::SERVICE => array(
             'name' => 'service',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\ServiceDescriptorProto'
+            'type' => '\Google\Protobuf\ServiceDescriptorProto'
         ),
         self::EXTENSION => array(
             'name' => 'extension',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\FieldDescriptorProto'
+            'type' => '\Google\Protobuf\FieldDescriptorProto'
         ),
         self::OPTIONS => array(
             'name' => 'options',
             'required' => false,
-            'type' => '\Google\Protobuf\Compiler\FileOptions'
+            'type' => '\Google\Protobuf\FileOptions'
         ),
         self::SOURCE_CODE_INFO => array(
             'name' => 'source_code_info',
             'required' => false,
-            'type' => '\Google\Protobuf\Compiler\SourceCodeInfo'
+            'type' => '\Google\Protobuf\SourceCodeInfo'
         ),
         self::SYNTAX => array(
             'name' => 'syntax',
             'required' => false,
-            'type' => 7,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
     );
 
@@ -365,11 +367,11 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'message_type' list
      *
-     * @param \Google\Protobuf\Compiler\DescriptorProto $value Value to append
+     * @param \Google\Protobuf\DescriptorProto $value Value to append
      *
      * @return null
      */
-    public function appendMessageType(\Google\Protobuf\Compiler\DescriptorProto $value)
+    public function appendMessageType(\Google\Protobuf\DescriptorProto $value)
     {
         return $this->append(self::MESSAGE_TYPE, $value);
     }
@@ -387,7 +389,7 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Returns 'message_type' list
      *
-     * @return \Google\Protobuf\Compiler\DescriptorProto[]
+     * @return \Google\Protobuf\DescriptorProto[]
      */
     public function getMessageType()
     {
@@ -409,7 +411,7 @@ class FileDescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\DescriptorProto
+     * @return \Google\Protobuf\DescriptorProto
      */
     public function getMessageTypeAt($offset)
     {
@@ -429,11 +431,11 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'enum_type' list
      *
-     * @param \Google\Protobuf\Compiler\EnumDescriptorProto $value Value to append
+     * @param \Google\Protobuf\EnumDescriptorProto $value Value to append
      *
      * @return null
      */
-    public function appendEnumType(\Google\Protobuf\Compiler\EnumDescriptorProto $value)
+    public function appendEnumType(\Google\Protobuf\EnumDescriptorProto $value)
     {
         return $this->append(self::ENUM_TYPE, $value);
     }
@@ -451,7 +453,7 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Returns 'enum_type' list
      *
-     * @return \Google\Protobuf\Compiler\EnumDescriptorProto[]
+     * @return \Google\Protobuf\EnumDescriptorProto[]
      */
     public function getEnumType()
     {
@@ -473,7 +475,7 @@ class FileDescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\EnumDescriptorProto
+     * @return \Google\Protobuf\EnumDescriptorProto
      */
     public function getEnumTypeAt($offset)
     {
@@ -493,11 +495,11 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'service' list
      *
-     * @param \Google\Protobuf\Compiler\ServiceDescriptorProto $value Value to append
+     * @param \Google\Protobuf\ServiceDescriptorProto $value Value to append
      *
      * @return null
      */
-    public function appendService(\Google\Protobuf\Compiler\ServiceDescriptorProto $value)
+    public function appendService(\Google\Protobuf\ServiceDescriptorProto $value)
     {
         return $this->append(self::SERVICE, $value);
     }
@@ -515,7 +517,7 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Returns 'service' list
      *
-     * @return \Google\Protobuf\Compiler\ServiceDescriptorProto[]
+     * @return \Google\Protobuf\ServiceDescriptorProto[]
      */
     public function getService()
     {
@@ -537,7 +539,7 @@ class FileDescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\ServiceDescriptorProto
+     * @return \Google\Protobuf\ServiceDescriptorProto
      */
     public function getServiceAt($offset)
     {
@@ -557,11 +559,11 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'extension' list
      *
-     * @param \Google\Protobuf\Compiler\FieldDescriptorProto $value Value to append
+     * @param \Google\Protobuf\FieldDescriptorProto $value Value to append
      *
      * @return null
      */
-    public function appendExtension(\Google\Protobuf\Compiler\FieldDescriptorProto $value)
+    public function appendExtension(\Google\Protobuf\FieldDescriptorProto $value)
     {
         return $this->append(self::EXTENSION, $value);
     }
@@ -579,7 +581,7 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Returns 'extension' list
      *
-     * @return \Google\Protobuf\Compiler\FieldDescriptorProto[]
+     * @return \Google\Protobuf\FieldDescriptorProto[]
      */
     public function getExtension()
     {
@@ -601,7 +603,7 @@ class FileDescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\FieldDescriptorProto
+     * @return \Google\Protobuf\FieldDescriptorProto
      */
     public function getExtensionAt($offset)
     {
@@ -621,11 +623,11 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Sets value of 'options' property
      *
-     * @param \Google\Protobuf\Compiler\FileOptions $value Property value
+     * @param \Google\Protobuf\FileOptions $value Property value
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\Compiler\FileOptions $value)
+    public function setOptions(\Google\Protobuf\FileOptions $value)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -633,7 +635,7 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Returns value of 'options' property
      *
-     * @return \Google\Protobuf\Compiler\FileOptions
+     * @return \Google\Protobuf\FileOptions
      */
     public function getOptions()
     {
@@ -643,11 +645,11 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Sets value of 'source_code_info' property
      *
-     * @param \Google\Protobuf\Compiler\SourceCodeInfo $value Property value
+     * @param \Google\Protobuf\SourceCodeInfo $value Property value
      *
      * @return null
      */
-    public function setSourceCodeInfo(\Google\Protobuf\Compiler\SourceCodeInfo $value)
+    public function setSourceCodeInfo(\Google\Protobuf\SourceCodeInfo $value)
     {
         return $this->set(self::SOURCE_CODE_INFO, $value);
     }
@@ -655,7 +657,7 @@ class FileDescriptorProto extends \ProtobufMessage
     /**
      * Returns value of 'source_code_info' property
      *
-     * @return \Google\Protobuf\Compiler\SourceCodeInfo
+     * @return \Google\Protobuf\SourceCodeInfo
      */
     public function getSourceCodeInfo()
     {
