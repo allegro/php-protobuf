@@ -5,8 +5,8 @@ die("This is a stub file for IDEs, don't use it directly!");
 abstract class ProtobufMessage
 {
     const PB_TYPE_DOUBLE     = 1;
-    const PB_TYPE_FIXED_32   = 2;
-    const PB_TYPE_FIXED_64   = 3;
+    const PB_TYPE_FIXED32    = 2;
+    const PB_TYPE_FIXED64    = 3;
     const PB_TYPE_FLOAT      = 4;
     const PB_TYPE_INT        = 5;
     const PB_TYPE_SIGNED_INT = 6;
@@ -63,11 +63,12 @@ abstract class ProtobufMessage
     }
 
     /**
-     * @param int $position
-     * 
+     * @param int      $position
+     * @param int|null $offset
+     *
      * @return mixed
      */
-    public function get($position = -1)
+    public function get($position = -1, $offset = null)
     {
         
     }
