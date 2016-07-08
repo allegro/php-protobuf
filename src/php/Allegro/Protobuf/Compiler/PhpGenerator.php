@@ -23,6 +23,7 @@ class PhpGenerator
      * @param CodeGeneratorRequest $request
      *
      * @return CodeGeneratorResponse
+     * @throws GenerationException
      */
     public function generate(CodeGeneratorRequest $request) {
         $this->customArguments = array();
@@ -64,6 +65,7 @@ class PhpGenerator
      * @param FileDescriptorProto[] $fileDescriptorProtos
      *
      * @return FileDescriptor[]
+     * @throws GenerationException
      */
     private function _buildFileDescriptors(array $fileDescriptorProtos)
     {
@@ -79,6 +81,7 @@ class PhpGenerator
      * @param FileDescriptor[] $files
      *
      * @return null
+     * @throws GenerationException
      */
     private function _resolveFieldTypeDescriptors(array $files)
     {
@@ -112,6 +115,7 @@ class PhpGenerator
      * @param array             $typeDescriptorsByTypeName
      *
      * @return null
+     * @throws GenerationException
      */
     private function _resolveMessageFieldTypes($messageDescriptor, array $typeDescriptorsByTypeName)
     {
@@ -122,7 +126,7 @@ class PhpGenerator
                 if ($typeDescriptor) {
                     $fieldDescriptor->setTypeDescriptor($typeDescriptorsByTypeName[$typeName]);
                 } else {
-                    fputs(STDERR, 'Failed to resolve ' . $typeName . ' type' . PHP_EOL);
+                    throw new GenerationException('Failed to resolve ' . $typeName . ' type');
                 }
             }
         }
@@ -191,19 +195,32 @@ class PhpGenerator
             $this->_addMessageDescriptor($nestedDescriptorProto, $fileDescriptor, $messageDescriptor);
         }
 
+        $ignoredOneofs = array();
+
         foreach ($descriptorProto->getField() as $fieldDescriptorProto) {
-            $fieldDescriptor = new FieldDescriptor();
-            $fieldDescriptor->setName($fieldDescriptorProto->getName());
-            $fieldDescriptor->setDefault($fieldDescriptorProto->getDefaultValue());
-            $fieldDescriptor->setLabel($fieldDescriptorProto->getLabel());
-            $fieldDescriptor->setNumber($fieldDescriptorProto->getNumber());
-            $fieldDescriptor->setType($fieldDescriptorProto->getType());
-            $fieldDescriptor->setTypeName($fieldDescriptorProto->getTypeName());
-            $options = $fieldDescriptorProto->getOptions();
-            if ($options) {
-                $fieldDescriptor->setPacked($options->getPacked());
+            $oneofIndex = $fieldDescriptorProto->getOneofIndex();
+            if (!is_null($oneofIndex)) {
+                if (!in_array($oneofIndex, $ignoredOneofs)) {
+                    $oneofDescriptorProto = $descriptorProto->getOneofDeclAt($oneofIndex);
+                    $name = $oneofDescriptorProto->getName();
+                    Logger::warn("Ignoring '{$name}' field, "
+                        . 'oneof is not supported (https://github.com/allegro/php-protobuf/issues/72).');
+                    $ignoredOneofs[] = $oneofIndex;
+                }
+            } else {
+                $fieldDescriptor = new FieldDescriptor();
+                $fieldDescriptor->setName($fieldDescriptorProto->getName());
+                $fieldDescriptor->setDefault($fieldDescriptorProto->getDefaultValue());
+                $fieldDescriptor->setLabel($fieldDescriptorProto->getLabel());
+                $fieldDescriptor->setNumber($fieldDescriptorProto->getNumber());
+                $fieldDescriptor->setType($fieldDescriptorProto->getType());
+                $fieldDescriptor->setTypeName($fieldDescriptorProto->getTypeName());
+                $options = $fieldDescriptorProto->getOptions();
+                if ($options) {
+                    $fieldDescriptor->setPacked($options->getPacked());
+                }
+                $messageDescriptor->addField($fieldDescriptor);
             }
-            $messageDescriptor->addField($fieldDescriptor);
         }
     }
 

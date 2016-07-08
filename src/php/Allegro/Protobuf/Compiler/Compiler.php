@@ -20,13 +20,17 @@ class Compiler
             try {
                 $request->parseFromString($data);
             } catch (\Exception $ex) {
-                $this->log('ERROR: Unable to parse a message passed by protoc.');
-                $this->log('       ' . $ex->getMessage() . '.');
+                Logger::error('Unable to parse a message passed by protoc.' . $ex->getMessage() . '.');
                 exit(1);
             }
             $generator = new PhpGenerator();
-            $response = $generator->generate($request);
-            echo $response->serializeToString();
+            try {
+                $response = $generator->generate($request);
+                echo $response->serializeToString();
+            } catch (GenerationException $ex) {
+                Logger::error($ex->getMessage() . '.');
+                exit(1);
+            }
         } else {
             if ($this->isWin()) {
                 $pluginExecutable = substr($pluginExecutable, 0, -3) . 'bat';
@@ -141,9 +145,8 @@ class Compiler
         passthru($cmdStr, $return);
 
         if ($return !== 0) {
-            $this->log('');
-            $this->log('ERROR: protoc exited with an exit status (' . $return . ') when executed with: ');
-            $this->log('  ' . implode(" \\\n    ", $cmd));
+            Logger::error('protoc exited with an exit status ' . $return . ' when executed with: ' . PHP_EOL
+                . '  ' . implode(" \\\n    ", $cmd));
             exit($return);
         }
     }
@@ -158,20 +161,18 @@ class Compiler
         exec("$protocExecutable --version", $output, $return);
 
         if (0 !== $return && 1 !== $return) {
-            $this->log('ERROR: Unable to find the protoc command.');
-            $this->log('       Please make sure it\'s installed and available in the path.');
+            Logger::error('Unable to find the protoc command. Please make sure it\'s installed and available in the path.');
             exit(1);
         }
 
         if (!preg_match('/[0-9\.]+/', $output[0], $m)) {
-            $this->log('ERROR: Unable to get protoc command version.');
-            $this->log('       Please make sure it\'s installed and available in the path.');
+            Logger::error('Unable to get protoc command version. Please make sure it\'s installed and available in the path.');
             exit(1);
         }
 
         if (version_compare($m[0], self::MINIMUM_PROTOC_VERSION) < 0) {
-            $this->log('ERROR: The protoc command in your system is too old.');
-            $this->log('       Minimum required version is ' . self::MINIMUM_PROTOC_VERSION . ' but found ' . $m[0]);
+            Logger::error('The protoc command in your system is too old. Minimum required version is '
+                . self::MINIMUM_PROTOC_VERSION . ' but found ' . $m[0]);
             exit(1);
         }
     }
@@ -197,15 +198,5 @@ class Compiler
         }
 
         return http_build_query($args, '', '&');
-    }
-
-    /**
-     * @param string $message
-     * 
-     * @return null
-     */
-    private function log($message)
-    {
-        fputs(STDERR, $message . PHP_EOL);
     }
 }
