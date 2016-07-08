@@ -96,7 +96,7 @@ class Compiler
             'long_name'     => '--define',
             'action'        => 'StoreArray',
             'multiple'      => true,
-            'description'   => 'Define a generator option (i.e. -Dnamespace=Foo\Bar\Baz).',
+            'description'   => 'Define a generator option (i.e. -Dnamespace=\'Foo\Bar\Baz\').',
         ));
 
         $parser->addArgument('file', array(

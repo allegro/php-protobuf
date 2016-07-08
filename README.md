@@ -1,51 +1,140 @@
-PHP Protobuf - Fast PHP Protocol Buffers implementation
-=======================================================
+PHP Protobuf - Google's Protocol Buffers for PHP
+================================================
 
 Overview
 --------
 
 [Protocol Buffers][1] are a way of encoding structured data in an efficient yet extensible format. It might be used in file formats and RPC protocols.
 
-PHP Protobuf is PHP implementation of Google's Protocol Buffers. Parsing and serialization is provided by ProtobufMessage class which is entirely implemented in extension providing high performance.
+PHP Protobuf is Google's Protocol Buffers implementation for PHP with a goal to provide high performance, including a `protoc` plugin to generate PHP classes from .proto files. The heavy-lifting (a parsing and a serialization) is done by a PHP extension.
 
-PHP Protobuf is highly portable and has no external dependencies. Compiler is written from scratch in pure PHP. Extension has no OS-specific requirements.
+### Requirements
+* PHP 5.3 or above
+* Pear's Console_CommandLine (for the protoc plugin)
+* Google's protoc compiler version 2.6 or above
 
-Extension is PECL-compliant so compilation is easy. All that is needed are PHP developer tools (i.e. phpize).
+## Getting started
+
+### Installation
+1. Clone the source code
+
+    ```
+    git clone https://github.com/allegro/php-protobuf
+    ```
+1. Go to the source code directory
+
+    ```
+    cd php-protobuf
+    ```
+1. Build and install the PHP extension (follow instructions at [php.net][2])
+
+1. Install protoc plugin dependencies
+
+    ```
+    composer install
+    ```
+
+### Usage
+
+1. Assume you have a file `foo.proto`
+    ```
+    message Foo
+    {
+        required int32 bar = 1;
+        optional string baz = 2;
+        repeated float spam = 3;
+    }
+    ```
+
+1. Compile `foo.proto`
+    ```
+    php protoc-gen-php.php foo.proto
+    ```
+
+1. Create `Foo` message and populate it with some data
+    ```php
+    require_once 'Foo.php';
+    
+    $foo = new Foo();
+    $foo->setBar(1);
+    $foo->setBaz('two');
+    $foo->appendSpam(3.0);
+    $foo->appendSpam(4.0);
+    ```
+
+1. Serialize a message to a string
+    ```php
+    $packed = $foo->serializeToString();
+    ```
+
+1. Parse a message from a string
+    ```php
+    $parseFoo = new Foo();
+    try {
+        $parsedFoo->parseFromString($packed);
+    } catch (Exception $ex) {
+        die('Oops.. there is a bug in this example, ' . $ex->getMessage());
+    }
+    ```
+
+1. Let's see what we parsed out
+
+    ```php
+    $parsedFoo->dump();
+    ```
+
+    It should produce output similar to the following:
+    ```
+    Foo {
+      1: bar => 1
+      2: baz => 'two'
+      3: spam(2) =>
+        [0] => 3
+        [1] => 4
+    }
+    ```
 
 Guide
 -----
 
-### Compilation ###
+### Compilation
 
-Use *protoc-php.php* script to compile your *proto* files. It requires extension to be installed.
+PHP Protobuf comes with Google's protoc compiler plugin. You can run in directly:
 
-    php protoc-php.php foo.proto
+    php protoc-gen-php.php -o output_dir foo.proto
 
-Specify *--use-namespaces* or *-n* option to generate classes using native PHP namespaces.
+or pass it to the *protoc*:
 
-    php protoc-php.php -n foo.proto
+    protoc --plugin=protoc-gen-php.php --php_out=output_dir foo.proto
+    
+Put `protoc-php-gen.php` on the *PATH* or pass absolute path to `protoc`.
 
-### Package ###
+On Windows use `protoc-gen-php.bat` instead.
 
-If a proto file is compiled with a -n / --use-namespaces option a package is represented as an namespace. Otherwise message and enum name is prefixed with it seperated by underscore. The package name is composed of a respective first-upper-case parts seperated by underscore.
+#### Command line options
 
-### Message and enum name ###
+* -o out, --out=out - the destination directory for generated files (defaults to the current directory).
+* -I proto_path, --proto_path=proto_path - the directory in which to search for imports.
+* --protoc=protoc - the protoc compiler executable path.
+* -D define, --define=define - define a generator option (i.e. -Dnamespace='Foo\Bar\Baz').
 
-* underscore seperated name is converted to CamelCased
-* embedded name is composed of parent message name seperated by underscore
+#### Generator options
+* namespace - the namespace to be used by the generated PHP classes.
 
-### Message interface ###
+### Message class
 
-PHP Protobuf module implements *ProtobufMessage* class which encapsulates protocol logic. Message compiled from *proto* file extends this class providing message field descriptors. Based on these descriptors *ProtobufMessage* knows how to parse and serialize messages of the given type.
+The classes generated during the compilation are PSR-0 compliant (each class is put into it's own file). If `namespace` generator option is not defined then a package name (if present) is used to create a namespace. If the package name is not set then a class is put into global space. 
 
-For each field a set of accessors is generated. Methods actualy accessible are different for single value fields (*required* / *optional*) and multi-value fields (*repeated*).
+PHP Protobuf module implements `ProtobufMessage` class which encapsulates the protocol logic. A message compiled from a proto file extends this class providing message field descriptors. Based on these descriptors *ProtobufMessage* knows how to parse and serialize a message of a given type.
 
-* *required* / *optional*
+For each field a set of accessors is generated. The set of methods is different for single value fields (`required` / `optional`) and multi-value fields (`repeated`).
+
+* `required` / `optional`
 
         get{FIELD}()        // return field value
         set{FIELD}($value)  // set field value to $value
 
-* repeated
+* `repeated`
 
         append{FIELD}($value)       // append $value value to field
         clear{FIELD}()              // empty field
@@ -54,17 +143,15 @@ For each field a set of accessors is generated. Methods actualy accessible are d
         getCount{FIELD}()           // return number of field values
         getIterator{FIELD}($index)  // return ArrayIterator for field values
 
-{FIELD} is camel cased field name.
+{FIELD} is a camel cased field name.
 
-### Enums ###
+### Enum
 
-PHP does not natively support enum type. Hence enum is compiled to a class with set of constants.
+PHP does not natively support enum type. Hence enum is represented by the PHP integer type. For convenience enum is compiled to a class with set of constants corresponding to its possible values.
 
-Enum field is simple PHP integer type.
+### Type mapping
 
-### Type mapping ###
-
-Range of available build-in PHP types poses some limitations. PHP does not support 64-bit positive integer type. Note that parsing big integer values might result in getting unexpected results.
+The range of available build-in PHP types poses some limitations. PHP does not support 64-bit positive integer type. Note that parsing big integer values might result in getting unexpected results.
 
 Protocol Buffers types map to PHP types as follows:
 
@@ -89,97 +176,47 @@ Protocol Buffers types map to PHP types as follows:
     | string           | string |
     | bytes            |        |
 
-Not set value is represented by *null* type. To unset value just set its value to *null*.
+Not set value is represented by `null` type. To unset value just set its value to `null`.
 
-### Parsing ###
+### Parsing
 
-To parse message create message class instance and call its *parseFromString* method passing it prior to the serialized message. Errors encountered are signaled by throwing *Exception*. Exception message provides detailed explanation. Required fields not set are silently ignored.
+To parse message create a message class instance and call its `parseFromString` method passing it a serialized message. The errors encountered are signaled by throwing `Exception`. Exception message provides detailed explanation. Required fields not set are silently ignored.
 
-    $packed = /* serialized FooMessage */;
-    $foo = new FooMessage();
+```php
+$packed = /* serialized FooMessage */;
+$foo = new FooMessage();
 
-    try {
-        $foo->parseFromString($packed);
-    } catch (Exception $ex) {
-        die('Parse error: ' . $e->getMessage());
-    }
+try {
+    $foo->parseFromString($packed);
+} catch (Exception $ex) {
+    die('Parse error: ' . $e->getMessage());
+}
 
-    $foo->dump(); // see what you got
+$foo->dump(); // see what you got
+```
 
-### Serialization ###
+### Serialization
 
-To serialize message call *serializeToString* method. It returns a string containing protobuf-encoded message. Errors encountered are signaled by throwing *Exception*. Exception message provides detailed explanation. Required field not set triggers an error.
+To serialize a message call `serializeToString` method. It returns a string containing protobuf-encoded message. The errors encountered are signaled by throwing `Exception`. Exception message provides detailed explanation. A required field not set triggers an error.
 
-    $foo = new FooMessage()
-    $foo->setBar(1);
+```php
+$foo = new FooMessage()
+$foo->setBar(1);
 
-    try {
-        $packed = $foo->serializeToString();
-    } catch (Exception $ex) {
-        die 'Serialize error: ' . $e->getMessage();
-    }
+try {
+    $packed = $foo->serializeToString();
+} catch (Exception $ex) {
+    die 'Serialize error: ' . $e->getMessage();
+}
 
-    /* do some cool stuff with protobuf-encoded $packed */
+/* do some cool stuff with protobuf-encoded $packed */
+```
 
-### Dumping ###
+### Dumping
 
-There might be situations you need to investigate what actual content of the given message is. What *var_dump* gives on message instance is somewhat obscure.
+There might be situations you need to investigate what an actual content of a given message is. What `var_dump` gives on a message instance is somewhat obscure.
 
-*ProtobufMessage* class comes with *dump* method which prints out a message content to the standard output. It takes one optional argument specifing whether you want to dump only set fields. By default it dumps only set fields. Pass *false* as argument to dump all fields. Format it produces is similar to *var_dump*.
-
-### Example ###
-
-* *foo.proto*
-
-        message Foo
-        {
-            required int32 bar = 1;
-            optional string baz = 2;
-            repeated float spam = 3;
-        }
-
-* *pb_proto_foo.php*
-
-        php protoc-php.php foo.proto
-
-* *foo.php*
-
-        <?php
-            require_once 'pb_proto_foo.php';
-
-            $foo = new Foo();
-            $foo->setBar(1);
-            $foo->setBaz('two');
-            $foo->appendSpam(3.0);
-            $foo->appendSpam(4.0);
-
-            $packed = $foo->serializeToString();
-
-            $foo->clear();
-
-            try {
-                $foo->parseFromString($packed);
-            } catch (Exception $ex) {
-                die('Upss.. there is a bug in this example');
-            }
-
-            $foo->dump();
-        ?>
-
-`php foo.php` should produce following output:
-
-    Foo {
-      1: bar => 1
-      2: baz => 'two'
-      3: spam(2) =>
-        [0] => 3
-        [1] => 4
-    }
-
-Compatibility
--------------
-
-PHP Protobuf does not support repeated packed fields.
+The `ProtobufMessage` class comes with `dump` method which prints out a message content to the standard output. It takes one optional argument specifying whether you want to dump only fields thar are set. By default it dumps only set fields. Pass `false` as an argument to dump all fields. Format it produces is similar to `var_dump`.
 
 IDE Helper and Auto-Complete Support
 ------------------------------------
@@ -192,3 +229,4 @@ References
 * [Protocol Buffers][1]
 
 [1]: http://code.google.com/p/protobuf/ "Protocol Buffers"
+[2]: http://php.net/manual/en/install.pecl.phpize.php
