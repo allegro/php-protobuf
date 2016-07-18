@@ -77,25 +77,6 @@ static int pb_serialize_packed_field(zval *this, writer_t *writer, long field_nu
 static ulong PB_FIELD_TYPE_HASH;
 static ulong PB_VALUES_PROPERTY_HASH;
 
-static const uint32_t primeFor32Bit = 16777619;
-static const uint32_t offsetBiasFor32Bit = 2166136261;
-
-static uint32_t static_hash(const char * string, const int length, const uint32_t hash)
-{
-	return (length > 0) ? static_hash(string + 1, length - 1, (hash ^ *string) * primeFor32Bit) : hash;
-}
-
-PHP_FUNCTION(fnvhash)
-{
-	char * str;
-    int str_len;
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &str, &str_len) == FAILURE) {
-		zend_throw_exception(zend_exception_get_default(TSRMLS_C), "Missing String", 0 TSRMLS_CC);
-    }
-
-    RETURN_LONG(static_hash(str, str_len, offsetBiasFor32Bit));
-}
-
 PHP_METHOD(ProtobufMessage, __construct)
 {
 	zval *values;
@@ -664,15 +645,6 @@ static zend_function_entry pb_methods[] = {
 	{NULL, NULL, NULL, 0, 0}
 };
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_fnvhash, 0, 0, 1)
-	ZEND_ARG_INFO(0, packed)
-ZEND_END_ARG_INFO()
-
-static zend_function_entry free_functions[] = {
-    PHP_FE(fnvhash, arginfo_fnvhash)
-    {NULL, NULL, NULL}
-};
-
 PHP_MINIT_FUNCTION(protobuf)
 {
 	zend_class_entry ce;
@@ -700,7 +672,7 @@ zend_module_entry protobuf_module_entry = {
 	STANDARD_MODULE_HEADER,
 #endif
 	PHP_PROTOBUF_EXTNAME,
-	free_functions,
+	NULL,
 	PHP_MINIT(protobuf),
 	NULL,
 	NULL,
