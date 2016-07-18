@@ -59,7 +59,7 @@ enum
 zend_class_entry *pb_entry;
 
 static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_number);
-static int pb_print_field_value(zval **value, long level, zend_bool only_set, const char * call);
+static int pb_print_field_value(zval **value, long level, zend_bool only_set);
 static int pb_dump_field_value(zval **value, long level, zend_bool only_set);
 static int pb_print_debug_field_value(zval **value, long level);
 static zval **pb_get_field_type(zval *this, zval **field_descriptors, uint32_t field_number);
@@ -142,7 +142,6 @@ PHP_METHOD(ProtobufMessage, clear)
 
 PHP_METHOD(ProtobufMessage, printDebugString)
 {
-	zend_bool only_set = 1;
 	int indent;
 	char indent_char;
 	long level = 0;
@@ -151,7 +150,7 @@ PHP_METHOD(ProtobufMessage, printDebugString)
 	HashPosition i, j;
 	zval **field_descriptor, *field_descriptors, **val, **value, **values;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|bl", &only_set, &level) == FAILURE || level < 0) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &level) == FAILURE || level < 0) {
 		return;
 	}
 
@@ -600,11 +599,12 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_clear, 0, 0, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_printDebugString, 0, 0, 0)
+	ZEND_ARG_INFO(0, level)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_dump, 0, 0, 0)
 	ZEND_ARG_INFO(0, onlySet)
-	ZEND_ARG_INFO(0, indendation)
+	ZEND_ARG_INFO(0, level)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_count, 0, 0, 1)
@@ -749,37 +749,15 @@ fail0:
 	return -1;
 }
 
-static int pb_print_field_value(zval **value, long level, zend_bool only_set, const char *call)
+static int pb_print_field_value(zval **value, long level, zend_bool only_set)
 {
 	const char *string_value;
-	zval tmp, ret, arg0, arg1, *args[2];
+	zval tmp;
 	TSRMLS_FETCH();
 
 	INIT_ZVAL(tmp);
 
-	if (Z_TYPE_PP(value) == IS_OBJECT) {
-		php_printf("\n");
-
-		INIT_ZVAL(arg0);
-		Z_TYPE(arg0) = IS_BOOL;
-		Z_LVAL(arg0) = only_set;
-		Z_ADDREF(arg0);
-
-		INIT_ZVAL(arg1);
-		Z_TYPE(arg1) = IS_LONG;
-		Z_LVAL(arg1) = level;
-		Z_ADDREF(arg1);
-
-		args[0] = &arg0;
-		args[1] = &arg1;
-
-		ZVAL_STRING(&tmp, call, 0);
-
-		if (call_user_function(NULL, value, &tmp, &ret, 2, args TSRMLS_CC) == FAILURE)
-			return -1;
-		else
-			return 0;
-	} else if (Z_TYPE_PP(value) == IS_NULL)
+	if (Z_TYPE_PP(value) == IS_NULL)
 		string_value = "null";
 	else if (Z_TYPE_PP(value) == IS_BOOL) {
 		if (Z_BVAL_PP(value) )
@@ -807,12 +785,64 @@ static int pb_print_field_value(zval **value, long level, zend_bool only_set, co
 
 static int pb_print_debug_field_value(zval **value, long level)
 {
-	return pb_print_field_value(value, level, 1, PB_PRINT_DEBUG_STRING_METHOD);
+	zval tmp, ret, arg0, *args[1];
+	TSRMLS_FETCH();
+
+	INIT_ZVAL(tmp);
+
+	if (Z_TYPE_PP(value) == IS_OBJECT) {
+		php_printf("\n");
+
+		INIT_ZVAL(arg0);
+		Z_TYPE(arg0) = IS_LONG;
+		Z_LVAL(arg0) = level;
+		Z_ADDREF(arg0);
+
+		args[0] = &arg0;
+
+		ZVAL_STRING(&tmp, PB_PRINT_DEBUG_STRING_METHOD, 0);
+
+		if (call_user_function(NULL, value, &tmp, &ret, 1, args TSRMLS_CC) == FAILURE)
+			return -1;
+		else
+			return 0;
+	}
+
+	return pb_print_field_value(value, level, 1);
 }
 
 static int pb_dump_field_value(zval **value, long level, zend_bool only_set)
 {
-	return pb_print_field_value(value, level, only_set, PB_DUMP_METHOD);
+	zval tmp, ret, arg0, arg1, *args[2];
+	TSRMLS_FETCH();
+
+	INIT_ZVAL(tmp);
+
+	if (Z_TYPE_PP(value) == IS_OBJECT) {
+		php_printf("\n");
+
+		INIT_ZVAL(arg0);
+		Z_TYPE(arg0) = IS_BOOL;
+		Z_LVAL(arg0) = only_set;
+		Z_ADDREF(arg0);
+
+		INIT_ZVAL(arg1);
+		Z_TYPE(arg1) = IS_LONG;
+		Z_LVAL(arg1) = level;
+		Z_ADDREF(arg1);
+
+		args[0] = &arg0;
+		args[1] = &arg1;
+
+		ZVAL_STRING(&tmp, PB_DUMP_METHOD, 0);
+
+		if (call_user_function(NULL, value, &tmp, &ret, 2, args TSRMLS_CC) == FAILURE)
+			return -1;
+		else
+			return 0;
+	}
+
+	return pb_print_field_value(value, level, only_set);
 }
 
 static zval **pb_get_field_descriptor(zval *this, zval *field_descriptors, uint32_t field_number)
