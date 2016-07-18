@@ -6,6 +6,7 @@ use Google\Protobuf\Compiler\CodeGeneratorRequest;
 class Compiler
 {
     const MINIMUM_PROTOC_VERSION = '2.6.0';
+    const VERSION = '0.11.0';
 
     /**
      * @param string $pluginExecutable
@@ -66,7 +67,7 @@ class Compiler
      */
     private function parseArguments()
     {
-        $parser = new \Console_CommandLine();
+        $parser = new \Console_CommandLine(array('version' => self::VERSION));
 
         $parser->addOption('out', array(
             'short_name'    => '-o',
