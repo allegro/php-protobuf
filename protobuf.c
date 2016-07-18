@@ -174,8 +174,7 @@ PHP_METHOD(ProtobufMessage, printDebugString)
 		if ((field_name = pb_get_field_name(getThis(), field_number)) == NULL)
 			return;
 
-		if (Z_TYPE_PP(value) == IS_ARRAY)
-		{
+		if (Z_TYPE_PP(value) == IS_ARRAY) {
 			if (zend_hash_num_elements(Z_ARRVAL_PP(value)) == 0)
 				continue;
 
@@ -192,28 +191,23 @@ PHP_METHOD(ProtobufMessage, printDebugString)
 				if (Z_TYPE_PP(value) == IS_NULL)
 					continue;
 
-				if ((wire == WIRE_TYPE_LENGTH_DELIMITED && Z_TYPE_PP(val) != IS_STRING) || wire == -1)
-				{
+				if ((wire == WIRE_TYPE_LENGTH_DELIMITED && Z_TYPE_PP(val) != IS_STRING) || wire == -1) {
 					php_printf("%*c%s {", indent, indent_char, field_name);
 					if (pb_print_debug_field_value(val, level + 1) != 0)
 						return;
 					php_printf("%*c}\n", indent, indent_char);
-				} else
-				{
+				} else {
 					php_printf("%*c%s:", indent, indent_char, field_name);
 					if (pb_print_debug_field_value(val, level + 1) != 0)
 						return;
 				}
 			}
-
-		} else if (Z_TYPE_PP(value) == IS_OBJECT)
-		{
+		} else if (Z_TYPE_PP(value) == IS_OBJECT) {
 			php_printf("%*c%s {", indent, indent_char, field_name);
 			if (pb_print_debug_field_value(value, level + 1) != 0)
 				return;
 			php_printf("%*c}\n", indent, indent_char);
-		} else if (Z_TYPE_PP(value) != IS_NULL)
-		{
+		} else if (Z_TYPE_PP(value) != IS_NULL) {
 			php_printf("%*c%s:", indent, indent_char, field_name);
 			if (pb_print_debug_field_value(value, level + 1) != 0)
 				return;
@@ -755,7 +749,7 @@ fail0:
 	return -1;
 }
 
-static int pb_print_field_value(zval **value, long level, zend_bool only_set, const char * call)
+static int pb_print_field_value(zval **value, long level, zend_bool only_set, const char *call)
 {
 	const char *string_value;
 	zval tmp, ret, arg0, arg1, *args[2];
