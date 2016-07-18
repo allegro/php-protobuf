@@ -12,9 +12,9 @@
 
 static inline int writer_ensure_space(writer_t *writer, size_t len);
 static inline void writer_write_varint(writer_t *writer, int64_t value);
-
-static inline void write_fixed32(fixed32_t value, uint8_t *out);
-static inline void write_fixed64(fixed64_t value, uint8_t *out);
+static inline void write_fixed32(writer_t *writer, fixed32_t value);
+static inline void write_fixed64(writer_t *writer, fixed64_t value);
+static inline void zigzag_encode(int64_t *value);
 
 void writer_free_pack(writer_t *writer)
 {
@@ -29,18 +29,22 @@ void writer_free_pack(writer_t *writer)
 
 void writer_init(writer_t *writer)
 {
-	if ((writer->data = (uint8_t *) emalloc(WRITER_DATA_SIZE_INCREMENT)) != NULL)
-		writer->size = WRITER_DATA_SIZE_INCREMENT;
+	writer_init_ex(writer, WRITER_DATA_SIZE_INCREMENT);
+}
+
+void writer_init_ex(writer_t *writer, size_t size)
+{
+	if ((writer->data = (uint8_t *) emalloc(size)) != NULL)
+		writer->size = size;
 	else
 		writer->size = 0;
 
 	writer->pos = 0;
 }
 
-char *writer_get_pack(writer_t *writer, int *size)
+char *writer_get_pack(writer_t *writer, size_t *size)
 {
 	*size = writer->pos;
-	writer->data[writer->pos] = '\0';
 	return (char *) writer->data;
 }
 
@@ -57,8 +61,7 @@ int writer_write_double(writer_t *writer, uint64_t field_number, double value)
 	writer_write_varint(writer, key);
 
 	val.d_val = value;
-	write_fixed64(val, writer->data + writer->pos);
-	writer->pos += WRITER_64BIT_SPACE;
+	write_fixed64(writer, val);
 
 	return 0;
 }
@@ -76,8 +79,7 @@ int writer_write_fixed32(writer_t *writer, uint64_t field_number, int32_t value)
 	writer_write_varint(writer, key);
 
 	val.i_val = value;
-	write_fixed32(val, writer->data + writer->pos);
-	writer->pos += WRITER_32BIT_SPACE;
+	write_fixed32(writer, val);
 
 	return 0;
 }
@@ -95,8 +97,7 @@ int writer_write_fixed64(writer_t *writer, uint64_t field_number, int64_t value)
 	writer_write_varint(writer, key);
 
 	val.i_val = value;
-	write_fixed64(val, writer->data + writer->pos);
-	writer->pos += WRITER_64BIT_SPACE;
+	write_fixed64(writer, val);
 
 	return 0;
 }
@@ -114,8 +115,7 @@ int writer_write_float(writer_t *writer, uint64_t field_number, double value)
 	writer_write_varint(writer, key);
 
 	val.f_val = value;
-	write_fixed32(val, writer->data + writer->pos);
-	writer->pos += WRITER_32BIT_SPACE;
+	write_fixed32(writer, val);
 
 	return 0;
 }
@@ -146,10 +146,7 @@ int writer_write_signed_int(writer_t *writer, uint64_t field_number, int64_t val
 
 	writer_write_varint(writer, key);
 
-	if (value < 0)
-		*(uint64_t *) &value = ((uint64_t) (-value) * 2) - 1;
-	else
-		*(uint64_t *) &value = 2 * value;
+	zigzag_encode(&value);
 
 	writer_write_varint(writer, value);
 
@@ -173,12 +170,196 @@ int writer_write_string(writer_t *writer, uint64_t field_number, const char *str
 	return 0;
 }
 
+int writer_write_packed_double(writer_t *writer, uint64_t field_number, zval *values)
+{
+	fixed64_t val;
+	HashPosition i;
+	zval *value;
+	writer_t packed_writer;
+	int ret, num;
+	size_t pack_size;
+	char *pack;
+
+	num = zend_hash_num_elements(Z_ARRVAL_P(values));
+	if (num == 0) {
+		return 0;
+	}
+
+	writer_init_ex(&packed_writer, WRITER_64BIT_SPACE * num);
+
+	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val.d_val = Z_DVAL_P(value);
+		write_fixed64(&packed_writer, val);
+	}
+
+	pack = writer_get_pack(&packed_writer, &pack_size);
+	ret = writer_write_string(writer, field_number, pack, pack_size);
+	writer_free_pack(&packed_writer);
+
+	return ret;
+}
+
+int writer_write_packed_fixed32(writer_t *writer, uint64_t field_number, zval *values)
+{
+	fixed32_t val;
+	HashPosition i;
+	zval *value;
+	writer_t packed_writer;
+	int ret, num;
+	size_t pack_size;
+	char *pack;
+
+	num = zend_hash_num_elements(Z_ARRVAL_P(values));
+	if (num == 0) {
+		return 0;
+	}
+
+	writer_init_ex(&packed_writer, WRITER_32BIT_SPACE * num);
+
+	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val.i_val = (int32_t)Z_LVAL_P(value);
+		write_fixed32(&packed_writer, val);
+	}
+
+	pack = writer_get_pack(&packed_writer, &pack_size);
+	ret = writer_write_string(writer, field_number, pack, pack_size);
+	writer_free_pack(&packed_writer);
+
+	return ret;
+}
+
+int writer_write_packed_fixed64(writer_t *writer, uint64_t field_number, zval *values)
+{
+	fixed64_t val;
+	HashPosition i;
+	zval *value;
+	writer_t packed_writer;
+	int ret, num;
+	size_t pack_size;
+	char *pack;
+
+	num = zend_hash_num_elements(Z_ARRVAL_P(values));
+	if (num == 0) {
+		return 0;
+	}
+
+	writer_init_ex(&packed_writer, WRITER_64BIT_SPACE * num);
+
+	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val.i_val = Z_LVAL_P(value);
+		write_fixed64(&packed_writer, val);
+	}
+
+	pack = writer_get_pack(&packed_writer, &pack_size);
+	ret = writer_write_string(writer, field_number, pack, pack_size);
+	writer_free_pack(&packed_writer);
+
+	return ret;
+}
+
+int writer_write_packed_float(writer_t *writer, uint64_t field_number, zval *values)
+{
+	fixed32_t val;
+	HashPosition i;
+	zval *value;
+	writer_t packed_writer;
+	int ret, num;
+	size_t pack_size;
+	char *pack;
+
+	num = zend_hash_num_elements(Z_ARRVAL_P(values));
+	if (num == 0) {
+		return 0;
+	}
+
+	writer_init_ex(&packed_writer, WRITER_32BIT_SPACE * num);
+
+	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val.f_val = Z_DVAL_P(value);
+		write_fixed32(&packed_writer, val);
+	}
+
+	pack = writer_get_pack(&packed_writer, &pack_size);
+	ret = writer_write_string(writer, field_number, pack, pack_size);
+	writer_free_pack(&packed_writer);
+
+	return ret;
+}
+
+int writer_write_packed_int(writer_t *writer, uint64_t field_number, zval *values)
+{
+	int64_t val;
+	HashPosition i;
+	zval *value;
+	writer_t packed_writer;
+	int ret, num;
+	size_t pack_size;
+	char *pack;
+
+	num = zend_hash_num_elements(Z_ARRVAL_P(values));
+	if (num == 0) {
+		return 0;
+	}
+
+	writer_init_ex(&packed_writer, WRITER_VARINT_SPACE * num);
+
+	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val = Z_LVAL_P(value);
+		writer_write_varint(&packed_writer, val);
+	}
+
+	pack = writer_get_pack(&packed_writer, &pack_size);
+	ret = writer_write_string(writer, field_number, pack, pack_size);
+	writer_free_pack(&packed_writer);
+
+	return ret;
+}
+
+int writer_write_packed_signed_int(writer_t *writer, uint64_t field_number, zval *values)
+{
+	int64_t val;
+	HashPosition i;
+	zval *value;
+	writer_t packed_writer;
+	int ret, num;
+	size_t pack_size;
+	char *pack;
+
+	num = zend_hash_num_elements(Z_ARRVAL_P(values));
+	if (num == 0) {
+		return 0;
+	}
+
+	writer_init_ex(&packed_writer, WRITER_VARINT_SPACE * num);
+
+	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		val = Z_LVAL_P(value);
+		zigzag_encode(&val);
+		writer_write_varint(&packed_writer, val);
+	}
+
+	pack = writer_get_pack(&packed_writer, &pack_size);
+	ret = writer_write_string(writer, field_number, pack, pack_size);
+	writer_free_pack(&packed_writer);
+
+	return ret;
+}
+
 static inline int writer_ensure_space(writer_t *writer, size_t space)
 {
 	uint8_t *data;
+	size_t left_space;
 
-	if ((writer->size - writer->pos) + 1 < space) {
-		writer->size += space;
+	left_space = writer->size - writer->pos;
+
+	if (left_space < space) {
+		writer->size += (space - left_space);
 		data = (uint8_t *) erealloc(writer->data, writer->size);
 
 		if (data == NULL)
@@ -219,8 +400,10 @@ static inline void writer_write_varint(writer_t *writer, int64_t value)
 	}
 }
 
-static inline void write_fixed32(fixed32_t value, uint8_t *out)
+static inline void write_fixed32(writer_t *writer, fixed32_t value)
 {
+	uint8_t *out;
+	out = writer->data + writer->pos;
 #ifndef WORDS_BIGENDIAN
 	memcpy(out, &value.u_val, 4);
 #else
@@ -229,12 +412,17 @@ static inline void write_fixed32(fixed32_t value, uint8_t *out)
 	out[2] = value.u_val >> 16;
 	out[3] = value.u_val >> 24;
 #endif
+
+	writer->pos += WRITER_32BIT_SPACE;
 }
 
-static inline void write_fixed64(fixed64_t value, uint8_t *out)
+static inline void write_fixed64(writer_t *writer, fixed64_t value)
 {
 #ifndef WORDS_BIGENDIAN
+	uint8_t *out;
+	out = writer->data + writer->pos;
 	memcpy(out, &value.u_val, 8);
+	writer->pos += WRITER_64BIT_SPACE;
 #else
 	fixed32_t lo;
 	lo.u_val = value.u_val;
@@ -242,7 +430,15 @@ static inline void write_fixed64(fixed64_t value, uint8_t *out)
 	fixed32_t hi;
 	hi.u_val = value.u_val >> 32;
 
-	write_fixed32(lo, out);
-	write_fixed32(hi, out + 4);
+	write_fixed32(writer, lo);
+	write_fixed32(writer, hi);
 #endif
+}
+
+static inline void zigzag_encode(int64_t *value)
+{
+	if (*value < 0)
+		*(uint64_t *) value = ((uint64_t) (-(*value)) * 2) - 1;
+	else
+		*(uint64_t *) value = 2 * (*value);
 }

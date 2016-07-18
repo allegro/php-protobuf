@@ -4,7 +4,7 @@ Protocol Buffers setting floating-point value
 <?php require 'skipif.inc' ?>
 --FILE--
 <?php
-require 'test.inc';
+require 'Foo.php';
 
 $foo = new Foo();
 
