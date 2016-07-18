@@ -18,7 +18,7 @@ $expected->appendRepeatedObjField($bar1);
 $expected->appendRepeatedObjField($bar2);
 
 $actual = new Foo();
-$actual->parseFromString(base64_decode('kgEJCZqZmZmZmfE/kgEJCZqZmZmZmQFA'));
+$actual->parseFromString(base64_decode('ygEJCZqZmZmZmfE/ygEJCZqZmZmZmQFA'));
 
 var_dump($expected == $actual);
 ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2016-07-04 21:08:58
+ * Auto generated from test.proto at 2016-07-18 19:04:02
  */
 
 namespace {
@@ -34,6 +34,7 @@ class Foo extends \ProtobufMessage
     const INT32_PACKED_FIELD = 22;
     const SINT32_PACKED_FIELD = 23;
     const BOOL_PACKED_FIELD = 24;
+    const REPEATED_OBJ_FIELD = 25;
 
     /* @var array Field descriptors */
     protected static $fields = array(
@@ -164,6 +165,11 @@ class Foo extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
             'packed' => true
         ),
+        self::REPEATED_OBJ_FIELD => array(
+            'name' => 'repeated_obj_field',
+            'repeated' => true,
+            'type' => '\Bar'
+        ),
     );
 
     /**
@@ -205,6 +211,7 @@ class Foo extends \ProtobufMessage
         $this->values[self::INT32_PACKED_FIELD] = array();
         $this->values[self::SINT32_PACKED_FIELD] = array();
         $this->values[self::BOOL_PACKED_FIELD] = array();
+        $this->values[self::REPEATED_OBJ_FIELD] = array();
     }
 
     /**
@@ -1079,6 +1086,70 @@ class Foo extends \ProtobufMessage
     public function getBoolPackedFieldCount()
     {
         return $this->count(self::BOOL_PACKED_FIELD);
+    }
+
+    /**
+     * Appends value to 'repeated_obj_field' list
+     *
+     * @param \Bar $value Value to append
+     *
+     * @return null
+     */
+    public function appendRepeatedObjField(\Bar $value)
+    {
+        return $this->append(self::REPEATED_OBJ_FIELD, $value);
+    }
+
+    /**
+     * Clears 'repeated_obj_field' list
+     *
+     * @return null
+     */
+    public function clearRepeatedObjField()
+    {
+        return $this->clear(self::REPEATED_OBJ_FIELD);
+    }
+
+    /**
+     * Returns 'repeated_obj_field' list
+     *
+     * @return \Bar[]
+     */
+    public function getRepeatedObjField()
+    {
+        return $this->get(self::REPEATED_OBJ_FIELD);
+    }
+
+    /**
+     * Returns 'repeated_obj_field' iterator
+     *
+     * @return \ArrayIterator
+     */
+    public function getRepeatedObjFieldIterator()
+    {
+        return new \ArrayIterator($this->get(self::REPEATED_OBJ_FIELD));
+    }
+
+    /**
+     * Returns element from 'repeated_obj_field' list at given offset
+     *
+     * @param int $offset Position in list
+     *
+     * @return \Bar
+     */
+    public function getRepeatedObjFieldAt($offset)
+    {
+        return $this->get(self::REPEATED_OBJ_FIELD, $offset);
+    }
+
+    /**
+     * Returns count of 'repeated_obj_field' list
+     *
+     * @return int
+     */
+    public function getRepeatedObjFieldCount()
+    {
+        return $this->count(self::REPEATED_OBJ_FIELD);
     }
 }
 }

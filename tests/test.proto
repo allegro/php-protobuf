@@ -16,7 +16,6 @@ message Foo
 	optional string string_field = 14;
 	optional bytes bytes_field = 15;
 	repeated int32 repeated_field = 16;
-	optional Foo embedded_field = 17;
 	optional Bar embedded_field = 17;
 	repeated double double_packed_field = 18 [packed=true];
 	repeated float float_packed_field = 19 [packed=true];
