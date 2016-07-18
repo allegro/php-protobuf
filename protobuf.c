@@ -59,9 +59,9 @@ enum
 zend_class_entry *pb_entry;
 
 static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_number);
-static int pb_field_value_print(zval **value, long level, zend_bool only_set, const char * call);
+static int pb_print_field_value(zval **value, long level, zend_bool only_set, const char * call);
 static int pb_dump_field_value(zval **value, long level, zend_bool only_set);
-static int pb_debug_print_field_value(zval **value, long level);
+static int pb_print_debug_field_value(zval **value, long level);
 static zval **pb_get_field_type(zval *this, zval **field_descriptors, uint32_t field_number);
 static zval **pb_get_field_descriptor(zval *this, zval *field_descriptors, uint32_t field_number);
 static zval *pb_get_field_descriptors(zval *this);
@@ -195,13 +195,13 @@ PHP_METHOD(ProtobufMessage, printDebugString)
 				if ((wire == WIRE_TYPE_LENGTH_DELIMITED && Z_TYPE_PP(val) != IS_STRING) || wire == -1)
 				{
 					php_printf("%*c%s {", indent, indent_char, field_name);
-					if (pb_debug_print_field_value(val, level + 1) != 0)
+					if (pb_print_debug_field_value(val, level + 1) != 0)
 						return;
 					php_printf("%*c}\n", indent, indent_char);
 				} else
 				{
 					php_printf("%*c%s:", indent, indent_char, field_name);
-					if (pb_debug_print_field_value(val, level + 1) != 0)
+					if (pb_print_debug_field_value(val, level + 1) != 0)
 						return;
 				}
 			}
@@ -209,13 +209,13 @@ PHP_METHOD(ProtobufMessage, printDebugString)
 		} else if (Z_TYPE_PP(value) == IS_OBJECT)
 		{
 			php_printf("%*c%s {", indent, indent_char, field_name);
-			if (pb_debug_print_field_value(value, level + 1) != 0)
+			if (pb_print_debug_field_value(value, level + 1) != 0)
 				return;
 			php_printf("%*c}\n", indent, indent_char);
 		} else if (Z_TYPE_PP(value) != IS_NULL)
 		{
 			php_printf("%*c%s:", indent, indent_char, field_name);
-			if (pb_debug_print_field_value(value, level + 1) != 0)
+			if (pb_print_debug_field_value(value, level + 1) != 0)
 				return;
 		}
 	}
@@ -755,7 +755,7 @@ fail0:
 	return -1;
 }
 
-static int pb_field_value_print(zval **value, long level, zend_bool only_set, const char * call)
+static int pb_print_field_value(zval **value, long level, zend_bool only_set, const char * call)
 {
 	const char *string_value;
 	zval tmp, ret, arg0, arg1, *args[2];
@@ -811,14 +811,14 @@ static int pb_field_value_print(zval **value, long level, zend_bool only_set, co
 	return 0;
 }
 
-static int pb_debug_print_field_value(zval **value, long level)
+static int pb_print_debug_field_value(zval **value, long level)
 {
-	return pb_field_value_print(value, level, 1, PB_PRINT_DEBUG_STRING_METHOD);
+	return pb_print_field_value(value, level, 1, PB_PRINT_DEBUG_STRING_METHOD);
 }
 
 static int pb_dump_field_value(zval **value, long level, zend_bool only_set)
 {
-	return pb_field_value_print(value, level, only_set, PB_DUMP_METHOD);
+	return pb_print_field_value(value, level, only_set, PB_DUMP_METHOD);
 }
 
 static zval **pb_get_field_descriptor(zval *this, zval *field_descriptors, uint32_t field_number)
