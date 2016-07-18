@@ -143,6 +143,8 @@ PHP_METHOD(ProtobufMessage, clear)
 PHP_METHOD(ProtobufMessage, printDebugString)
 {
 	zend_bool only_set = 1;
+	int indent;
+	char indent_char;
 	long level = 0;
 	const char *field_name;
 	ulong field_number, index;
@@ -152,6 +154,9 @@ PHP_METHOD(ProtobufMessage, printDebugString)
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|bl", &only_set, &level) == FAILURE || level < 0) {
 		return;
 	}
+
+	indent = ((int)level) * 2;
+	indent_char = indent ? ' ': '\0';
 
 	if ((field_descriptors = pb_get_field_descriptors(getThis())) == NULL)
 		return;
@@ -165,8 +170,6 @@ PHP_METHOD(ProtobufMessage, printDebugString)
 
 		if ((field_descriptor = pb_get_field_descriptor(getThis(), field_descriptors, field_number)) == NULL)
 			return;
-
-
 
 		if ((field_name = pb_get_field_name(getThis(), field_number)) == NULL)
 			return;
@@ -191,27 +194,27 @@ PHP_METHOD(ProtobufMessage, printDebugString)
 
 				if ((wire == WIRE_TYPE_LENGTH_DELIMITED && Z_TYPE_PP(val) != IS_STRING) || wire == -1)
 				{
-					php_printf("%*c%s {", ((int) level + 1) * 2, ' ', field_name);
-					if (pb_debug_print_field_value(val, level + 3) != 0)
+					php_printf("%*c%s {", indent, indent_char, field_name);
+					if (pb_debug_print_field_value(val, level + 1) != 0)
 						return;
-					php_printf("%*c}\n", ((int) level + 1) * 2, ' ');
+					php_printf("%*c}\n", indent, indent_char);
 				} else
 				{
-					php_printf("%*c%s:", 2 * ((int) level + 1), ' ', field_name);
-					if (pb_debug_print_field_value(val, level + 3) != 0)
+					php_printf("%*c%s:", indent, indent_char, field_name);
+					if (pb_debug_print_field_value(val, level + 1) != 0)
 						return;
 				}
 			}
 
 		} else if (Z_TYPE_PP(value) == IS_OBJECT)
 		{
-			php_printf("%*c%s {", 2 * ((int) level + 1), ' ', field_name);
+			php_printf("%*c%s {", indent, indent_char, field_name);
 			if (pb_debug_print_field_value(value, level + 1) != 0)
 				return;
-			php_printf("%*c}\n", 2 * ((int) level + 1), ' ');
+			php_printf("%*c}\n", indent, indent_char);
 		} else if (Z_TYPE_PP(value) != IS_NULL)
 		{
-			php_printf("%*c%s:", 2 * ((int) level + 1), ' ', field_name);
+			php_printf("%*c%s:", indent, indent_char, field_name);
 			if (pb_debug_print_field_value(value, level + 1) != 0)
 				return;
 		}
