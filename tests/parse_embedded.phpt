@@ -4,9 +4,10 @@ Protocol Buffers embedded message parsing
 <?php require 'skipif.inc' ?>
 --FILE--
 <?php
-require 'test.inc';
+require 'Foo.php';
+require 'Bar.php';
 
-$embedded = new Foo();
+$embedded = new Bar();
 $embedded->setDoubleField(2.0);
 
 $expected = new Foo();

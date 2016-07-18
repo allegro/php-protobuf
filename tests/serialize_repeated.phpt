@@ -4,7 +4,7 @@ Protocol Buffers repeated field serialization
 <?php require 'skipif.inc' ?>
 --FILE--
 <?php
-require 'test.inc';
+require 'Foo.php';
 
 $foo = new Foo();
 $foo->appendRepeatedField(2);

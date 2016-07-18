@@ -1,6 +1,0 @@
-message Foo
-{
-	required int32 bar = 1;
-	optional string baz = 2;
-	repeated float spam = 3;
-}

@@ -4,7 +4,7 @@ Protocol Buffers simple field parsing
 <?php require 'skipif.inc' ?>
 --FILE--
 <?php
-require 'test.inc';
+require 'Foo.php';
 
 function parse_field($field, $value, $packed)
 {
