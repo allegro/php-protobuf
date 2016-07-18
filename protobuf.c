@@ -786,7 +786,7 @@ static int pb_print_field_value(zval **value, long level, zend_bool only_set, co
 		else
 			return 0;
 	} else if (Z_TYPE_PP(value) == IS_NULL)
-		string_value = "null (not set)";
+		string_value = "null";
 	else if (Z_TYPE_PP(value) == IS_BOOL) {
 		if (Z_BVAL_PP(value) )
 			string_value = "true";
