@@ -802,7 +802,7 @@ static int pb_field_value_print(zval **value, long level, zend_bool only_set, co
 	}
 
 	if (Z_TYPE_PP(value) == IS_STRING)
-		php_printf(" '%s'\n", string_value);
+		php_printf(" \"%s\"\n", string_value);
 	else
 		php_printf(" %s\n", string_value);
 
