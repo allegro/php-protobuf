@@ -1,0 +1,7 @@
+message StringArray {
+ optional string data = 1;
+}
+
+message ObjectArray {
+ repeated StringArray object = 1;
+}
