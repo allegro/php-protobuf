@@ -4,7 +4,7 @@ Protocol Buffers setting int64 values
 <?php require 'skipif.inc' ?>
 --FILE--
 <?php
-require 'test.inc';
+require 'Foo.php';
 
 $expected = new Foo();
 
