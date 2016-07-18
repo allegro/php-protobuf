@@ -34,7 +34,7 @@
 #define PB_FIELDS_METHOD "fields"
 #define PB_PARSE_FROM_STRING_METHOD "parseFromString"
 #define PB_SERIALIZE_TO_STRING_METHOD "serializeToString"
-#define PB_DEBUG_PRINT_METHOD "debugPrint"
+#define PB_PRINT_DEBUG_STRING_METHOD "printDebugString"
 
 #define PB_FIELD_NAME "name"
 #define PB_FIELD_PACKED "packed"
@@ -140,7 +140,7 @@ PHP_METHOD(ProtobufMessage, clear)
 	RETURN_THIS();
 }
 
-PHP_METHOD(ProtobufMessage, debugPrint)
+PHP_METHOD(ProtobufMessage, printDebugString)
 {
 	zend_bool only_set = 1;
 	long level = 0;
@@ -602,7 +602,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_clear, 0, 0, 1)
 	ZEND_ARG_INFO(0, position)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_debugPrint, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_printDebugString, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_dump, 0, 0, 0)
@@ -641,7 +641,7 @@ static zend_function_entry pb_methods[] = {
 	PHP_ME(ProtobufMessage, parseFromString, arginfo_parseFromString, ZEND_ACC_PUBLIC)
 	PHP_ME(ProtobufMessage, serializeToString, arginfo_serializeToString, ZEND_ACC_PUBLIC)
 	PHP_ME(ProtobufMessage, set, arginfo_set, ZEND_ACC_PUBLIC)
-	PHP_ME(ProtobufMessage, debugPrint, arginfo_debugPrint, ZEND_ACC_PUBLIC)
+	PHP_ME(ProtobufMessage, printDebugString, arginfo_printDebugString, ZEND_ACC_PUBLIC)
 	{NULL, NULL, NULL, 0, 0}
 };
 
@@ -810,7 +810,7 @@ static int pb_field_value_print(zval **value, long level, zend_bool only_set, co
 
 static int pb_debug_print_field_value(zval **value, long level)
 {
-	return pb_field_value_print(value, level, 1, PB_DEBUG_PRINT_METHOD);
+	return pb_field_value_print(value, level, 1, PB_PRINT_DEBUG_STRING_METHOD);
 }
 
 static int pb_dump_field_value(zval **value, long level, zend_bool only_set)
