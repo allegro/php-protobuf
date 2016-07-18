@@ -94,6 +94,8 @@ PHP Protobuf is Google's Protocol Buffers implementation for PHP with a goal to 
     }
     ```
 
+    Alternatively you can use `printDebugString()` method which produces output in protocol buffers text format.
+
 1. If you would like you can reset an object to its initial state
 
     ```php

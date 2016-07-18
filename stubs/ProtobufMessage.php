@@ -26,41 +26,34 @@ abstract class ProtobufMessage
      * 
      * @return null
      */
-    public function append($position, $value)
-    {
-        
-    }
+    public function append($position, $value) {}
 
     /**
      * @param int $position
      * 
      * @return null
      */
-    public function clear($position)
-    {
-        
-    }
+    public function clear($position) {}
 
     /**
      * @param bool $onlySet
-     * @param int  $indentation
      * 
-     * @return string
+     * @return null
      */
-    public function dump($onlySet = true, $indentation = 0)
-    {
-        
-    }
+    public function dump($onlySet = true) {}
+
+    /**
+     *
+     * @return null
+     */
+    public function printDebugString() {}
 
     /**
      * @param int $position
      * 
      * @return int
      */
-    public function count($position)
-    {
-        
-    }
+    public function count($position) {}
 
     /**
      * @param int      $position
@@ -68,10 +61,7 @@ abstract class ProtobufMessage
      *
      * @return mixed
      */
-    public function get($position = -1, $offset = null)
-    {
-        
-    }
+    public function get($position = -1, $offset = null) {}
 
     /**
      * @param string $packed
@@ -80,20 +70,14 @@ abstract class ProtobufMessage
      * 
      * @return mixed
      */
-    public function parseFromString($packed)
-    {
-        
-    }
+    public function parseFromString($packed) {}
 
     /**
      * @throws Exception
      *
      * @return string
      */
-    public function serializeToString()
-    {
-        
-    }
+    public function serializeToString() {}
 
     /**
      * @param int   $position
@@ -101,8 +85,5 @@ abstract class ProtobufMessage
      * 
      * @return null
      */
-    public function set($position = -1, $value)
-    {
-        
-    }
+    public function set($position = -1, $value) {}
 }
