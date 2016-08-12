@@ -69,7 +69,7 @@ PHP Protobuf is Google's Protocol Buffers implementation for PHP with a goal to 
 
 1. Parse a message from a string
     ```php
-    $parseFoo = new Foo();
+    $parsedFoo = new Foo();
     try {
         $parsedFoo->parseFromString($packed);
     } catch (Exception $ex) {
@@ -93,8 +93,6 @@ PHP Protobuf is Google's Protocol Buffers implementation for PHP with a goal to 
         [1] => 4
     }
     ```
-
-    Alternatively you can use `printDebugString()` method which produces output in protocol buffers text format.
 
 1. If you would like you can reset an object to its initial state
 
@@ -220,11 +218,13 @@ try {
 /* do some cool stuff with protobuf-encoded $packed */
 ```
 
-### Dumping
+### Debugging
 
 There might be situations you need to investigate what an actual content of a given message is. What `var_dump` gives on a message instance is somewhat obscure.
 
-The `ProtobufMessage` class comes with `dump` method which prints out a message content to the standard output. It takes one optional argument specifying whether you want to dump only fields thar are set. By default it dumps only set fields. Pass `false` as an argument to dump all fields. Format it produces is similar to `var_dump`.
+The `ProtobufMessage` class comes with `dump` method which prints out a message content to the standard output. It takes one optional argument specifying whether you want to dump only set fields (by default it dumps only set fields). Pass `false` as an argument to dump all fields. Format it produces is similar to `var_dump`.
+
+Alternatively you can use `printDebugString()` method which produces output in protocol buffers text format.
 
 IDE Helper and Auto-Complete Support
 ------------------------------------
