@@ -1063,8 +1063,7 @@ static int pb_serialize_field_value(zval *this, writer_t *writer, uint32_t field
 		if (Z_TYPE(ret) != IS_STRING)
 			return -1;
 
-		if (Z_STRLEN(ret) > 0)
-			writer_write_message(writer, field_number, Z_STRVAL(ret), Z_STRLEN(ret));
+		writer_write_message(writer, field_number, Z_STRVAL(ret), Z_STRLEN(ret));
 
 		zval_dtor(&ret);
 	} else if (Z_TYPE_PP(type) == IS_LONG) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2016-07-04 21:08:58
+ * Auto generated from test.proto at 2016-08-15 23:40:08
  */
 
 namespace {
@@ -34,6 +34,7 @@ class Foo extends \ProtobufMessage
     const INT32_PACKED_FIELD = 22;
     const SINT32_PACKED_FIELD = 23;
     const BOOL_PACKED_FIELD = 24;
+    const OPTIONAL_EMBEDDED_FIELD = 25;
 
     /* @var array Field descriptors */
     protected static $fields = array(
@@ -164,6 +165,11 @@ class Foo extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
             'packed' => true
         ),
+        self::OPTIONAL_EMBEDDED_FIELD => array(
+            'name' => 'optional_embedded_field',
+            'required' => false,
+            'type' => '\Baz'
+        ),
     );
 
     /**
@@ -205,6 +211,7 @@ class Foo extends \ProtobufMessage
         $this->values[self::INT32_PACKED_FIELD] = array();
         $this->values[self::SINT32_PACKED_FIELD] = array();
         $this->values[self::BOOL_PACKED_FIELD] = array();
+        $this->values[self::OPTIONAL_EMBEDDED_FIELD] = null;
     }
 
     /**
@@ -618,7 +625,7 @@ class Foo extends \ProtobufMessage
      *
      * @return null
      */
-    public function setEmbeddedField(\Bar $value)
+    public function setEmbeddedField(\Bar $value=null)
     {
         return $this->set(self::EMBEDDED_FIELD, $value);
     }
@@ -1079,6 +1086,28 @@ class Foo extends \ProtobufMessage
     public function getBoolPackedFieldCount()
     {
         return $this->count(self::BOOL_PACKED_FIELD);
+    }
+
+    /**
+     * Sets value of 'optional_embedded_field' property
+     *
+     * @param \Baz $value Property value
+     *
+     * @return null
+     */
+    public function setOptionalEmbeddedField(\Baz $value=null)
+    {
+        return $this->set(self::OPTIONAL_EMBEDDED_FIELD, $value);
+    }
+
+    /**
+     * Returns value of 'optional_embedded_field' property
+     *
+     * @return \Baz
+     */
+    public function getOptionalEmbeddedField()
+    {
+        return $this->get(self::OPTIONAL_EMBEDDED_FIELD);
     }
 }
 }
