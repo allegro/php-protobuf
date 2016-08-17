@@ -683,7 +683,7 @@ class PhpGenerator
             ->append($comment)
             ->append(
                 'public function set' . $field->getCamelCaseName() .
-                '(' . $argumentClass . '$value)'
+                '(' . $argumentClass . '$value' . ($argumentClass ? '=null' : '') . ')'
             )
             ->append('{')
             ->append(

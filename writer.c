@@ -164,8 +164,11 @@ int writer_write_string(writer_t *writer, uint64_t field_number, const char *str
 
 	writer_write_varint(writer, key);
 	writer_write_varint(writer, len);
-	memcpy(writer->data + writer->pos, str, len);
-	writer->pos += len;
+
+	if (len > 0) {
+		memcpy(writer->data + writer->pos, str, len);
+		writer->pos += len;
+	}
 
 	return 0;
 }

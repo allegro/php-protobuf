@@ -1,23 +1,23 @@
 <?php
 /**
- * Auto generated from test.proto at 2016-08-15 23:40:08
+ * Auto generated from test.proto at 2016-08-17 20:37:56
  */
 
 namespace {
 /**
- * Bar message
+ * Baz message
  */
-class Bar extends \ProtobufMessage
+class Baz extends \ProtobufMessage
 {
     /* Field index constants */
-    const DOUBLE_FIELD = 1;
+    const ID = 1;
 
     /* @var array Field descriptors */
     protected static $fields = array(
-        self::DOUBLE_FIELD => array(
-            'name' => 'double_field',
-            'required' => true,
-            'type' => \ProtobufMessage::PB_TYPE_DOUBLE,
+        self::ID => array(
+            'name' => 'id',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
     );
 
@@ -36,7 +36,7 @@ class Bar extends \ProtobufMessage
      */
     public function reset()
     {
-        $this->values[self::DOUBLE_FIELD] = null;
+        $this->values[self::ID] = null;
     }
 
     /**
@@ -50,25 +50,25 @@ class Bar extends \ProtobufMessage
     }
 
     /**
-     * Sets value of 'double_field' property
+     * Sets value of 'id' property
      *
-     * @param double $value Property value
+     * @param integer $value Property value
      *
      * @return null
      */
-    public function setDoubleField($value)
+    public function setId($value)
     {
-        return $this->set(self::DOUBLE_FIELD, $value);
+        return $this->set(self::ID, $value);
     }
 
     /**
-     * Returns value of 'double_field' property
+     * Returns value of 'id' property
      *
-     * @return double
+     * @return integer
      */
-    public function getDoubleField()
+    public function getId()
     {
-        return $this->get(self::DOUBLE_FIELD);
+        return $this->get(self::ID);
     }
 }
 }
