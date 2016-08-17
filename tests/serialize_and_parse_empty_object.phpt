@@ -1,5 +1,5 @@
 --TEST--
-Protocol Buffers test empty object (object with default prop
+Protocol Buffers empty object serialization and parsing
 --SKIPIF--
 <?php require 'skipif.inc' ?>
 --FILE--
