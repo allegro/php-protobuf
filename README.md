@@ -9,7 +9,7 @@ Overview
 PHP Protobuf is Google's Protocol Buffers implementation for PHP with a goal to provide high performance, including a `protoc` plugin to generate PHP classes from .proto files. The heavy-lifting (a parsing and a serialization) is done by a PHP extension.
 
 ### Requirements
-* PHP 5.3 or above
+* PHP 7.0 or above
 * Pear's Console_CommandLine (for the protoc plugin)
 * Google's protoc compiler version 2.6 or above
 
