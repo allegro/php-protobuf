@@ -24,9 +24,15 @@ message Foo
 	repeated int32 int32_packed_field = 22 [packed=true];
 	repeated sint32 sint32_packed_field = 23 [packed=true];
 	repeated bool bool_packed_field = 24 [packed=true];
+	optional Baz optional_embedded_field = 25;
 }
 
 message Bar
 {
 	required double double_field = 1;
+}
+
+message Baz
+{
+	optional int32 id = 1;
 }
