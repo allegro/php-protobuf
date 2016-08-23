@@ -19,6 +19,23 @@
 #define Z_UNSET_ISREF(z) PZVAL_IS_REF(&(z)) = 0
 #endif
 
+#ifndef ZVAL_COPY_VALUE
+#define ZVAL_COPY_VALUE(z, v) \
+	do { \
+		(z)->value = (v)->value; \
+		Z_TYPE_P(z) = Z_TYPE_P(v); \
+	} while (0)
+#endif
+
+#ifndef INIT_PZVAL_COPY
+#define INIT_PZVAL_COPY(z, v) \
+	do { \
+		ZVAL_COPY_VALUE(z, v); \
+		Z_SET_REFCOUNT_P(z, 1); \
+		Z_UNSET_ISREF_P(z); \
+	} while (0)
+#endif
+
 #define PB_COMPILE_ERROR(message, ...) PB_COMPILE_ERROR_EX(getThis(), message, __VA_ARGS__)
 #define PB_COMPILE_ERROR_EX(this, message, ...) \
 	zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "%s: compile error - " #message, Z_OBJCE_P(this)->name, __VA_ARGS__)
@@ -58,7 +75,7 @@ enum
 
 zend_class_entry *pb_entry;
 
-static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_number);
+static zval *pb_prepare_value(zval *this, uint32_t field_number, zval *value);
 static int pb_print_field_value(zval **value, long level, zend_bool only_set);
 static int pb_dump_field_value(zval **value, long level, zend_bool only_set);
 static int pb_print_debug_field_value(zval **value, long level);
@@ -90,7 +107,7 @@ PHP_METHOD(ProtobufMessage, __construct)
 PHP_METHOD(ProtobufMessage, append)
 {
 	long field_number;
-	zval **array, *value, **values, *val;
+	zval **array, *prepared_value, *value, **values;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &field_number, &value) == FAILURE) {
 		RETURN_THIS();
@@ -105,13 +122,10 @@ PHP_METHOD(ProtobufMessage, append)
 	if ((array = pb_get_value(getThis(), values, field_number)) == NULL)
 		RETURN_THIS();
 
-	MAKE_STD_ZVAL(val);
-	if (pb_assign_value(getThis(), val, value, field_number) != 0) {
-		zval_ptr_dtor(&val);
-		RETURN_THIS();
+	if ((prepared_value = pb_prepare_value(getThis(), field_number, value)) != NULL) {
+		add_next_index_zval(*array, prepared_value);
 	}
 
-	add_next_index_zval(*array, val);
 	RETURN_THIS();
 }
 
@@ -558,7 +572,7 @@ fail:
 PHP_METHOD(ProtobufMessage, set)
 {
 	long field_number = -1;
-	zval **old_value, *value, **values;
+	zval *prepared_value, **old_value, *value, **values, *val;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &field_number, &value) == FAILURE) {
 		RETURN_THIS();
@@ -567,17 +581,20 @@ PHP_METHOD(ProtobufMessage, set)
 	if ((values = pb_get_values(getThis())) == NULL)
 		RETURN_THIS();
 
-	if ((old_value = pb_get_value(getThis(), values, field_number)) == NULL)
-		RETURN_THIS();
-
 	if (Z_TYPE_P(value) == IS_NULL) {
+		// null value means 'no value', therefore should not be converted
+		if ((old_value = pb_get_value(getThis(), values, field_number)) == NULL) {
+			RETURN_THIS();
+		}
 		if (Z_TYPE_PP(old_value) != IS_NULL) {
-			zval_dtor(*old_value);
-			INIT_ZVAL(**old_value);
+			if ((prepared_value = pb_prepare_value(getThis(), field_number, value)) != NULL) {
+				add_index_zval(*values, field_number, prepared_value);
+			}
 		}
 	} else {
-		zval_dtor(*old_value);
-		pb_assign_value(getThis(), *old_value, value, field_number);
+		if ((prepared_value = pb_prepare_value(getThis(), field_number, value)) != NULL) {
+			add_index_zval(*values, field_number, prepared_value);
+		}
 	}
 
 	RETURN_THIS();
@@ -685,33 +702,27 @@ zend_module_entry protobuf_module_entry = {
 ZEND_GET_MODULE(protobuf)
 #endif
 
-static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_number)
+static zval *pb_prepare_value(zval *this, uint32_t field_number, zval *value)
 {
-	zval **field_descriptor, *field_descriptors, tmp, **type;
+	zval *converted_value, **field_descriptor, *field_descriptors, **type;
+	long expected_type;
 	TSRMLS_FETCH();
 
 	if ((field_descriptors = pb_get_field_descriptors(this)) == NULL)
-		goto fail0;
+		goto fail;
 
 	if ((field_descriptor = pb_get_field_descriptor(this, field_descriptors, field_number)) == NULL)
-		goto fail0;
+		goto fail;
 
 	if ((type = pb_get_field_type(this, field_descriptor, field_number)) == NULL)
-		goto fail0;
-
-	tmp = *src;
-	zval_copy_ctor(&tmp);
-	Z_SET_REFCOUNT(tmp, 1);
-	Z_UNSET_ISREF(tmp);
+		goto fail;
 
 	if (Z_TYPE_PP(type) == IS_LONG) {
 		switch (Z_LVAL_PP(type))
 		{
 			case PB_TYPE_DOUBLE:
 			case PB_TYPE_FLOAT:
-				if (Z_TYPE_P(&tmp) != IS_DOUBLE)
-					convert_to_explicit_type(&tmp, IS_DOUBLE);
-
+				expected_type = IS_DOUBLE;
 				break;
 
 			case PB_TYPE_FIXED32:
@@ -719,34 +730,34 @@ static int pb_assign_value(zval *this, zval *dst, zval *src, uint32_t field_numb
 			case PB_TYPE_FIXED64:
 			case PB_TYPE_SIGNED_INT:
 			case PB_TYPE_BOOL:
-				if (Z_TYPE_P(&tmp) != IS_LONG)
-					convert_to_explicit_type(&tmp, IS_LONG);
-
+				expected_type = IS_LONG;
 				break;
 
 			case PB_TYPE_STRING:
-				if (Z_TYPE_P(&tmp) != IS_STRING)
-					convert_to_explicit_type(&tmp, IS_STRING);
-
+				expected_type = IS_STRING;
 				break;
 
 			default:
 				PB_COMPILE_ERROR_EX(this, "unexpected '%s' field type %d in field descriptor", pb_get_field_name(this, field_number), zend_get_type_by_const(Z_LVAL_PP(type)));
-				goto fail1;
+				goto fail;
 		}
-
 	} else if (Z_TYPE_PP(type) != IS_STRING) {
 		PB_COMPILE_ERROR_EX(this, "unexpected %s type of '%s' field type in field descriptor", zend_get_type_by_const(Z_TYPE_PP(type)), pb_get_field_name(this, field_number));
-		goto fail1;
+		goto fail;
 	}
 
-	*dst = tmp;
+	if (Z_TYPE_P(value) != expected_type) {
+		ALLOC_ZVAL(converted_value);
+		INIT_PZVAL_COPY(converted_value, value);
+		zval_copy_ctor(converted_value);
+		convert_to_explicit_type(converted_value, expected_type);
+		return converted_value;
+	}
 
-	return 0;
-fail1:
-	zval_dtor(&tmp);
-fail0:
-	return -1;
+	Z_ADDREF_P(value);
+	return value;
+fail:
+	return NULL;
 }
 
 static int pb_print_field_value(zval **value, long level, zend_bool only_set)
