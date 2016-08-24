@@ -25,6 +25,8 @@ message Foo
 	repeated sint32 sint32_packed_field = 23 [packed=true];
 	repeated bool bool_packed_field = 24 [packed=true];
 	optional Baz optional_embedded_field = 25;
+	repeated Bar repeated_obj_field = 26;
+	repeated string repeated_string_field = 27;
 }
 
 message Bar

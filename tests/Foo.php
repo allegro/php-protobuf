@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2016-08-15 23:40:08
+ * Auto generated from test.proto at 2016-08-24 20:32:21
  */
 
 namespace {
@@ -35,6 +35,8 @@ class Foo extends \ProtobufMessage
     const SINT32_PACKED_FIELD = 23;
     const BOOL_PACKED_FIELD = 24;
     const OPTIONAL_EMBEDDED_FIELD = 25;
+    const REPEATED_OBJ_FIELD = 26;
+    const REPEATED_STRING_FIELD = 27;
 
     /* @var array Field descriptors */
     protected static $fields = array(
@@ -170,6 +172,16 @@ class Foo extends \ProtobufMessage
             'required' => false,
             'type' => '\Baz'
         ),
+        self::REPEATED_OBJ_FIELD => array(
+            'name' => 'repeated_obj_field',
+            'repeated' => true,
+            'type' => '\Bar'
+        ),
+        self::REPEATED_STRING_FIELD => array(
+            'name' => 'repeated_string_field',
+            'repeated' => true,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
+        ),
     );
 
     /**
@@ -212,6 +224,8 @@ class Foo extends \ProtobufMessage
         $this->values[self::SINT32_PACKED_FIELD] = array();
         $this->values[self::BOOL_PACKED_FIELD] = array();
         $this->values[self::OPTIONAL_EMBEDDED_FIELD] = null;
+        $this->values[self::REPEATED_OBJ_FIELD] = array();
+        $this->values[self::REPEATED_STRING_FIELD] = array();
     }
 
     /**
@@ -1108,6 +1122,134 @@ class Foo extends \ProtobufMessage
     public function getOptionalEmbeddedField()
     {
         return $this->get(self::OPTIONAL_EMBEDDED_FIELD);
+    }
+
+    /**
+     * Appends value to 'repeated_obj_field' list
+     *
+     * @param \Bar $value Value to append
+     *
+     * @return null
+     */
+    public function appendRepeatedObjField(\Bar $value)
+    {
+        return $this->append(self::REPEATED_OBJ_FIELD, $value);
+    }
+
+    /**
+     * Clears 'repeated_obj_field' list
+     *
+     * @return null
+     */
+    public function clearRepeatedObjField()
+    {
+        return $this->clear(self::REPEATED_OBJ_FIELD);
+    }
+
+    /**
+     * Returns 'repeated_obj_field' list
+     *
+     * @return \Bar[]
+     */
+    public function getRepeatedObjField()
+    {
+        return $this->get(self::REPEATED_OBJ_FIELD);
+    }
+
+    /**
+     * Returns 'repeated_obj_field' iterator
+     *
+     * @return \ArrayIterator
+     */
+    public function getRepeatedObjFieldIterator()
+    {
+        return new \ArrayIterator($this->get(self::REPEATED_OBJ_FIELD));
+    }
+
+    /**
+     * Returns element from 'repeated_obj_field' list at given offset
+     *
+     * @param int $offset Position in list
+     *
+     * @return \Bar
+     */
+    public function getRepeatedObjFieldAt($offset)
+    {
+        return $this->get(self::REPEATED_OBJ_FIELD, $offset);
+    }
+
+    /**
+     * Returns count of 'repeated_obj_field' list
+     *
+     * @return int
+     */
+    public function getRepeatedObjFieldCount()
+    {
+        return $this->count(self::REPEATED_OBJ_FIELD);
+    }
+
+    /**
+     * Appends value to 'repeated_string_field' list
+     *
+     * @param string $value Value to append
+     *
+     * @return null
+     */
+    public function appendRepeatedStringField($value)
+    {
+        return $this->append(self::REPEATED_STRING_FIELD, $value);
+    }
+
+    /**
+     * Clears 'repeated_string_field' list
+     *
+     * @return null
+     */
+    public function clearRepeatedStringField()
+    {
+        return $this->clear(self::REPEATED_STRING_FIELD);
+    }
+
+    /**
+     * Returns 'repeated_string_field' list
+     *
+     * @return string[]
+     */
+    public function getRepeatedStringField()
+    {
+        return $this->get(self::REPEATED_STRING_FIELD);
+    }
+
+    /**
+     * Returns 'repeated_string_field' iterator
+     *
+     * @return \ArrayIterator
+     */
+    public function getRepeatedStringFieldIterator()
+    {
+        return new \ArrayIterator($this->get(self::REPEATED_STRING_FIELD));
+    }
+
+    /**
+     * Returns element from 'repeated_string_field' list at given offset
+     *
+     * @param int $offset Position in list
+     *
+     * @return string
+     */
+    public function getRepeatedStringFieldAt($offset)
+    {
+        return $this->get(self::REPEATED_STRING_FIELD, $offset);
+    }
+
+    /**
+     * Returns count of 'repeated_string_field' list
+     *
+     * @return int
+     */
+    public function getRepeatedStringFieldCount()
+    {
+        return $this->count(self::REPEATED_STRING_FIELD);
     }
 }
 }
