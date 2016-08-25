@@ -1,5 +1,5 @@
 --TEST--
-Protocol Buffers setting object value
+Protocol Buffers appending object value
 --SKIPIF--
 <?php require 'skipif.inc' ?>
 --FILE--
@@ -16,23 +16,25 @@ class SpiedBar extends Bar {
     }
 }
 
-$embedded = new SpiedBar();
-$embedded->setDoubleField(2.0);
+$bar = new SpiedBar();
+$bar->setDoubleField(1.0);
 
 $foo = new Foo();
-$foo->setEmbeddedField($embedded);
+$foo->appendRepeatedObjField($bar);
 
-var_dump($embedded === $foo->getEmbeddedField());
+$values = $foo->getRepeatedObjField();
+var_dump(count($values));
+var_dump($values[0] === $bar);
+$values = null;
 
-$foo->setEmbeddedField(null);
+$foo->clearRepeatedObjField();
 var_dump($barDestructed);
-var_dump($foo->getEmbeddedField());
 
-$embedded = null;
+$bar = null;
 var_dump($barDestructed);
 ?>
 --EXPECT--
+int(1)
 bool(true)
 bool(false)
-NULL
 bool(true)

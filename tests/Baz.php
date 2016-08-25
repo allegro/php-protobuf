@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2016-08-16 02:35:04
+ * Auto generated from test.proto at 2016-08-24 20:32:21
  */
 
 namespace {

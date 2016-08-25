@@ -571,8 +571,8 @@ fail:
 
 PHP_METHOD(ProtobufMessage, set)
 {
-	long field_number = -1;
-	zval *prepared_value, **old_value, *value, **values, *val;
+	long field_number;
+	zval *prepared_value, *value, **values;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz", &field_number, &value) == FAILURE) {
 		RETURN_THIS();
@@ -583,14 +583,8 @@ PHP_METHOD(ProtobufMessage, set)
 
 	if (Z_TYPE_P(value) == IS_NULL) {
 		// null value means 'no value', therefore should not be converted
-		if ((old_value = pb_get_value(getThis(), values, field_number)) == NULL) {
-			RETURN_THIS();
-		}
-		if (Z_TYPE_PP(old_value) != IS_NULL) {
-			if ((prepared_value = pb_prepare_value(getThis(), field_number, value)) != NULL) {
-				add_index_zval(*values, field_number, prepared_value);
-			}
-		}
+		Z_ADDREF_P(value);
+		add_index_zval(*values, field_number, value);
 	} else {
 		if ((prepared_value = pb_prepare_value(getThis(), field_number, value)) != NULL) {
 			add_index_zval(*values, field_number, prepared_value);
@@ -741,17 +735,17 @@ static zval *pb_prepare_value(zval *this, uint32_t field_number, zval *value)
 				PB_COMPILE_ERROR_EX(this, "unexpected '%s' field type %d in field descriptor", pb_get_field_name(this, field_number), zend_get_type_by_const(Z_LVAL_PP(type)));
 				goto fail;
 		}
+
+		if (Z_TYPE_P(value) != expected_type) {
+			ALLOC_ZVAL(converted_value);
+			INIT_PZVAL_COPY(converted_value, value);
+			zval_copy_ctor(converted_value);
+			convert_to_explicit_type(converted_value, expected_type);
+			return converted_value;
+		}
 	} else if (Z_TYPE_PP(type) != IS_STRING) {
 		PB_COMPILE_ERROR_EX(this, "unexpected %s type of '%s' field type in field descriptor", zend_get_type_by_const(Z_TYPE_PP(type)), pb_get_field_name(this, field_number));
 		goto fail;
-	}
-
-	if (Z_TYPE_P(value) != expected_type) {
-		ALLOC_ZVAL(converted_value);
-		INIT_PZVAL_COPY(converted_value, value);
-		zval_copy_ctor(converted_value);
-		convert_to_explicit_type(converted_value, expected_type);
-		return converted_value;
 	}
 
 	Z_ADDREF_P(value);
