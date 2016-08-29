@@ -661,9 +661,11 @@ class PhpGenerator
         if ($phpType != 'object') {
             $typeName = $phpType;
             $argumentClass = '';
+            $returnCast = '(' . $phpType . ')';
         } else {
             $typeName = $this->_createFullyQualifiedClassName($field->getTypeDescriptor());
             $argumentClass = $typeName . ' ';
+            $returnCast = '';
         }
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -703,12 +705,7 @@ class PhpGenerator
             ->append($comment)
             ->append('public function get' . $field->getCamelCaseName() . '()')
             ->append('{')
-            ->append(
-                'return ' .
-                '$this->get(self::' . $field->getConstName() . ');',
-                false,
-                1
-            )
+            ->append('return ' . $returnCast . '$this->get(self::' . $field->getConstName() . ');', false, 1)
             ->append('}');
     }
 
