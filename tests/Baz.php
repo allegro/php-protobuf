@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2016-08-29 12:36:15
+ * Auto generated from test.proto at 2016-08-30 20:39:31
  */
 
 namespace {
@@ -68,7 +68,8 @@ class Baz extends \ProtobufMessage
      */
     public function getId()
     {
-        return (integer)$this->get(self::ID);
+        $value = $this->get(self::ID);
+        return $value === null ? (integer)$value : $value;
     }
 }
 }

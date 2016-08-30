@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2016-08-29 12:36:15
+ * Auto generated from test.proto at 2016-08-30 20:39:31
  */
 
 namespace {
@@ -68,7 +68,8 @@ class Bar extends \ProtobufMessage
      */
     public function getDoubleField()
     {
-        return (double)$this->get(self::DOUBLE_FIELD);
+        $value = $this->get(self::DOUBLE_FIELD);
+        return $value === null ? (double)$value : $value;
     }
 }
 }
