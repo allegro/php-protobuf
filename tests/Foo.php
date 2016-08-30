@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2016-08-29 12:36:15
+ * Auto generated from test.proto at 2016-08-30 20:39:31
  */
 
 namespace {
@@ -257,7 +257,8 @@ class Foo extends \ProtobufMessage
      */
     public function getDoubleField()
     {
-        return (double)$this->get(self::DOUBLE_FIELD);
+        $value = $this->get(self::DOUBLE_FIELD);
+        return $value === null ? (double)$value : $value;
     }
 
     /**
@@ -279,7 +280,8 @@ class Foo extends \ProtobufMessage
      */
     public function getFloatField()
     {
-        return (double)$this->get(self::FLOAT_FIELD);
+        $value = $this->get(self::FLOAT_FIELD);
+        return $value === null ? (double)$value : $value;
     }
 
     /**
@@ -301,7 +303,8 @@ class Foo extends \ProtobufMessage
      */
     public function getInt32Field()
     {
-        return (integer)$this->get(self::INT32_FIELD);
+        $value = $this->get(self::INT32_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -323,7 +326,8 @@ class Foo extends \ProtobufMessage
      */
     public function getInt64Field()
     {
-        return (integer)$this->get(self::INT64_FIELD);
+        $value = $this->get(self::INT64_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -345,7 +349,8 @@ class Foo extends \ProtobufMessage
      */
     public function getUint32Field()
     {
-        return (integer)$this->get(self::UINT32_FIELD);
+        $value = $this->get(self::UINT32_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -367,7 +372,8 @@ class Foo extends \ProtobufMessage
      */
     public function getUint64Field()
     {
-        return (integer)$this->get(self::UINT64_FIELD);
+        $value = $this->get(self::UINT64_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -389,7 +395,8 @@ class Foo extends \ProtobufMessage
      */
     public function getSint32Field()
     {
-        return (integer)$this->get(self::SINT32_FIELD);
+        $value = $this->get(self::SINT32_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -411,7 +418,8 @@ class Foo extends \ProtobufMessage
      */
     public function getSint64Field()
     {
-        return (integer)$this->get(self::SINT64_FIELD);
+        $value = $this->get(self::SINT64_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -433,7 +441,8 @@ class Foo extends \ProtobufMessage
      */
     public function getFixed32Field()
     {
-        return (integer)$this->get(self::FIXED32_FIELD);
+        $value = $this->get(self::FIXED32_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -455,7 +464,8 @@ class Foo extends \ProtobufMessage
      */
     public function getFixed64Field()
     {
-        return (integer)$this->get(self::FIXED64_FIELD);
+        $value = $this->get(self::FIXED64_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -477,7 +487,8 @@ class Foo extends \ProtobufMessage
      */
     public function getSfixed32Field()
     {
-        return (integer)$this->get(self::SFIXED32_FIELD);
+        $value = $this->get(self::SFIXED32_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -499,7 +510,8 @@ class Foo extends \ProtobufMessage
      */
     public function getSfixed64Field()
     {
-        return (integer)$this->get(self::SFIXED64_FIELD);
+        $value = $this->get(self::SFIXED64_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -521,7 +533,8 @@ class Foo extends \ProtobufMessage
      */
     public function getBoolField()
     {
-        return (boolean)$this->get(self::BOOL_FIELD);
+        $value = $this->get(self::BOOL_FIELD);
+        return $value === null ? (boolean)$value : $value;
     }
 
     /**
@@ -543,7 +556,8 @@ class Foo extends \ProtobufMessage
      */
     public function getStringField()
     {
-        return (string)$this->get(self::STRING_FIELD);
+        $value = $this->get(self::STRING_FIELD);
+        return $value === null ? (string)$value : $value;
     }
 
     /**
@@ -565,7 +579,8 @@ class Foo extends \ProtobufMessage
      */
     public function getBytesField()
     {
-        return (string)$this->get(self::BYTES_FIELD);
+        $value = $this->get(self::BYTES_FIELD);
+        return $value === null ? (string)$value : $value;
     }
 
     /**

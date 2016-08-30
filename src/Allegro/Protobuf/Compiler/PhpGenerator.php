@@ -705,8 +705,15 @@ class PhpGenerator
             ->append($comment)
             ->append('public function get' . $field->getCamelCaseName() . '()')
             ->append('{')
-            ->append('return ' . $returnCast . '$this->get(self::' . $field->getConstName() . ');', false, 1)
-            ->append('}');
+            ->increaseIdentation();
+            if ($returnCast) {
+                $buffer->append('$value = ' . '$this->get(self::' . $field->getConstName() . ');')
+                    ->append('return $value === null ? ' . $returnCast . '$value : $value;');
+            } else {
+                $buffer->append('return ' . '$this->get(self::' . $field->getConstName() . ');');
+            }
+            $buffer->decreaseIdentation()
+                ->append('}');
     }
 
     /**
