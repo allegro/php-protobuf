@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2016-08-17 20:37:56
+ * Auto generated from test.proto at 2016-08-31 07:38:24
  */
 
 namespace {
@@ -36,6 +36,7 @@ class Foo extends \ProtobufMessage
     const BOOL_PACKED_FIELD = 24;
     const OPTIONAL_EMBEDDED_FIELD = 25;
     const REPEATED_OBJ_FIELD = 26;
+    const REPEATED_STRING_FIELD = 27;
 
     /* @var array Field descriptors */
     protected static $fields = array(
@@ -176,6 +177,11 @@ class Foo extends \ProtobufMessage
             'repeated' => true,
             'type' => '\Bar'
         ),
+        self::REPEATED_STRING_FIELD => array(
+            'name' => 'repeated_string_field',
+            'repeated' => true,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
+        ),
     );
 
     /**
@@ -219,6 +225,7 @@ class Foo extends \ProtobufMessage
         $this->values[self::BOOL_PACKED_FIELD] = array();
         $this->values[self::OPTIONAL_EMBEDDED_FIELD] = null;
         $this->values[self::REPEATED_OBJ_FIELD] = array();
+        $this->values[self::REPEATED_STRING_FIELD] = array();
     }
 
     /**
@@ -250,7 +257,8 @@ class Foo extends \ProtobufMessage
      */
     public function getDoubleField()
     {
-        return $this->get(self::DOUBLE_FIELD);
+        $value = $this->get(self::DOUBLE_FIELD);
+        return $value === null ? (double)$value : $value;
     }
 
     /**
@@ -272,7 +280,8 @@ class Foo extends \ProtobufMessage
      */
     public function getFloatField()
     {
-        return $this->get(self::FLOAT_FIELD);
+        $value = $this->get(self::FLOAT_FIELD);
+        return $value === null ? (double)$value : $value;
     }
 
     /**
@@ -294,7 +303,8 @@ class Foo extends \ProtobufMessage
      */
     public function getInt32Field()
     {
-        return $this->get(self::INT32_FIELD);
+        $value = $this->get(self::INT32_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -316,7 +326,8 @@ class Foo extends \ProtobufMessage
      */
     public function getInt64Field()
     {
-        return $this->get(self::INT64_FIELD);
+        $value = $this->get(self::INT64_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -338,7 +349,8 @@ class Foo extends \ProtobufMessage
      */
     public function getUint32Field()
     {
-        return $this->get(self::UINT32_FIELD);
+        $value = $this->get(self::UINT32_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -360,7 +372,8 @@ class Foo extends \ProtobufMessage
      */
     public function getUint64Field()
     {
-        return $this->get(self::UINT64_FIELD);
+        $value = $this->get(self::UINT64_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -382,7 +395,8 @@ class Foo extends \ProtobufMessage
      */
     public function getSint32Field()
     {
-        return $this->get(self::SINT32_FIELD);
+        $value = $this->get(self::SINT32_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -404,7 +418,8 @@ class Foo extends \ProtobufMessage
      */
     public function getSint64Field()
     {
-        return $this->get(self::SINT64_FIELD);
+        $value = $this->get(self::SINT64_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -426,7 +441,8 @@ class Foo extends \ProtobufMessage
      */
     public function getFixed32Field()
     {
-        return $this->get(self::FIXED32_FIELD);
+        $value = $this->get(self::FIXED32_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -448,7 +464,8 @@ class Foo extends \ProtobufMessage
      */
     public function getFixed64Field()
     {
-        return $this->get(self::FIXED64_FIELD);
+        $value = $this->get(self::FIXED64_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -470,7 +487,8 @@ class Foo extends \ProtobufMessage
      */
     public function getSfixed32Field()
     {
-        return $this->get(self::SFIXED32_FIELD);
+        $value = $this->get(self::SFIXED32_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -492,7 +510,8 @@ class Foo extends \ProtobufMessage
      */
     public function getSfixed64Field()
     {
-        return $this->get(self::SFIXED64_FIELD);
+        $value = $this->get(self::SFIXED64_FIELD);
+        return $value === null ? (integer)$value : $value;
     }
 
     /**
@@ -514,7 +533,8 @@ class Foo extends \ProtobufMessage
      */
     public function getBoolField()
     {
-        return $this->get(self::BOOL_FIELD);
+        $value = $this->get(self::BOOL_FIELD);
+        return $value === null ? (boolean)$value : $value;
     }
 
     /**
@@ -536,7 +556,8 @@ class Foo extends \ProtobufMessage
      */
     public function getStringField()
     {
-        return $this->get(self::STRING_FIELD);
+        $value = $this->get(self::STRING_FIELD);
+        return $value === null ? (string)$value : $value;
     }
 
     /**
@@ -558,7 +579,8 @@ class Foo extends \ProtobufMessage
      */
     public function getBytesField()
     {
-        return $this->get(self::BYTES_FIELD);
+        $value = $this->get(self::BYTES_FIELD);
+        return $value === null ? (string)$value : $value;
     }
 
     /**
@@ -1179,6 +1201,70 @@ class Foo extends \ProtobufMessage
     public function getRepeatedObjFieldCount()
     {
         return $this->count(self::REPEATED_OBJ_FIELD);
+    }
+
+    /**
+     * Appends value to 'repeated_string_field' list
+     *
+     * @param string $value Value to append
+     *
+     * @return null
+     */
+    public function appendRepeatedStringField($value)
+    {
+        return $this->append(self::REPEATED_STRING_FIELD, $value);
+    }
+
+    /**
+     * Clears 'repeated_string_field' list
+     *
+     * @return null
+     */
+    public function clearRepeatedStringField()
+    {
+        return $this->clear(self::REPEATED_STRING_FIELD);
+    }
+
+    /**
+     * Returns 'repeated_string_field' list
+     *
+     * @return string[]
+     */
+    public function getRepeatedStringField()
+    {
+        return $this->get(self::REPEATED_STRING_FIELD);
+    }
+
+    /**
+     * Returns 'repeated_string_field' iterator
+     *
+     * @return \ArrayIterator
+     */
+    public function getRepeatedStringFieldIterator()
+    {
+        return new \ArrayIterator($this->get(self::REPEATED_STRING_FIELD));
+    }
+
+    /**
+     * Returns element from 'repeated_string_field' list at given offset
+     *
+     * @param int $offset Position in list
+     *
+     * @return string
+     */
+    public function getRepeatedStringFieldAt($offset)
+    {
+        return $this->get(self::REPEATED_STRING_FIELD, $offset);
+    }
+
+    /**
+     * Returns count of 'repeated_string_field' list
+     *
+     * @return int
+     */
+    public function getRepeatedStringFieldCount()
+    {
+        return $this->count(self::REPEATED_STRING_FIELD);
     }
 }
 }

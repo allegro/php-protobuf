@@ -13,14 +13,20 @@ $foo->setStringField('2');
 var_dump($foo->getStringField());
 
 /* from int type */
-$foo->setStringField(3);
+$intValue = 3;
+$foo->setStringField($intValue);
+var_dump($intValue);
 var_dump($foo->getStringField());
 
 /* from float type */
-$foo->setStringField(4.0);
+$floatValue = 4.0;
+$foo->setStringField($floatValue);
+var_dump($floatValue);
 var_dump($foo->getStringField());
 ?>
 --EXPECT--
 string(1) "2"
+int(3)
 string(1) "3"
+float(4)
 string(1) "4"
