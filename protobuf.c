@@ -16,6 +16,7 @@
 	PB_PARSE_ERROR_EX(getThis(), message, __VA_ARGS__)
 #define PB_PARSE_ERROR_EX(this, message, ...) \
 	zend_throw_exception_ex(NULL, 0 TSRMLS_CC, "%s: parse error - " #message, ZSTR_VAL(Z_OBJCE_P(this)->name), __VA_ARGS__)
+#define IS_BOOL(zval) ((Z_TYPE(zval) == IS_FALSE) || (Z_TYPE(zval) == IS_TRUE))
 
 #define PB_RESET_METHOD "reset"
 #define PB_DUMP_METHOD "dump"
@@ -361,7 +362,8 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 	uint64_t next_field_number;
 	int32_t int32_value;
 	int64_t int64_value;
-	int expected_wire_type, str_size, pack_size, subpack_size, ret, field_repeated;
+	int expected_wire_type, str_size, subpack_size, ret, field_repeated;
+	size_t pack_size;
 	zval arg, *args, *field_descriptor, *field_type, field_descriptors, name, *old_value, value, *values, zret;
 	int bool_value;
 
@@ -757,9 +759,14 @@ static int pb_assign_value(zval *this, zval *dst, zval *src, zend_ulong field_nu
 				break;
 
 			case PB_TYPE_FIXED32:
-			case PB_TYPE_BOOL:
 				if (Z_TYPE(tmp) != IS_LONG)
 					convert_to_explicit_type(&tmp, IS_LONG);
+				break;
+
+			case PB_TYPE_BOOL:
+				if (!IS_BOOL(tmp)) {
+					convert_to_boolean(&tmp);
+				}
 				break;
 
 			case PB_TYPE_INT:
@@ -1139,6 +1146,14 @@ static int pb_serialize_field_value(zval *this, writer_t *writer, zend_ulong fie
 				break;
 
 			case PB_TYPE_BOOL:
+				if (Z_TYPE_P(value) == IS_TRUE) {
+					int64_value = 1;
+				} else {
+					int64_value = 0;
+				}
+				r = writer_write_int(writer, (uint64_t)field_number, int64_value);
+				break;
+
 			case PB_TYPE_INT:
 				Z_LVAL_INT64(value, &int64_value);
 				r = writer_write_int(writer, (uint64_t)field_number, int64_value);
@@ -1205,8 +1220,11 @@ static int pb_serialize_packed_field(zval *this, writer_t *writer, zend_ulong fi
 			break;
 
 		case PB_TYPE_INT:
-		case PB_TYPE_BOOL:
 			ret = writer_write_packed_int(writer, field_number, values);
+			break;
+
+		case PB_TYPE_BOOL:
+			ret = writer_write_packed_bool(writer, field_number, values);
 			break;
 
 		default:

@@ -323,6 +323,40 @@ int writer_write_packed_int(writer_t *writer, uint64_t field_number, zval *value
 	return ret;
 }
 
+int writer_write_packed_bool(writer_t *writer, uint64_t field_number, zval *values)
+{
+	int64_t val;
+	HashPosition i;
+	zval *value;
+	writer_t packed_writer;
+	int ret, num;
+	size_t pack_size;
+	char *pack;
+
+	num = zend_hash_num_elements(Z_ARRVAL_P(values));
+	if (num == 0) {
+		return 0;
+	}
+
+	writer_init_ex(&packed_writer, WRITER_VARINT_SPACE * num);
+
+	PB_FOREACH(&i, Z_ARRVAL_P(values)) {
+		value = zend_hash_get_current_data_ex(Z_ARRVAL_P(values), &i);
+		if (Z_TYPE_P(value) == IS_TRUE) {
+			val = 1;
+		} else {
+			val = 0;
+		}
+		writer_write_varint(&packed_writer, val);
+	}
+
+	pack = writer_get_pack(&packed_writer, &pack_size);
+	ret = writer_write_string(writer, field_number, pack, pack_size);
+	writer_free_pack(&packed_writer);
+
+	return ret;
+}
+
 int writer_write_packed_signed_int(writer_t *writer, uint64_t field_number, zval *values)
 {
 	int64_t val;
