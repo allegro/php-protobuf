@@ -1,0 +1,51 @@
+#!/usr/bin/make -f
+#export DH_VERBOSE=1
+
+DEB_SRCDIR=$(shell pwd)
+INSTALL_DIR=$(DEB_SRCDIR)/debian/$(shell dh_listpackages)
+EXTENSION_DIR=`php-config5 --extension-dir`
+
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	phpize && ./configure
+	$(MAKE) -C $(CURDIR)
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	phpize --clean
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_prep
+	dh_installdirs
+	$(MAKE) prefix=$(INSTALL_DIR)/usr EXTENSION_DIR=$(INSTALL_DIR)$(EXTENSION_DIR) install
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installexamples
+	dh_php5
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

@@ -1,0 +1,5 @@
+php5-protobuf (0.37) stable; urgency=low
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Ilya Kozlov <unicast.ru@gmail.com>  Fri, 18 Dec 2015 00:35:08 +0300
