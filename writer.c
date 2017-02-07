@@ -379,6 +379,9 @@ static inline void writer_write_varint(writer_t *writer, int64_t value)
 	int i;
 	uint8_t byte;
 
+	if (writer_ensure_space(writer, WRITER_VARINT_SPACE) != 0)
+		return;
+
 	if (value == 0) {
 		writer->data[writer->pos++] = 0;
 	} else if (value < 0) {
