@@ -36,7 +36,7 @@
 // when opcache is enabled initial array could be stored in
 // shared memory as an immutable one, in this case it should be separated
 #define ARRAY_ADD_NEXT_INDEX(array, zval_p) \
-	if (Z_IMMUTABLE_P(array)) SEPARATE_ARRAY(array); \
+	if (Z_IMMUTABLE_P(array) || Z_REFCOUNTED_P(array)) SEPARATE_ARRAY(array); \
 	add_next_index_zval((array), (zval_p))
 
 #define IS_32_BIT (sizeof(zend_long) < sizeof(int64_t))

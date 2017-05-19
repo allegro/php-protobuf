@@ -31,6 +31,7 @@ int writer_write_packed_fixed64(writer_t *writer, uint64_t field_number, zval *v
 int writer_write_packed_float(writer_t *writer, uint64_t field_number, zval *values);
 int writer_write_packed_int(writer_t *writer, uint64_t field_number, zval *values);
 int writer_write_packed_signed_int(writer_t *writer, uint64_t field_number, zval *values);
+int writer_write_packed_bool(writer_t *writer, uint64_t field_number, zval *values);
 
 #define writer_write_message(writer, field_number, str, len) writer_write_string((writer), (field_number), (str), (len))
 
