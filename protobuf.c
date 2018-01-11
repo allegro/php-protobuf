@@ -798,8 +798,7 @@ static int pb_assign_value(zval *this, zval *dst, zval *src, zend_ulong field_nu
 		goto fail2;
 	}
 
-	//*dst = tmp;
-	ZVAL_COPY(dst, &tmp);
+	ZVAL_COPY_VALUE(dst, &tmp);
 
 	zval_ptr_dtor(&field_descriptors);
 	return 0;

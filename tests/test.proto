@@ -32,6 +32,8 @@ message Foo
 message Bar
 {
 	required double double_field = 1;
+	optional int32 int_field = 2;
+	optional string last_field = 66;
 }
 
 message Baz
