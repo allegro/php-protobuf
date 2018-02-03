@@ -9,7 +9,7 @@ Overview
 PHP Protobuf is Google's Protocol Buffers implementation for PHP with a goal to provide high performance, including a `protoc` plugin to generate PHP classes from .proto files. The heavy-lifting (a parsing and a serialization) is done by a PHP extension.
 
 ### Requirements
-* PHP 5.3 or above
+* PHP 7.0 or above
 * Pear's Console_CommandLine (for the protoc plugin)
 * Google's protoc compiler version 2.6 or above
 
@@ -157,7 +157,7 @@ PHP does not natively support enum type. Hence enum is represented by the PHP in
 
 The range of available build-in PHP types poses some limitations. PHP does not support 64-bit positive integer type. Note that parsing big integer values might result in getting unexpected results.
 
-Protocol Buffers types map to PHP types as follows:
+Protocol Buffers types map to PHP types as follows (x86_64):
 
     | Protocol Buffers | PHP    |
     | ---------------- | ------ |
@@ -179,6 +179,30 @@ Protocol Buffers types map to PHP types as follows:
     | ---------------- | ------ |
     | string           | string |
     | bytes            |        |
+
+Protocol Buffers types map to PHP types as follows (x86):
+
+    | Protocol Buffers | PHP                         |
+    | ---------------- | --------------------------- |
+    | double           | float                       |
+    | float            |                             |
+    | ---------------- | --------------------------- |
+    | int32            | int                         |
+    | uint32           |                             |
+    | sint32           |                             |
+    | fixed32          |                             |
+    | sfixed32         |                             |
+    | ---------------- | --------------------------- |
+    | int64            | if val <= PHP_INT_MAX       |
+    | uint64           | then value is stored as int |
+    | sint64           | otherwise as double         |
+    | fixed64          |                             |
+    | sfixed64         |                             |
+    | ---------------- | --------------------------- |
+    | bool             | bool                        |
+    | ---------------- | --------------------------- |
+    | string           | string                      |
+    | bytes            |                             |
 
 Not set value is represented by `null` type. To unset value just set its value to `null`.
 
