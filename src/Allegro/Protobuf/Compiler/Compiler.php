@@ -127,7 +127,7 @@ class Compiler
         $this->checkProtoc($protocExecutable);
 
         $cmd[] = $protocExecutable;
-        $cmd[] = '--plugin=protoc-gen-php=' . escapeshellarg($pluginExecutable);
+        $cmd[] = '--plugin=protoc-gen-allegrophp=' . escapeshellarg($pluginExecutable);
 
         if ($result->options['proto_path']) {
             foreach ($result->options['proto_path'] as $protoPath) {
@@ -136,7 +136,7 @@ class Compiler
         }
 
         $customArgs = $this->buildCustomArguments($result);
-        $cmd[] = '--php_out=' . escapeshellarg($customArgs . ':' . $result->options['out']);
+        $cmd[] = '--allegrophp_out=' . escapeshellarg($customArgs . ':' . $result->options['out']);
 
         foreach ($result->args['file'] as $file) {
             $cmd[] = escapeshellarg($file);

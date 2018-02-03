@@ -111,9 +111,7 @@ PHP Protobuf comes with Google's protoc compiler plugin. You can run in directly
 
 or pass it to the *protoc*:
 
-    protoc --plugin=protoc-gen-php.php --php_out=output_dir foo.proto
-    
-Put `protoc-php-gen.php` on the *PATH* or pass absolute path to `protoc`.
+    protoc --plugin=protoc-gen-allegrophp=protoc-gen-php.php --allegrophp_out=output_dir foo.proto
 
 On Windows use `protoc-gen-php.bat` instead.
 
