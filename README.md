@@ -253,6 +253,13 @@ IDE Helper and Auto-Complete Support
 
 To integrate this extension with your IDE (PhpStorm, Eclipse etc.) and get auto-complete support, simply include `stubs\ProtobufMessage.php` anywhere under your project root.
 
+Known issues
+------------
+
+* [maps](https://developers.google.com/protocol-buffers/docs/proto#maps) are not fully supported ([#73](https://github.com/allegro/php-protobuf/issues/73))
+* [oneof](https://developers.google.com/protocol-buffers/docs/proto#oneof) is not supported ([#72](https://github.com/allegro/php-protobuf/issues/72))
+* [groups](https://developers.google.com/protocol-buffers/docs/proto#groups) are not supported
+
 References
 ----------
 
