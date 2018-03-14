@@ -235,9 +235,6 @@ class PhpGenerator
                         . 'oneof is not supported (https://github.com/allegro/php-protobuf/issues/72).');
                     $ignoredOneofs[] = $oneofIndex;
                 }
-            } else if ($fieldDescriptorProto->getType()) {
-                $name = $fieldDescriptorProto->getName();
-                Logger::warn("Ignoring '${name}' field, groups are not supported.");
             } else {
                 $fieldDescriptor = new FieldDescriptor();
                 $fieldDescriptor->setName($fieldDescriptorProto->getName());
