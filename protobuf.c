@@ -653,7 +653,7 @@ static zend_function_entry pb_methods[] = {
 	{NULL, NULL, NULL, 0, 0}
 };
 
-PHP_MINIT_FUNCTION(protobuf)
+PHP_MINIT_FUNCTION(allegro_protobuf)
 {
 	zend_class_entry ce;
 
@@ -675,13 +675,13 @@ PHP_MINIT_FUNCTION(protobuf)
 	return SUCCESS;
 }
 
-zend_module_entry protobuf_module_entry = {
+zend_module_entry allegro_protobuf_module_entry = {
 #if ZEND_MODULE_API_NO >= 20010901
 	STANDARD_MODULE_HEADER,
 #endif
 	PHP_PROTOBUF_EXTNAME,
 	NULL,
-	PHP_MINIT(protobuf),
+	PHP_MINIT(allegro_protobuf),
 	NULL,
 	NULL,
 	NULL,
@@ -692,8 +692,8 @@ zend_module_entry protobuf_module_entry = {
 	STANDARD_MODULE_PROPERTIES
 };
 
-#ifdef COMPILE_DL_PROTOBUF
-ZEND_GET_MODULE(protobuf)
+#ifdef COMPILE_DL_ALLEGRO_PROTOBUF
+ZEND_GET_MODULE(allegro_protobuf)
 #endif
 
 static zval *pb_prepare_value(zval *this, uint32_t field_number, zval *value)

@@ -6,8 +6,8 @@
 #endif
 
 #define PHP_PROTOBUF_VERSION "0.11.0"
-#define PHP_PROTOBUF_EXTNAME "protobuf"
+#define PHP_PROTOBUF_EXTNAME "allegro_protobuf"
 
-extern zend_module_entry protobuf_module_entry;
+extern zend_module_entry allegro_protobuf_module_entry;
 
 #endif /* PROTOBUF_PHP_PHP_PROTOBUF_H */

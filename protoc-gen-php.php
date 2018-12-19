@@ -21,8 +21,8 @@ if (!file_exists($composerAutoload)) {
     exit(1);
 }
 
-if (!extension_loaded('protobuf')) {
-    Logger::error('protobuf module is not installed.');
+if (!extension_loaded('allegro_protobuf')) {
+    Logger::error('allegro_protobuf module is not installed.');
     exit(1);
 }
 
