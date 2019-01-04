@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -107,7 +107,18 @@ class MethodDescriptorProto extends \ProtobufMessage
      */
     public function getName()
     {
-        return $this->get(self::NAME);
+        $value = $this->get(self::NAME);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'name' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasName()
+    {
+        return $this->get(self::NAME) !== null;
     }
 
     /**
@@ -129,7 +140,18 @@ class MethodDescriptorProto extends \ProtobufMessage
      */
     public function getInputType()
     {
-        return $this->get(self::INPUT_TYPE);
+        $value = $this->get(self::INPUT_TYPE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'input_type' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasInputType()
+    {
+        return $this->get(self::INPUT_TYPE) !== null;
     }
 
     /**
@@ -151,7 +173,18 @@ class MethodDescriptorProto extends \ProtobufMessage
      */
     public function getOutputType()
     {
-        return $this->get(self::OUTPUT_TYPE);
+        $value = $this->get(self::OUTPUT_TYPE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'output_type' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOutputType()
+    {
+        return $this->get(self::OUTPUT_TYPE) !== null;
     }
 
     /**
@@ -161,7 +194,7 @@ class MethodDescriptorProto extends \ProtobufMessage
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\MethodOptions $value)
+    public function setOptions(\Google\Protobuf\MethodOptions $value=null)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -174,6 +207,16 @@ class MethodDescriptorProto extends \ProtobufMessage
     public function getOptions()
     {
         return $this->get(self::OPTIONS);
+    }
+
+    /**
+     * Returns true if 'options' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOptions()
+    {
+        return $this->get(self::OPTIONS) !== null;
     }
 
     /**
@@ -195,7 +238,18 @@ class MethodDescriptorProto extends \ProtobufMessage
      */
     public function getClientStreaming()
     {
-        return $this->get(self::CLIENT_STREAMING);
+        $value = $this->get(self::CLIENT_STREAMING);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'client_streaming' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasClientStreaming()
+    {
+        return $this->get(self::CLIENT_STREAMING) !== null;
     }
 
     /**
@@ -217,7 +271,18 @@ class MethodDescriptorProto extends \ProtobufMessage
      */
     public function getServerStreaming()
     {
-        return $this->get(self::SERVER_STREAMING);
+        $value = $this->get(self::SERVER_STREAMING);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'server_streaming' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasServerStreaming()
+    {
+        return $this->get(self::SERVER_STREAMING) !== null;
     }
 }
 }

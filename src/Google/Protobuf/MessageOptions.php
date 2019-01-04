@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -101,7 +101,18 @@ class MessageOptions extends \ProtobufMessage
      */
     public function getMessageSetWireFormat()
     {
-        return $this->get(self::MESSAGE_SET_WIRE_FORMAT);
+        $value = $this->get(self::MESSAGE_SET_WIRE_FORMAT);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'message_set_wire_format' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasMessageSetWireFormat()
+    {
+        return $this->get(self::MESSAGE_SET_WIRE_FORMAT) !== null;
     }
 
     /**
@@ -123,7 +134,18 @@ class MessageOptions extends \ProtobufMessage
      */
     public function getNoStandardDescriptorAccessor()
     {
-        return $this->get(self::NO_STANDARD_DESCRIPTOR_ACCESSOR);
+        $value = $this->get(self::NO_STANDARD_DESCRIPTOR_ACCESSOR);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'no_standard_descriptor_accessor' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasNoStandardDescriptorAccessor()
+    {
+        return $this->get(self::NO_STANDARD_DESCRIPTOR_ACCESSOR) !== null;
     }
 
     /**
@@ -145,7 +167,18 @@ class MessageOptions extends \ProtobufMessage
      */
     public function getDeprecated()
     {
-        return $this->get(self::DEPRECATED);
+        $value = $this->get(self::DEPRECATED);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'deprecated' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasDeprecated()
+    {
+        return $this->get(self::DEPRECATED) !== null;
     }
 
     /**
@@ -167,7 +200,18 @@ class MessageOptions extends \ProtobufMessage
      */
     public function getMapEntry()
     {
-        return $this->get(self::MAP_ENTRY);
+        $value = $this->get(self::MAP_ENTRY);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'map_entry' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasMapEntry()
+    {
+        return $this->get(self::MAP_ENTRY) !== null;
     }
 
     /**
@@ -200,6 +244,16 @@ class MessageOptions extends \ProtobufMessage
     public function getUninterpretedOption()
     {
         return $this->get(self::UNINTERPRETED_OPTION);
+    }
+
+    /**
+     * Returns true if 'uninterpreted_option' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasUninterpretedOption()
+    {
+        return count($this->get(self::UNINTERPRETED_OPTION)) !== 0;
     }
 
     /**

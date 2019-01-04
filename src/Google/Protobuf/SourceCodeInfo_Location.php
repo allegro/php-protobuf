@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -114,6 +114,16 @@ class SourceCodeInfo_Location extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'path' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasPath()
+    {
+        return count($this->get(self::PATH)) !== 0;
+    }
+
+    /**
      * Returns 'path' iterator
      *
      * @return \ArrayIterator
@@ -178,6 +188,16 @@ class SourceCodeInfo_Location extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'span' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasSpan()
+    {
+        return count($this->get(self::SPAN)) !== 0;
+    }
+
+    /**
      * Returns 'span' iterator
      *
      * @return \ArrayIterator
@@ -228,7 +248,18 @@ class SourceCodeInfo_Location extends \ProtobufMessage
      */
     public function getLeadingComments()
     {
-        return $this->get(self::LEADING_COMMENTS);
+        $value = $this->get(self::LEADING_COMMENTS);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'leading_comments' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasLeadingComments()
+    {
+        return $this->get(self::LEADING_COMMENTS) !== null;
     }
 
     /**
@@ -250,7 +281,18 @@ class SourceCodeInfo_Location extends \ProtobufMessage
      */
     public function getTrailingComments()
     {
-        return $this->get(self::TRAILING_COMMENTS);
+        $value = $this->get(self::TRAILING_COMMENTS);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'trailing_comments' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasTrailingComments()
+    {
+        return $this->get(self::TRAILING_COMMENTS) !== null;
     }
 
     /**
@@ -283,6 +325,16 @@ class SourceCodeInfo_Location extends \ProtobufMessage
     public function getLeadingDetachedComments()
     {
         return $this->get(self::LEADING_DETACHED_COMMENTS);
+    }
+
+    /**
+     * Returns true if 'leading_detached_comments' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasLeadingDetachedComments()
+    {
+        return count($this->get(self::LEADING_DETACHED_COMMENTS)) !== 0;
     }
 
     /**

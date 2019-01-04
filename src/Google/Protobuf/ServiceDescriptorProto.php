@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -84,7 +84,18 @@ class ServiceDescriptorProto extends \ProtobufMessage
      */
     public function getName()
     {
-        return $this->get(self::NAME);
+        $value = $this->get(self::NAME);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'name' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasName()
+    {
+        return $this->get(self::NAME) !== null;
     }
 
     /**
@@ -117,6 +128,16 @@ class ServiceDescriptorProto extends \ProtobufMessage
     public function getMethod()
     {
         return $this->get(self::METHOD);
+    }
+
+    /**
+     * Returns true if 'method' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasMethod()
+    {
+        return count($this->get(self::METHOD)) !== 0;
     }
 
     /**
@@ -158,7 +179,7 @@ class ServiceDescriptorProto extends \ProtobufMessage
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\ServiceOptions $value)
+    public function setOptions(\Google\Protobuf\ServiceOptions $value=null)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -171,6 +192,16 @@ class ServiceDescriptorProto extends \ProtobufMessage
     public function getOptions()
     {
         return $this->get(self::OPTIONS);
+    }
+
+    /**
+     * Returns true if 'options' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOptions()
+    {
+        return $this->get(self::OPTIONS) !== null;
     }
 }
 }

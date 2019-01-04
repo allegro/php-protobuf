@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -147,7 +147,18 @@ class FileDescriptorProto extends \ProtobufMessage
      */
     public function getName()
     {
-        return $this->get(self::NAME);
+        $value = $this->get(self::NAME);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'name' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasName()
+    {
+        return $this->get(self::NAME) !== null;
     }
 
     /**
@@ -169,7 +180,18 @@ class FileDescriptorProto extends \ProtobufMessage
      */
     public function getPackage()
     {
-        return $this->get(self::PACKAGE);
+        $value = $this->get(self::PACKAGE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'package' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasPackage()
+    {
+        return $this->get(self::PACKAGE) !== null;
     }
 
     /**
@@ -202,6 +224,16 @@ class FileDescriptorProto extends \ProtobufMessage
     public function getDependency()
     {
         return $this->get(self::DEPENDENCY);
+    }
+
+    /**
+     * Returns true if 'dependency' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasDependency()
+    {
+        return count($this->get(self::DEPENDENCY)) !== 0;
     }
 
     /**
@@ -269,6 +301,16 @@ class FileDescriptorProto extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'public_dependency' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasPublicDependency()
+    {
+        return count($this->get(self::PUBLIC_DEPENDENCY)) !== 0;
+    }
+
+    /**
      * Returns 'public_dependency' iterator
      *
      * @return \ArrayIterator
@@ -330,6 +372,16 @@ class FileDescriptorProto extends \ProtobufMessage
     public function getWeakDependency()
     {
         return $this->get(self::WEAK_DEPENDENCY);
+    }
+
+    /**
+     * Returns true if 'weak_dependency' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasWeakDependency()
+    {
+        return count($this->get(self::WEAK_DEPENDENCY)) !== 0;
     }
 
     /**
@@ -397,6 +449,16 @@ class FileDescriptorProto extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'message_type' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasMessageType()
+    {
+        return count($this->get(self::MESSAGE_TYPE)) !== 0;
+    }
+
+    /**
      * Returns 'message_type' iterator
      *
      * @return \ArrayIterator
@@ -458,6 +520,16 @@ class FileDescriptorProto extends \ProtobufMessage
     public function getEnumType()
     {
         return $this->get(self::ENUM_TYPE);
+    }
+
+    /**
+     * Returns true if 'enum_type' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasEnumType()
+    {
+        return count($this->get(self::ENUM_TYPE)) !== 0;
     }
 
     /**
@@ -525,6 +597,16 @@ class FileDescriptorProto extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'service' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasService()
+    {
+        return count($this->get(self::SERVICE)) !== 0;
+    }
+
+    /**
      * Returns 'service' iterator
      *
      * @return \ArrayIterator
@@ -589,6 +671,16 @@ class FileDescriptorProto extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'extension' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasExtension()
+    {
+        return count($this->get(self::EXTENSION)) !== 0;
+    }
+
+    /**
      * Returns 'extension' iterator
      *
      * @return \ArrayIterator
@@ -627,7 +719,7 @@ class FileDescriptorProto extends \ProtobufMessage
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\FileOptions $value)
+    public function setOptions(\Google\Protobuf\FileOptions $value=null)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -643,13 +735,23 @@ class FileDescriptorProto extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'options' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOptions()
+    {
+        return $this->get(self::OPTIONS) !== null;
+    }
+
+    /**
      * Sets value of 'source_code_info' property
      *
      * @param \Google\Protobuf\SourceCodeInfo $value Property value
      *
      * @return null
      */
-    public function setSourceCodeInfo(\Google\Protobuf\SourceCodeInfo $value)
+    public function setSourceCodeInfo(\Google\Protobuf\SourceCodeInfo $value=null)
     {
         return $this->set(self::SOURCE_CODE_INFO, $value);
     }
@@ -662,6 +764,16 @@ class FileDescriptorProto extends \ProtobufMessage
     public function getSourceCodeInfo()
     {
         return $this->get(self::SOURCE_CODE_INFO);
+    }
+
+    /**
+     * Returns true if 'source_code_info' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasSourceCodeInfo()
+    {
+        return $this->get(self::SOURCE_CODE_INFO) !== null;
     }
 
     /**
@@ -683,7 +795,18 @@ class FileDescriptorProto extends \ProtobufMessage
      */
     public function getSyntax()
     {
-        return $this->get(self::SYNTAX);
+        $value = $this->get(self::SYNTAX);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'syntax' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasSyntax()
+    {
+        return $this->get(self::SYNTAX) !== null;
     }
 }
 }

@@ -7,29 +7,15 @@
 
 namespace Google\Protobuf {
 /**
- * MethodOptions message
+ * ExtensionRangeOptions message
  */
-class MethodOptions extends \ProtobufMessage
+class ExtensionRangeOptions extends \ProtobufMessage
 {
     /* Field index constants */
-    const DEPRECATED = 33;
-    const IDEMPOTENCY_LEVEL = 34;
     const UNINTERPRETED_OPTION = 999;
 
     /* @var array Field descriptors */
     protected static $fields = array(
-        self::DEPRECATED => array(
-            'default' => false,
-            'name' => 'deprecated',
-            'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
-        ),
-        self::IDEMPOTENCY_LEVEL => array(
-            'default' => \Google\Protobuf\MethodOptions_IdempotencyLevel::IDEMPOTENCY_UNKNOWN,
-            'name' => 'idempotency_level',
-            'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
-        ),
         self::UNINTERPRETED_OPTION => array(
             'name' => 'uninterpreted_option',
             'repeated' => true,
@@ -52,8 +38,6 @@ class MethodOptions extends \ProtobufMessage
      */
     public function reset()
     {
-        $this->values[self::DEPRECATED] = self::$fields[self::DEPRECATED]['default'];
-        $this->values[self::IDEMPOTENCY_LEVEL] = self::$fields[self::IDEMPOTENCY_LEVEL]['default'];
         $this->values[self::UNINTERPRETED_OPTION] = array();
     }
 
@@ -65,72 +49,6 @@ class MethodOptions extends \ProtobufMessage
     public function fields()
     {
         return self::$fields;
-    }
-
-    /**
-     * Sets value of 'deprecated' property
-     *
-     * @param boolean $value Property value
-     *
-     * @return null
-     */
-    public function setDeprecated($value)
-    {
-        return $this->set(self::DEPRECATED, $value);
-    }
-
-    /**
-     * Returns value of 'deprecated' property
-     *
-     * @return boolean
-     */
-    public function getDeprecated()
-    {
-        $value = $this->get(self::DEPRECATED);
-        return $value === null ? (boolean)$value : $value;
-    }
-
-    /**
-     * Returns true if 'deprecated' property is set, false otherwise
-     *
-     * @return boolean
-     */
-    public function hasDeprecated()
-    {
-        return $this->get(self::DEPRECATED) !== null;
-    }
-
-    /**
-     * Sets value of 'idempotency_level' property
-     *
-     * @param integer $value Property value
-     *
-     * @return null
-     */
-    public function setIdempotencyLevel($value)
-    {
-        return $this->set(self::IDEMPOTENCY_LEVEL, $value);
-    }
-
-    /**
-     * Returns value of 'idempotency_level' property
-     *
-     * @return integer
-     */
-    public function getIdempotencyLevel()
-    {
-        $value = $this->get(self::IDEMPOTENCY_LEVEL);
-        return $value === null ? (integer)$value : $value;
-    }
-
-    /**
-     * Returns true if 'idempotency_level' property is set, false otherwise
-     *
-     * @return boolean
-     */
-    public function hasIdempotencyLevel()
-    {
-        return $this->get(self::IDEMPOTENCY_LEVEL) !== null;
     }
 
     /**

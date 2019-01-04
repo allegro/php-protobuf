@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -133,7 +133,18 @@ class DescriptorProto extends \ProtobufMessage
      */
     public function getName()
     {
-        return $this->get(self::NAME);
+        $value = $this->get(self::NAME);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'name' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasName()
+    {
+        return $this->get(self::NAME) !== null;
     }
 
     /**
@@ -166,6 +177,16 @@ class DescriptorProto extends \ProtobufMessage
     public function getField()
     {
         return $this->get(self::FIELD);
+    }
+
+    /**
+     * Returns true if 'field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasField()
+    {
+        return count($this->get(self::FIELD)) !== 0;
     }
 
     /**
@@ -233,6 +254,16 @@ class DescriptorProto extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'extension' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasExtension()
+    {
+        return count($this->get(self::EXTENSION)) !== 0;
+    }
+
+    /**
      * Returns 'extension' iterator
      *
      * @return \ArrayIterator
@@ -294,6 +325,16 @@ class DescriptorProto extends \ProtobufMessage
     public function getNestedType()
     {
         return $this->get(self::NESTED_TYPE);
+    }
+
+    /**
+     * Returns true if 'nested_type' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasNestedType()
+    {
+        return count($this->get(self::NESTED_TYPE)) !== 0;
     }
 
     /**
@@ -361,6 +402,16 @@ class DescriptorProto extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'enum_type' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasEnumType()
+    {
+        return count($this->get(self::ENUM_TYPE)) !== 0;
+    }
+
+    /**
      * Returns 'enum_type' iterator
      *
      * @return \ArrayIterator
@@ -422,6 +473,16 @@ class DescriptorProto extends \ProtobufMessage
     public function getExtensionRange()
     {
         return $this->get(self::EXTENSION_RANGE);
+    }
+
+    /**
+     * Returns true if 'extension_range' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasExtensionRange()
+    {
+        return count($this->get(self::EXTENSION_RANGE)) !== 0;
     }
 
     /**
@@ -489,6 +550,16 @@ class DescriptorProto extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'oneof_decl' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOneofDecl()
+    {
+        return count($this->get(self::ONEOF_DECL)) !== 0;
+    }
+
+    /**
      * Returns 'oneof_decl' iterator
      *
      * @return \ArrayIterator
@@ -527,7 +598,7 @@ class DescriptorProto extends \ProtobufMessage
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\MessageOptions $value)
+    public function setOptions(\Google\Protobuf\MessageOptions $value=null)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -540,6 +611,16 @@ class DescriptorProto extends \ProtobufMessage
     public function getOptions()
     {
         return $this->get(self::OPTIONS);
+    }
+
+    /**
+     * Returns true if 'options' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOptions()
+    {
+        return $this->get(self::OPTIONS) !== null;
     }
 
     /**
@@ -572,6 +653,16 @@ class DescriptorProto extends \ProtobufMessage
     public function getReservedRange()
     {
         return $this->get(self::RESERVED_RANGE);
+    }
+
+    /**
+     * Returns true if 'reserved_range' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasReservedRange()
+    {
+        return count($this->get(self::RESERVED_RANGE)) !== 0;
     }
 
     /**
@@ -636,6 +727,16 @@ class DescriptorProto extends \ProtobufMessage
     public function getReservedName()
     {
         return $this->get(self::RESERVED_NAME);
+    }
+
+    /**
+     * Returns true if 'reserved_name' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasReservedName()
+    {
+        return count($this->get(self::RESERVED_NAME)) !== 0;
     }
 
     /**

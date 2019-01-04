@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2018-01-11 23:39:22
+ * Auto generated from test.proto at 2019-01-07 10:53:31
  */
 
 namespace {
@@ -87,6 +87,16 @@ class Bar extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'double_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasDoubleField()
+    {
+        return $this->get(self::DOUBLE_FIELD) !== null;
+    }
+
+    /**
      * Sets value of 'int_field' property
      *
      * @param integer $value Property value
@@ -110,6 +120,16 @@ class Bar extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'int_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasIntField()
+    {
+        return $this->get(self::INT_FIELD) !== null;
+    }
+
+    /**
      * Sets value of 'last_field' property
      *
      * @param string $value Property value
@@ -130,6 +150,16 @@ class Bar extends \ProtobufMessage
     {
         $value = $this->get(self::LAST_FIELD);
         return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'last_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasLastField()
+    {
+        return $this->get(self::LAST_FIELD) !== null;
     }
 }
 }

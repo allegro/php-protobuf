@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -22,10 +22,16 @@ class FileOptions extends \ProtobufMessage
     const CC_GENERIC_SERVICES = 16;
     const JAVA_GENERIC_SERVICES = 17;
     const PY_GENERIC_SERVICES = 18;
+    const PHP_GENERIC_SERVICES = 42;
     const DEPRECATED = 23;
     const CC_ENABLE_ARENAS = 31;
     const OBJC_CLASS_PREFIX = 36;
     const CSHARP_NAMESPACE = 37;
+    const SWIFT_PREFIX = 39;
+    const PHP_CLASS_PREFIX = 40;
+    const PHP_NAMESPACE = 41;
+    const PHP_METADATA_NAMESPACE = 44;
+    const RUBY_PACKAGE = 45;
     const UNINTERPRETED_OPTION = 999;
 
     /* @var array Field descriptors */
@@ -47,7 +53,6 @@ class FileOptions extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::JAVA_GENERATE_EQUALS_AND_HASH => array(
-            'default' => false,
             'name' => 'java_generate_equals_and_hash',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
@@ -87,6 +92,12 @@ class FileOptions extends \ProtobufMessage
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
+        self::PHP_GENERIC_SERVICES => array(
+            'default' => false,
+            'name' => 'php_generic_services',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+        ),
         self::DEPRECATED => array(
             'default' => false,
             'name' => 'deprecated',
@@ -106,6 +117,31 @@ class FileOptions extends \ProtobufMessage
         ),
         self::CSHARP_NAMESPACE => array(
             'name' => 'csharp_namespace',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
+        ),
+        self::SWIFT_PREFIX => array(
+            'name' => 'swift_prefix',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
+        ),
+        self::PHP_CLASS_PREFIX => array(
+            'name' => 'php_class_prefix',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
+        ),
+        self::PHP_NAMESPACE => array(
+            'name' => 'php_namespace',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
+        ),
+        self::PHP_METADATA_NAMESPACE => array(
+            'name' => 'php_metadata_namespace',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
+        ),
+        self::RUBY_PACKAGE => array(
+            'name' => 'ruby_package',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
@@ -134,17 +170,23 @@ class FileOptions extends \ProtobufMessage
         $this->values[self::JAVA_PACKAGE] = null;
         $this->values[self::JAVA_OUTER_CLASSNAME] = null;
         $this->values[self::JAVA_MULTIPLE_FILES] = self::$fields[self::JAVA_MULTIPLE_FILES]['default'];
-        $this->values[self::JAVA_GENERATE_EQUALS_AND_HASH] = self::$fields[self::JAVA_GENERATE_EQUALS_AND_HASH]['default'];
+        $this->values[self::JAVA_GENERATE_EQUALS_AND_HASH] = null;
         $this->values[self::JAVA_STRING_CHECK_UTF8] = self::$fields[self::JAVA_STRING_CHECK_UTF8]['default'];
         $this->values[self::OPTIMIZE_FOR] = self::$fields[self::OPTIMIZE_FOR]['default'];
         $this->values[self::GO_PACKAGE] = null;
         $this->values[self::CC_GENERIC_SERVICES] = self::$fields[self::CC_GENERIC_SERVICES]['default'];
         $this->values[self::JAVA_GENERIC_SERVICES] = self::$fields[self::JAVA_GENERIC_SERVICES]['default'];
         $this->values[self::PY_GENERIC_SERVICES] = self::$fields[self::PY_GENERIC_SERVICES]['default'];
+        $this->values[self::PHP_GENERIC_SERVICES] = self::$fields[self::PHP_GENERIC_SERVICES]['default'];
         $this->values[self::DEPRECATED] = self::$fields[self::DEPRECATED]['default'];
         $this->values[self::CC_ENABLE_ARENAS] = self::$fields[self::CC_ENABLE_ARENAS]['default'];
         $this->values[self::OBJC_CLASS_PREFIX] = null;
         $this->values[self::CSHARP_NAMESPACE] = null;
+        $this->values[self::SWIFT_PREFIX] = null;
+        $this->values[self::PHP_CLASS_PREFIX] = null;
+        $this->values[self::PHP_NAMESPACE] = null;
+        $this->values[self::PHP_METADATA_NAMESPACE] = null;
+        $this->values[self::RUBY_PACKAGE] = null;
         $this->values[self::UNINTERPRETED_OPTION] = array();
     }
 
@@ -177,7 +219,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getJavaPackage()
     {
-        return $this->get(self::JAVA_PACKAGE);
+        $value = $this->get(self::JAVA_PACKAGE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'java_package' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasJavaPackage()
+    {
+        return $this->get(self::JAVA_PACKAGE) !== null;
     }
 
     /**
@@ -199,7 +252,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getJavaOuterClassname()
     {
-        return $this->get(self::JAVA_OUTER_CLASSNAME);
+        $value = $this->get(self::JAVA_OUTER_CLASSNAME);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'java_outer_classname' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasJavaOuterClassname()
+    {
+        return $this->get(self::JAVA_OUTER_CLASSNAME) !== null;
     }
 
     /**
@@ -221,7 +285,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getJavaMultipleFiles()
     {
-        return $this->get(self::JAVA_MULTIPLE_FILES);
+        $value = $this->get(self::JAVA_MULTIPLE_FILES);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'java_multiple_files' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasJavaMultipleFiles()
+    {
+        return $this->get(self::JAVA_MULTIPLE_FILES) !== null;
     }
 
     /**
@@ -243,7 +318,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getJavaGenerateEqualsAndHash()
     {
-        return $this->get(self::JAVA_GENERATE_EQUALS_AND_HASH);
+        $value = $this->get(self::JAVA_GENERATE_EQUALS_AND_HASH);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'java_generate_equals_and_hash' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasJavaGenerateEqualsAndHash()
+    {
+        return $this->get(self::JAVA_GENERATE_EQUALS_AND_HASH) !== null;
     }
 
     /**
@@ -265,7 +351,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getJavaStringCheckUtf8()
     {
-        return $this->get(self::JAVA_STRING_CHECK_UTF8);
+        $value = $this->get(self::JAVA_STRING_CHECK_UTF8);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'java_string_check_utf8' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasJavaStringCheckUtf8()
+    {
+        return $this->get(self::JAVA_STRING_CHECK_UTF8) !== null;
     }
 
     /**
@@ -287,7 +384,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getOptimizeFor()
     {
-        return $this->get(self::OPTIMIZE_FOR);
+        $value = $this->get(self::OPTIMIZE_FOR);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'optimize_for' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOptimizeFor()
+    {
+        return $this->get(self::OPTIMIZE_FOR) !== null;
     }
 
     /**
@@ -309,7 +417,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getGoPackage()
     {
-        return $this->get(self::GO_PACKAGE);
+        $value = $this->get(self::GO_PACKAGE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'go_package' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasGoPackage()
+    {
+        return $this->get(self::GO_PACKAGE) !== null;
     }
 
     /**
@@ -331,7 +450,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getCcGenericServices()
     {
-        return $this->get(self::CC_GENERIC_SERVICES);
+        $value = $this->get(self::CC_GENERIC_SERVICES);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'cc_generic_services' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasCcGenericServices()
+    {
+        return $this->get(self::CC_GENERIC_SERVICES) !== null;
     }
 
     /**
@@ -353,7 +483,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getJavaGenericServices()
     {
-        return $this->get(self::JAVA_GENERIC_SERVICES);
+        $value = $this->get(self::JAVA_GENERIC_SERVICES);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'java_generic_services' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasJavaGenericServices()
+    {
+        return $this->get(self::JAVA_GENERIC_SERVICES) !== null;
     }
 
     /**
@@ -375,7 +516,51 @@ class FileOptions extends \ProtobufMessage
      */
     public function getPyGenericServices()
     {
-        return $this->get(self::PY_GENERIC_SERVICES);
+        $value = $this->get(self::PY_GENERIC_SERVICES);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'py_generic_services' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasPyGenericServices()
+    {
+        return $this->get(self::PY_GENERIC_SERVICES) !== null;
+    }
+
+    /**
+     * Sets value of 'php_generic_services' property
+     *
+     * @param boolean $value Property value
+     *
+     * @return null
+     */
+    public function setPhpGenericServices($value)
+    {
+        return $this->set(self::PHP_GENERIC_SERVICES, $value);
+    }
+
+    /**
+     * Returns value of 'php_generic_services' property
+     *
+     * @return boolean
+     */
+    public function getPhpGenericServices()
+    {
+        $value = $this->get(self::PHP_GENERIC_SERVICES);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'php_generic_services' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasPhpGenericServices()
+    {
+        return $this->get(self::PHP_GENERIC_SERVICES) !== null;
     }
 
     /**
@@ -397,7 +582,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getDeprecated()
     {
-        return $this->get(self::DEPRECATED);
+        $value = $this->get(self::DEPRECATED);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'deprecated' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasDeprecated()
+    {
+        return $this->get(self::DEPRECATED) !== null;
     }
 
     /**
@@ -419,7 +615,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getCcEnableArenas()
     {
-        return $this->get(self::CC_ENABLE_ARENAS);
+        $value = $this->get(self::CC_ENABLE_ARENAS);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'cc_enable_arenas' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasCcEnableArenas()
+    {
+        return $this->get(self::CC_ENABLE_ARENAS) !== null;
     }
 
     /**
@@ -441,7 +648,18 @@ class FileOptions extends \ProtobufMessage
      */
     public function getObjcClassPrefix()
     {
-        return $this->get(self::OBJC_CLASS_PREFIX);
+        $value = $this->get(self::OBJC_CLASS_PREFIX);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'objc_class_prefix' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasObjcClassPrefix()
+    {
+        return $this->get(self::OBJC_CLASS_PREFIX) !== null;
     }
 
     /**
@@ -463,7 +681,183 @@ class FileOptions extends \ProtobufMessage
      */
     public function getCsharpNamespace()
     {
-        return $this->get(self::CSHARP_NAMESPACE);
+        $value = $this->get(self::CSHARP_NAMESPACE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'csharp_namespace' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasCsharpNamespace()
+    {
+        return $this->get(self::CSHARP_NAMESPACE) !== null;
+    }
+
+    /**
+     * Sets value of 'swift_prefix' property
+     *
+     * @param string $value Property value
+     *
+     * @return null
+     */
+    public function setSwiftPrefix($value)
+    {
+        return $this->set(self::SWIFT_PREFIX, $value);
+    }
+
+    /**
+     * Returns value of 'swift_prefix' property
+     *
+     * @return string
+     */
+    public function getSwiftPrefix()
+    {
+        $value = $this->get(self::SWIFT_PREFIX);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'swift_prefix' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasSwiftPrefix()
+    {
+        return $this->get(self::SWIFT_PREFIX) !== null;
+    }
+
+    /**
+     * Sets value of 'php_class_prefix' property
+     *
+     * @param string $value Property value
+     *
+     * @return null
+     */
+    public function setPhpClassPrefix($value)
+    {
+        return $this->set(self::PHP_CLASS_PREFIX, $value);
+    }
+
+    /**
+     * Returns value of 'php_class_prefix' property
+     *
+     * @return string
+     */
+    public function getPhpClassPrefix()
+    {
+        $value = $this->get(self::PHP_CLASS_PREFIX);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'php_class_prefix' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasPhpClassPrefix()
+    {
+        return $this->get(self::PHP_CLASS_PREFIX) !== null;
+    }
+
+    /**
+     * Sets value of 'php_namespace' property
+     *
+     * @param string $value Property value
+     *
+     * @return null
+     */
+    public function setPhpNamespace($value)
+    {
+        return $this->set(self::PHP_NAMESPACE, $value);
+    }
+
+    /**
+     * Returns value of 'php_namespace' property
+     *
+     * @return string
+     */
+    public function getPhpNamespace()
+    {
+        $value = $this->get(self::PHP_NAMESPACE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'php_namespace' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasPhpNamespace()
+    {
+        return $this->get(self::PHP_NAMESPACE) !== null;
+    }
+
+    /**
+     * Sets value of 'php_metadata_namespace' property
+     *
+     * @param string $value Property value
+     *
+     * @return null
+     */
+    public function setPhpMetadataNamespace($value)
+    {
+        return $this->set(self::PHP_METADATA_NAMESPACE, $value);
+    }
+
+    /**
+     * Returns value of 'php_metadata_namespace' property
+     *
+     * @return string
+     */
+    public function getPhpMetadataNamespace()
+    {
+        $value = $this->get(self::PHP_METADATA_NAMESPACE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'php_metadata_namespace' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasPhpMetadataNamespace()
+    {
+        return $this->get(self::PHP_METADATA_NAMESPACE) !== null;
+    }
+
+    /**
+     * Sets value of 'ruby_package' property
+     *
+     * @param string $value Property value
+     *
+     * @return null
+     */
+    public function setRubyPackage($value)
+    {
+        return $this->set(self::RUBY_PACKAGE, $value);
+    }
+
+    /**
+     * Returns value of 'ruby_package' property
+     *
+     * @return string
+     */
+    public function getRubyPackage()
+    {
+        $value = $this->get(self::RUBY_PACKAGE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'ruby_package' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasRubyPackage()
+    {
+        return $this->get(self::RUBY_PACKAGE) !== null;
     }
 
     /**
@@ -496,6 +890,16 @@ class FileOptions extends \ProtobufMessage
     public function getUninterpretedOption()
     {
         return $this->get(self::UNINTERPRETED_OPTION);
+    }
+
+    /**
+     * Returns true if 'uninterpreted_option' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasUninterpretedOption()
+    {
+        return count($this->get(self::UNINTERPRETED_OPTION)) !== 0;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -85,7 +85,18 @@ class EnumOptions extends \ProtobufMessage
      */
     public function getAllowAlias()
     {
-        return $this->get(self::ALLOW_ALIAS);
+        $value = $this->get(self::ALLOW_ALIAS);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'allow_alias' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasAllowAlias()
+    {
+        return $this->get(self::ALLOW_ALIAS) !== null;
     }
 
     /**
@@ -107,7 +118,18 @@ class EnumOptions extends \ProtobufMessage
      */
     public function getDeprecated()
     {
-        return $this->get(self::DEPRECATED);
+        $value = $this->get(self::DEPRECATED);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'deprecated' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasDeprecated()
+    {
+        return $this->get(self::DEPRECATED) !== null;
     }
 
     /**
@@ -140,6 +162,16 @@ class EnumOptions extends \ProtobufMessage
     public function getUninterpretedOption()
     {
         return $this->get(self::UNINTERPRETED_OPTION);
+    }
+
+    /**
+     * Returns true if 'uninterpreted_option' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasUninterpretedOption()
+    {
+        return count($this->get(self::UNINTERPRETED_OPTION)) !== 0;
     }
 
     /**

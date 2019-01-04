@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -117,7 +117,18 @@ class FieldOptions extends \ProtobufMessage
      */
     public function getCtype()
     {
-        return $this->get(self::CTYPE);
+        $value = $this->get(self::CTYPE);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'ctype' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasCtype()
+    {
+        return $this->get(self::CTYPE) !== null;
     }
 
     /**
@@ -139,7 +150,18 @@ class FieldOptions extends \ProtobufMessage
      */
     public function getPacked()
     {
-        return $this->get(self::PACKED);
+        $value = $this->get(self::PACKED);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'packed' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasPacked()
+    {
+        return $this->get(self::PACKED) !== null;
     }
 
     /**
@@ -161,7 +183,18 @@ class FieldOptions extends \ProtobufMessage
      */
     public function getJstype()
     {
-        return $this->get(self::JSTYPE);
+        $value = $this->get(self::JSTYPE);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'jstype' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasJstype()
+    {
+        return $this->get(self::JSTYPE) !== null;
     }
 
     /**
@@ -183,7 +216,18 @@ class FieldOptions extends \ProtobufMessage
      */
     public function getLazy()
     {
-        return $this->get(self::LAZY);
+        $value = $this->get(self::LAZY);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'lazy' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasLazy()
+    {
+        return $this->get(self::LAZY) !== null;
     }
 
     /**
@@ -205,7 +249,18 @@ class FieldOptions extends \ProtobufMessage
      */
     public function getDeprecated()
     {
-        return $this->get(self::DEPRECATED);
+        $value = $this->get(self::DEPRECATED);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'deprecated' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasDeprecated()
+    {
+        return $this->get(self::DEPRECATED) !== null;
     }
 
     /**
@@ -227,7 +282,18 @@ class FieldOptions extends \ProtobufMessage
      */
     public function getWeak()
     {
-        return $this->get(self::WEAK);
+        $value = $this->get(self::WEAK);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'weak' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasWeak()
+    {
+        return $this->get(self::WEAK) !== null;
     }
 
     /**
@@ -260,6 +326,16 @@ class FieldOptions extends \ProtobufMessage
     public function getUninterpretedOption()
     {
         return $this->get(self::UNINTERPRETED_OPTION);
+    }
+
+    /**
+     * Returns true if 'uninterpreted_option' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasUninterpretedOption()
+    {
+        return count($this->get(self::UNINTERPRETED_OPTION)) !== 0;
     }
 
     /**

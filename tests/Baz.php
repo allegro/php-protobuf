@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2016-08-31 07:38:24
+ * Auto generated from test.proto at 2019-01-07 10:53:31
  */
 
 namespace {
@@ -70,6 +70,16 @@ class Baz extends \ProtobufMessage
     {
         $value = $this->get(self::ID);
         return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'id' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasId()
+    {
+        return $this->get(self::ID) !== null;
     }
 }
 }

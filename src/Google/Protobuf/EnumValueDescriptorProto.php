@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -84,7 +84,18 @@ class EnumValueDescriptorProto extends \ProtobufMessage
      */
     public function getName()
     {
-        return $this->get(self::NAME);
+        $value = $this->get(self::NAME);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'name' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasName()
+    {
+        return $this->get(self::NAME) !== null;
     }
 
     /**
@@ -106,7 +117,18 @@ class EnumValueDescriptorProto extends \ProtobufMessage
      */
     public function getNumber()
     {
-        return $this->get(self::NUMBER);
+        $value = $this->get(self::NUMBER);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'number' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasNumber()
+    {
+        return $this->get(self::NUMBER) !== null;
     }
 
     /**
@@ -116,7 +138,7 @@ class EnumValueDescriptorProto extends \ProtobufMessage
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\EnumValueOptions $value)
+    public function setOptions(\Google\Protobuf\EnumValueOptions $value=null)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -129,6 +151,16 @@ class EnumValueDescriptorProto extends \ProtobufMessage
     public function getOptions()
     {
         return $this->get(self::OPTIONS);
+    }
+
+    /**
+     * Returns true if 'options' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOptions()
+    {
+        return $this->get(self::OPTIONS) !== null;
     }
 }
 }

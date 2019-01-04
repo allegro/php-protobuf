@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -133,7 +133,18 @@ class FieldDescriptorProto extends \ProtobufMessage
      */
     public function getName()
     {
-        return $this->get(self::NAME);
+        $value = $this->get(self::NAME);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'name' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasName()
+    {
+        return $this->get(self::NAME) !== null;
     }
 
     /**
@@ -155,7 +166,18 @@ class FieldDescriptorProto extends \ProtobufMessage
      */
     public function getNumber()
     {
-        return $this->get(self::NUMBER);
+        $value = $this->get(self::NUMBER);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'number' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasNumber()
+    {
+        return $this->get(self::NUMBER) !== null;
     }
 
     /**
@@ -177,7 +199,18 @@ class FieldDescriptorProto extends \ProtobufMessage
      */
     public function getLabel()
     {
-        return $this->get(self::LABEL);
+        $value = $this->get(self::LABEL);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'label' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasLabel()
+    {
+        return $this->get(self::LABEL) !== null;
     }
 
     /**
@@ -199,7 +232,18 @@ class FieldDescriptorProto extends \ProtobufMessage
      */
     public function getType()
     {
-        return $this->get(self::TYPE);
+        $value = $this->get(self::TYPE);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'type' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasType()
+    {
+        return $this->get(self::TYPE) !== null;
     }
 
     /**
@@ -221,7 +265,18 @@ class FieldDescriptorProto extends \ProtobufMessage
      */
     public function getTypeName()
     {
-        return $this->get(self::TYPE_NAME);
+        $value = $this->get(self::TYPE_NAME);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'type_name' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasTypeName()
+    {
+        return $this->get(self::TYPE_NAME) !== null;
     }
 
     /**
@@ -243,7 +298,18 @@ class FieldDescriptorProto extends \ProtobufMessage
      */
     public function getExtendee()
     {
-        return $this->get(self::EXTENDEE);
+        $value = $this->get(self::EXTENDEE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'extendee' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasExtendee()
+    {
+        return $this->get(self::EXTENDEE) !== null;
     }
 
     /**
@@ -265,7 +331,18 @@ class FieldDescriptorProto extends \ProtobufMessage
      */
     public function getDefaultValue()
     {
-        return $this->get(self::DEFAULT_VALUE);
+        $value = $this->get(self::DEFAULT_VALUE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'default_value' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasDefaultValue()
+    {
+        return $this->get(self::DEFAULT_VALUE) !== null;
     }
 
     /**
@@ -287,7 +364,18 @@ class FieldDescriptorProto extends \ProtobufMessage
      */
     public function getOneofIndex()
     {
-        return $this->get(self::ONEOF_INDEX);
+        $value = $this->get(self::ONEOF_INDEX);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'oneof_index' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOneofIndex()
+    {
+        return $this->get(self::ONEOF_INDEX) !== null;
     }
 
     /**
@@ -309,7 +397,18 @@ class FieldDescriptorProto extends \ProtobufMessage
      */
     public function getJsonName()
     {
-        return $this->get(self::JSON_NAME);
+        $value = $this->get(self::JSON_NAME);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'json_name' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasJsonName()
+    {
+        return $this->get(self::JSON_NAME) !== null;
     }
 
     /**
@@ -319,7 +418,7 @@ class FieldDescriptorProto extends \ProtobufMessage
      *
      * @return null
      */
-    public function setOptions(\Google\Protobuf\FieldOptions $value)
+    public function setOptions(\Google\Protobuf\FieldOptions $value=null)
     {
         return $this->set(self::OPTIONS, $value);
     }
@@ -332,6 +431,16 @@ class FieldDescriptorProto extends \ProtobufMessage
     public function getOptions()
     {
         return $this->get(self::OPTIONS);
+    }
+
+    /**
+     * Returns true if 'options' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOptions()
+    {
+        return $this->get(self::OPTIONS) !== null;
     }
 }
 }
