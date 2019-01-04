@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -126,6 +126,16 @@ class UninterpretedOption extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'name' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasName()
+    {
+        return count($this->get(self::NAME)) !== 0;
+    }
+
+    /**
      * Returns 'name' iterator
      *
      * @return \ArrayIterator
@@ -176,7 +186,18 @@ class UninterpretedOption extends \ProtobufMessage
      */
     public function getIdentifierValue()
     {
-        return $this->get(self::IDENTIFIER_VALUE);
+        $value = $this->get(self::IDENTIFIER_VALUE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'identifier_value' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasIdentifierValue()
+    {
+        return $this->get(self::IDENTIFIER_VALUE) !== null;
     }
 
     /**
@@ -198,7 +219,18 @@ class UninterpretedOption extends \ProtobufMessage
      */
     public function getPositiveIntValue()
     {
-        return $this->get(self::POSITIVE_INT_VALUE);
+        $value = $this->get(self::POSITIVE_INT_VALUE);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'positive_int_value' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasPositiveIntValue()
+    {
+        return $this->get(self::POSITIVE_INT_VALUE) !== null;
     }
 
     /**
@@ -220,7 +252,18 @@ class UninterpretedOption extends \ProtobufMessage
      */
     public function getNegativeIntValue()
     {
-        return $this->get(self::NEGATIVE_INT_VALUE);
+        $value = $this->get(self::NEGATIVE_INT_VALUE);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'negative_int_value' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasNegativeIntValue()
+    {
+        return $this->get(self::NEGATIVE_INT_VALUE) !== null;
     }
 
     /**
@@ -242,7 +285,18 @@ class UninterpretedOption extends \ProtobufMessage
      */
     public function getDoubleValue()
     {
-        return $this->get(self::DOUBLE_VALUE);
+        $value = $this->get(self::DOUBLE_VALUE);
+        return $value === null ? (double)$value : $value;
+    }
+
+    /**
+     * Returns true if 'double_value' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasDoubleValue()
+    {
+        return $this->get(self::DOUBLE_VALUE) !== null;
     }
 
     /**
@@ -264,7 +318,18 @@ class UninterpretedOption extends \ProtobufMessage
      */
     public function getStringValue()
     {
-        return $this->get(self::STRING_VALUE);
+        $value = $this->get(self::STRING_VALUE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'string_value' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasStringValue()
+    {
+        return $this->get(self::STRING_VALUE) !== null;
     }
 
     /**
@@ -286,7 +351,18 @@ class UninterpretedOption extends \ProtobufMessage
      */
     public function getAggregateValue()
     {
-        return $this->get(self::AGGREGATE_VALUE);
+        $value = $this->get(self::AGGREGATE_VALUE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'aggregate_value' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasAggregateValue()
+    {
+        return $this->get(self::AGGREGATE_VALUE) !== null;
     }
 }
 }

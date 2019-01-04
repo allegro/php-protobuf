@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from plugin.proto at 2016-07-08 14:22:37
+ * Auto generated from plugin.proto at 2019-01-07 11:34:00
  *
  * google.protobuf.compiler package
  */
@@ -15,6 +15,7 @@ class CodeGeneratorRequest extends \ProtobufMessage
     const FILE_TO_GENERATE = 1;
     const PARAMETER = 2;
     const PROTO_FILE = 15;
+    const COMPILER_VERSION = 3;
 
     /* @var array Field descriptors */
     protected static $fields = array(
@@ -32,6 +33,11 @@ class CodeGeneratorRequest extends \ProtobufMessage
             'name' => 'proto_file',
             'repeated' => true,
             'type' => '\Google\Protobuf\FileDescriptorProto'
+        ),
+        self::COMPILER_VERSION => array(
+            'name' => 'compiler_version',
+            'required' => false,
+            'type' => '\Google\Protobuf\Compiler\Version'
         ),
     );
 
@@ -53,6 +59,7 @@ class CodeGeneratorRequest extends \ProtobufMessage
         $this->values[self::FILE_TO_GENERATE] = array();
         $this->values[self::PARAMETER] = null;
         $this->values[self::PROTO_FILE] = array();
+        $this->values[self::COMPILER_VERSION] = null;
     }
 
     /**
@@ -95,6 +102,16 @@ class CodeGeneratorRequest extends \ProtobufMessage
     public function getFileToGenerate()
     {
         return $this->get(self::FILE_TO_GENERATE);
+    }
+
+    /**
+     * Returns true if 'file_to_generate' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasFileToGenerate()
+    {
+        return count($this->get(self::FILE_TO_GENERATE)) !== 0;
     }
 
     /**
@@ -148,7 +165,18 @@ class CodeGeneratorRequest extends \ProtobufMessage
      */
     public function getParameter()
     {
-        return $this->get(self::PARAMETER);
+        $value = $this->get(self::PARAMETER);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'parameter' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasParameter()
+    {
+        return $this->get(self::PARAMETER) !== null;
     }
 
     /**
@@ -184,6 +212,16 @@ class CodeGeneratorRequest extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'proto_file' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasProtoFile()
+    {
+        return count($this->get(self::PROTO_FILE)) !== 0;
+    }
+
+    /**
      * Returns 'proto_file' iterator
      *
      * @return \ArrayIterator
@@ -213,6 +251,38 @@ class CodeGeneratorRequest extends \ProtobufMessage
     public function getProtoFileCount()
     {
         return $this->count(self::PROTO_FILE);
+    }
+
+    /**
+     * Sets value of 'compiler_version' property
+     *
+     * @param \Google\Protobuf\Compiler\Version $value Property value
+     *
+     * @return null
+     */
+    public function setCompilerVersion(\Google\Protobuf\Compiler\Version $value=null)
+    {
+        return $this->set(self::COMPILER_VERSION, $value);
+    }
+
+    /**
+     * Returns value of 'compiler_version' property
+     *
+     * @return \Google\Protobuf\Compiler\Version
+     */
+    public function getCompilerVersion()
+    {
+        return $this->get(self::COMPILER_VERSION);
+    }
+
+    /**
+     * Returns true if 'compiler_version' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasCompilerVersion()
+    {
+        return $this->get(self::COMPILER_VERSION) !== null;
     }
 }
 }

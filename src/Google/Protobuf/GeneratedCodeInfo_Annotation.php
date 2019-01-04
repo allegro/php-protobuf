@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -106,6 +106,16 @@ class GeneratedCodeInfo_Annotation extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'path' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasPath()
+    {
+        return count($this->get(self::PATH)) !== 0;
+    }
+
+    /**
      * Returns 'path' iterator
      *
      * @return \ArrayIterator
@@ -156,7 +166,18 @@ class GeneratedCodeInfo_Annotation extends \ProtobufMessage
      */
     public function getSourceFile()
     {
-        return $this->get(self::SOURCE_FILE);
+        $value = $this->get(self::SOURCE_FILE);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'source_file' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasSourceFile()
+    {
+        return $this->get(self::SOURCE_FILE) !== null;
     }
 
     /**
@@ -178,7 +199,18 @@ class GeneratedCodeInfo_Annotation extends \ProtobufMessage
      */
     public function getBegin()
     {
-        return $this->get(self::BEGIN);
+        $value = $this->get(self::BEGIN);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'begin' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasBegin()
+    {
+        return $this->get(self::BEGIN) !== null;
     }
 
     /**
@@ -200,7 +232,18 @@ class GeneratedCodeInfo_Annotation extends \ProtobufMessage
      */
     public function getEnd()
     {
-        return $this->get(self::END);
+        $value = $this->get(self::END);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'end' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasEnd()
+    {
+        return $this->get(self::END) !== null;
     }
 }
 }

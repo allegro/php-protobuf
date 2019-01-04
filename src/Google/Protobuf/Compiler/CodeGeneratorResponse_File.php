@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from plugin.proto at 2016-07-08 14:22:37
+ * Auto generated from plugin.proto at 2019-01-07 11:34:00
  *
  * google.protobuf.compiler package
  */
@@ -84,7 +84,18 @@ class CodeGeneratorResponse_File extends \ProtobufMessage
      */
     public function getName()
     {
-        return $this->get(self::NAME);
+        $value = $this->get(self::NAME);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'name' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasName()
+    {
+        return $this->get(self::NAME) !== null;
     }
 
     /**
@@ -106,7 +117,18 @@ class CodeGeneratorResponse_File extends \ProtobufMessage
      */
     public function getInsertionPoint()
     {
-        return $this->get(self::INSERTION_POINT);
+        $value = $this->get(self::INSERTION_POINT);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'insertion_point' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasInsertionPoint()
+    {
+        return $this->get(self::INSERTION_POINT) !== null;
     }
 
     /**
@@ -128,7 +150,18 @@ class CodeGeneratorResponse_File extends \ProtobufMessage
      */
     public function getContent()
     {
-        return $this->get(self::CONTENT);
+        $value = $this->get(self::CONTENT);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'content' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasContent()
+    {
+        return $this->get(self::CONTENT) !== null;
     }
 }
 }

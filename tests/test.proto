@@ -1,3 +1,5 @@
+syntax = "proto2";
+
 message Foo
 {
 	optional double double_field = 1;

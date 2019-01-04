@@ -135,17 +135,19 @@ For each field a set of accessors is generated. The set of methods is different 
 
 * `required` / `optional`
 
-        get{FIELD}()        // return field value
-        set{FIELD}($value)  // set field value to $value
+        get{FIELD}()        // return a field value
+        has{FIELD}()        // check whether a field is set
+        set{FIELD}($value)  // set a field value to $value
 
 * `repeated`
 
-        append{FIELD}($value)       // append $value value to field
+        append{FIELD}($value)       // append $value to a field
         clear{FIELD}()              // empty field
-        get{FIELD}()                // return array of field values
-        getAt{FIELD}($index)        // return field value at $index index
-        getCount{FIELD}()           // return number of field values
-        getIterator{FIELD}($index)  // return ArrayIterator for field values
+        get{FIELD}()                // return an array of field values
+        getAt{FIELD}($index)        // return a field value at $index index
+        getCount{FIELD}()           // return a number of field values
+        has{FIELD}()                // check whether a field is set
+        getIterator{FIELD}()        // return an ArrayIterator
 
 {FIELD} is a camel cased field name.
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -77,7 +77,18 @@ class UninterpretedOption_NamePart extends \ProtobufMessage
      */
     public function getNamePart()
     {
-        return $this->get(self::NAME_PART);
+        $value = $this->get(self::NAME_PART);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'name_part' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasNamePart()
+    {
+        return $this->get(self::NAME_PART) !== null;
     }
 
     /**
@@ -99,7 +110,18 @@ class UninterpretedOption_NamePart extends \ProtobufMessage
      */
     public function getIsExtension()
     {
-        return $this->get(self::IS_EXTENSION);
+        $value = $this->get(self::IS_EXTENSION);
+        return $value === null ? (boolean)$value : $value;
+    }
+
+    /**
+     * Returns true if 'is_extension' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasIsExtension()
+    {
+        return $this->get(self::IS_EXTENSION) !== null;
     }
 }
 }

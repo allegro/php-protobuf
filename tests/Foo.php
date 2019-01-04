@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2016-08-30 20:39:31
+ * Auto generated from test.proto at 2019-01-07 11:34:38
  */
 
 namespace {
@@ -262,6 +262,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'double_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasDoubleField()
+    {
+        return $this->get(self::DOUBLE_FIELD) !== null;
+    }
+
+    /**
      * Sets value of 'float_field' property
      *
      * @param double $value Property value
@@ -282,6 +292,16 @@ class Foo extends \ProtobufMessage
     {
         $value = $this->get(self::FLOAT_FIELD);
         return $value === null ? (double)$value : $value;
+    }
+
+    /**
+     * Returns true if 'float_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasFloatField()
+    {
+        return $this->get(self::FLOAT_FIELD) !== null;
     }
 
     /**
@@ -308,6 +328,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'int32_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasInt32Field()
+    {
+        return $this->get(self::INT32_FIELD) !== null;
+    }
+
+    /**
      * Sets value of 'int64_field' property
      *
      * @param integer $value Property value
@@ -328,6 +358,16 @@ class Foo extends \ProtobufMessage
     {
         $value = $this->get(self::INT64_FIELD);
         return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'int64_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasInt64Field()
+    {
+        return $this->get(self::INT64_FIELD) !== null;
     }
 
     /**
@@ -354,6 +394,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'uint32_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasUint32Field()
+    {
+        return $this->get(self::UINT32_FIELD) !== null;
+    }
+
+    /**
      * Sets value of 'uint64_field' property
      *
      * @param integer $value Property value
@@ -374,6 +424,16 @@ class Foo extends \ProtobufMessage
     {
         $value = $this->get(self::UINT64_FIELD);
         return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'uint64_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasUint64Field()
+    {
+        return $this->get(self::UINT64_FIELD) !== null;
     }
 
     /**
@@ -400,6 +460,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'sint32_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasSint32Field()
+    {
+        return $this->get(self::SINT32_FIELD) !== null;
+    }
+
+    /**
      * Sets value of 'sint64_field' property
      *
      * @param integer $value Property value
@@ -420,6 +490,16 @@ class Foo extends \ProtobufMessage
     {
         $value = $this->get(self::SINT64_FIELD);
         return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'sint64_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasSint64Field()
+    {
+        return $this->get(self::SINT64_FIELD) !== null;
     }
 
     /**
@@ -446,6 +526,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'fixed32_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasFixed32Field()
+    {
+        return $this->get(self::FIXED32_FIELD) !== null;
+    }
+
+    /**
      * Sets value of 'fixed64_field' property
      *
      * @param integer $value Property value
@@ -466,6 +556,16 @@ class Foo extends \ProtobufMessage
     {
         $value = $this->get(self::FIXED64_FIELD);
         return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'fixed64_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasFixed64Field()
+    {
+        return $this->get(self::FIXED64_FIELD) !== null;
     }
 
     /**
@@ -492,6 +592,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'sfixed32_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasSfixed32Field()
+    {
+        return $this->get(self::SFIXED32_FIELD) !== null;
+    }
+
+    /**
      * Sets value of 'sfixed64_field' property
      *
      * @param integer $value Property value
@@ -512,6 +622,16 @@ class Foo extends \ProtobufMessage
     {
         $value = $this->get(self::SFIXED64_FIELD);
         return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'sfixed64_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasSfixed64Field()
+    {
+        return $this->get(self::SFIXED64_FIELD) !== null;
     }
 
     /**
@@ -538,6 +658,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'bool_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasBoolField()
+    {
+        return $this->get(self::BOOL_FIELD) !== null;
+    }
+
+    /**
      * Sets value of 'string_field' property
      *
      * @param string $value Property value
@@ -561,6 +691,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'string_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasStringField()
+    {
+        return $this->get(self::STRING_FIELD) !== null;
+    }
+
+    /**
      * Sets value of 'bytes_field' property
      *
      * @param string $value Property value
@@ -581,6 +721,16 @@ class Foo extends \ProtobufMessage
     {
         $value = $this->get(self::BYTES_FIELD);
         return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'bytes_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasBytesField()
+    {
+        return $this->get(self::BYTES_FIELD) !== null;
     }
 
     /**
@@ -613,6 +763,16 @@ class Foo extends \ProtobufMessage
     public function getRepeatedField()
     {
         return $this->get(self::REPEATED_FIELD);
+    }
+
+    /**
+     * Returns true if 'repeated_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasRepeatedField()
+    {
+        return count($this->get(self::REPEATED_FIELD)) !== 0;
     }
 
     /**
@@ -670,6 +830,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'embedded_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasEmbeddedField()
+    {
+        return $this->get(self::EMBEDDED_FIELD) !== null;
+    }
+
+    /**
      * Appends value to 'double_packed_field' list
      *
      * @param double $value Value to append
@@ -699,6 +869,16 @@ class Foo extends \ProtobufMessage
     public function getDoublePackedField()
     {
         return $this->get(self::DOUBLE_PACKED_FIELD);
+    }
+
+    /**
+     * Returns true if 'double_packed_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasDoublePackedField()
+    {
+        return count($this->get(self::DOUBLE_PACKED_FIELD)) !== 0;
     }
 
     /**
@@ -766,6 +946,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'float_packed_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasFloatPackedField()
+    {
+        return count($this->get(self::FLOAT_PACKED_FIELD)) !== 0;
+    }
+
+    /**
      * Returns 'float_packed_field' iterator
      *
      * @return \ArrayIterator
@@ -827,6 +1017,16 @@ class Foo extends \ProtobufMessage
     public function getFixed32PackedField()
     {
         return $this->get(self::FIXED32_PACKED_FIELD);
+    }
+
+    /**
+     * Returns true if 'fixed32_packed_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasFixed32PackedField()
+    {
+        return count($this->get(self::FIXED32_PACKED_FIELD)) !== 0;
     }
 
     /**
@@ -894,6 +1094,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'fixed64_packed_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasFixed64PackedField()
+    {
+        return count($this->get(self::FIXED64_PACKED_FIELD)) !== 0;
+    }
+
+    /**
      * Returns 'fixed64_packed_field' iterator
      *
      * @return \ArrayIterator
@@ -955,6 +1165,16 @@ class Foo extends \ProtobufMessage
     public function getInt32PackedField()
     {
         return $this->get(self::INT32_PACKED_FIELD);
+    }
+
+    /**
+     * Returns true if 'int32_packed_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasInt32PackedField()
+    {
+        return count($this->get(self::INT32_PACKED_FIELD)) !== 0;
     }
 
     /**
@@ -1022,6 +1242,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'sint32_packed_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasSint32PackedField()
+    {
+        return count($this->get(self::SINT32_PACKED_FIELD)) !== 0;
+    }
+
+    /**
      * Returns 'sint32_packed_field' iterator
      *
      * @return \ArrayIterator
@@ -1086,6 +1316,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'bool_packed_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasBoolPackedField()
+    {
+        return count($this->get(self::BOOL_PACKED_FIELD)) !== 0;
+    }
+
+    /**
      * Returns 'bool_packed_field' iterator
      *
      * @return \ArrayIterator
@@ -1140,6 +1380,16 @@ class Foo extends \ProtobufMessage
     }
 
     /**
+     * Returns true if 'optional_embedded_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOptionalEmbeddedField()
+    {
+        return $this->get(self::OPTIONAL_EMBEDDED_FIELD) !== null;
+    }
+
+    /**
      * Appends value to 'repeated_obj_field' list
      *
      * @param \Bar $value Value to append
@@ -1169,6 +1419,16 @@ class Foo extends \ProtobufMessage
     public function getRepeatedObjField()
     {
         return $this->get(self::REPEATED_OBJ_FIELD);
+    }
+
+    /**
+     * Returns true if 'repeated_obj_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasRepeatedObjField()
+    {
+        return count($this->get(self::REPEATED_OBJ_FIELD)) !== 0;
     }
 
     /**
@@ -1233,6 +1493,16 @@ class Foo extends \ProtobufMessage
     public function getRepeatedStringField()
     {
         return $this->get(self::REPEATED_STRING_FIELD);
+    }
+
+    /**
+     * Returns true if 'repeated_string_field' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasRepeatedStringField()
+    {
+        return count($this->get(self::REPEATED_STRING_FIELD)) !== 0;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -81,6 +81,16 @@ class FileDescriptorSet extends \ProtobufMessage
     public function getFile()
     {
         return $this->get(self::FILE);
+    }
+
+    /**
+     * Returns true if 'file' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasFile()
+    {
+        return count($this->get(self::FILE)) !== 0;
     }
 
     /**

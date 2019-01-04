@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2016-07-08 14:22:37
+ * Auto generated from descriptor.proto at 2019-01-07 11:34:00
  *
  * google.protobuf package
  */
@@ -77,7 +77,18 @@ class DescriptorProto_ReservedRange extends \ProtobufMessage
      */
     public function getStart()
     {
-        return $this->get(self::START);
+        $value = $this->get(self::START);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'start' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasStart()
+    {
+        return $this->get(self::START) !== null;
     }
 
     /**
@@ -99,7 +110,18 @@ class DescriptorProto_ReservedRange extends \ProtobufMessage
      */
     public function getEnd()
     {
-        return $this->get(self::END);
+        $value = $this->get(self::END);
+        return $value === null ? (integer)$value : $value;
+    }
+
+    /**
+     * Returns true if 'end' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasEnd()
+    {
+        return $this->get(self::END) !== null;
     }
 }
 }

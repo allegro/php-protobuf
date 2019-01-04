@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from plugin.proto at 2016-07-08 14:22:37
+ * Auto generated from plugin.proto at 2019-01-07 11:34:00
  *
  * google.protobuf.compiler package
  */
@@ -77,7 +77,18 @@ class CodeGeneratorResponse extends \ProtobufMessage
      */
     public function getError()
     {
-        return $this->get(self::ERROR);
+        $value = $this->get(self::ERROR);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'error' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasError()
+    {
+        return $this->get(self::ERROR) !== null;
     }
 
     /**
@@ -110,6 +121,16 @@ class CodeGeneratorResponse extends \ProtobufMessage
     public function getFile()
     {
         return $this->get(self::FILE);
+    }
+
+    /**
+     * Returns true if 'file' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasFile()
+    {
+        return count($this->get(self::FILE)) !== 0;
     }
 
     /**

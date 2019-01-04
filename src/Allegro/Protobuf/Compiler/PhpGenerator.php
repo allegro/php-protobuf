@@ -226,19 +226,21 @@ class PhpGenerator
         $ignoredOneofs = array();
 
         foreach ($descriptorProto->getField() as $fieldDescriptorProto) {
-            $oneofIndex = $fieldDescriptorProto->getOneofIndex();
-            if (!is_null($oneofIndex)) {
+            if ($fieldDescriptorProto->hasOneofIndex()) {
+                $oneofIndex = $fieldDescriptorProto->getOneofIndex();
                 if (!in_array($oneofIndex, $ignoredOneofs)) {
                     $oneofDescriptorProto = $descriptorProto->getOneofDeclAt($oneofIndex);
                     $name = $oneofDescriptorProto->getName();
-                    Logger::warn("Ignoring '{$name}' field, "
+                    Logger::warn("Ignoring '{$name}', "
                         . 'oneof is not supported (https://github.com/allegro/php-protobuf/issues/72).');
                     $ignoredOneofs[] = $oneofIndex;
                 }
             } else {
                 $fieldDescriptor = new FieldDescriptor();
                 $fieldDescriptor->setName($fieldDescriptorProto->getName());
-                $fieldDescriptor->setDefault($fieldDescriptorProto->getDefaultValue());
+                if ($fieldDescriptorProto->hasDefaultValue()) {
+                    $fieldDescriptor->setDefault($fieldDescriptorProto->getDefaultValue());
+                }
                 $fieldDescriptor->setLabel($fieldDescriptorProto->getLabel());
                 $fieldDescriptor->setNumber($fieldDescriptorProto->getNumber());
                 $fieldDescriptor->setType($fieldDescriptorProto->getType());
@@ -590,6 +592,22 @@ class PhpGenerator
             ->append('}');
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
+        $comment->append('Returns true if \'' . $field->getName() . '\' property is set, false otherwise')
+            ->newline()
+            ->appendParam('return', 'boolean');
+
+        $buffer->newline()
+            ->append($comment)
+            ->append('public function has' . $field->getCamelCaseName() . '()')
+            ->append('{')
+            ->append(
+                'return count($this->get(self::' . $field->getConstName() . ')) !== 0;',
+                false,
+                1
+            )
+            ->append('}');
+
+        $comment = new CommentStringBuffer(self::TAB, self::EOL);
         $comment->append('Returns \'' . $field->getName() . '\' iterator')
             ->newline()
             ->appendParam('return', '\ArrayIterator');
@@ -714,6 +732,22 @@ class PhpGenerator
             }
             $buffer->decreaseIdentation()
                 ->append('}');
+
+        $comment = new CommentStringBuffer(self::TAB, self::EOL);
+        $comment->append('Returns true if \'' . $field->getName() . '\' property is set, false otherwise')
+            ->newline()
+            ->appendParam('return', 'boolean');
+
+        $buffer->newline()
+            ->append($comment)
+            ->append('public function has' . $field->getCamelCaseName() . '()')
+            ->append('{')
+            ->append(
+                'return $this->get(self::' . $field->getConstName() . ') !== null;',
+                false,
+                1
+            )
+            ->append('}');
     }
 
     /**
