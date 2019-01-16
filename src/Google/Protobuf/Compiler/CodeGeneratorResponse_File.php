@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from plugin.proto at 2019-01-07 11:34:00
- *
- * google.protobuf.compiler package
+ * Generated from plugin.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf\Compiler {
@@ -34,26 +32,6 @@ class CodeGeneratorResponse_File extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::NAME] = null;
-        $this->values[self::INSERTION_POINT] = null;
-        $this->values[self::CONTENT] = null;
-    }
 
     /**
      * Returns field descriptors

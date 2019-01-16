@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2019-01-07 11:34:00
- *
- * google.protobuf package
+ * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf {
@@ -46,28 +44,6 @@ class EnumDescriptorProto extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::NAME] = null;
-        $this->values[self::VALUE] = array();
-        $this->values[self::OPTIONS] = null;
-        $this->values[self::RESERVED_RANGE] = array();
-        $this->values[self::RESERVED_NAME] = array();
-    }
 
     /**
      * Returns field descriptors

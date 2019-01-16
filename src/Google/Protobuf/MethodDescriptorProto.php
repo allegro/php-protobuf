@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2019-01-07 11:34:00
- *
- * google.protobuf package
+ * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf {
@@ -54,29 +52,6 @@ class MethodDescriptorProto extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::NAME] = null;
-        $this->values[self::INPUT_TYPE] = null;
-        $this->values[self::OUTPUT_TYPE] = null;
-        $this->values[self::OPTIONS] = null;
-        $this->values[self::CLIENT_STREAMING] = self::$fields[self::CLIENT_STREAMING]['default'];
-        $this->values[self::SERVER_STREAMING] = self::$fields[self::SERVER_STREAMING]['default'];
-    }
 
     /**
      * Returns field descriptors

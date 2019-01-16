@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2019-01-07 11:34:00
- *
- * google.protobuf package
+ * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf {
@@ -14,12 +12,12 @@ class DescriptorProto extends \ProtobufMessage
     /* Field index constants */
     const NAME = 1;
     const FIELD = 2;
-    const EXTENSION = 6;
     const NESTED_TYPE = 3;
     const ENUM_TYPE = 4;
     const EXTENSION_RANGE = 5;
-    const ONEOF_DECL = 8;
+    const EXTENSION = 6;
     const OPTIONS = 7;
+    const ONEOF_DECL = 8;
     const RESERVED_RANGE = 9;
     const RESERVED_NAME = 10;
 
@@ -32,11 +30,6 @@ class DescriptorProto extends \ProtobufMessage
         ),
         self::FIELD => array(
             'name' => 'field',
-            'repeated' => true,
-            'type' => '\Google\Protobuf\FieldDescriptorProto'
-        ),
-        self::EXTENSION => array(
-            'name' => 'extension',
             'repeated' => true,
             'type' => '\Google\Protobuf\FieldDescriptorProto'
         ),
@@ -55,15 +48,20 @@ class DescriptorProto extends \ProtobufMessage
             'repeated' => true,
             'type' => '\Google\Protobuf\DescriptorProto_ExtensionRange'
         ),
-        self::ONEOF_DECL => array(
-            'name' => 'oneof_decl',
+        self::EXTENSION => array(
+            'name' => 'extension',
             'repeated' => true,
-            'type' => '\Google\Protobuf\OneofDescriptorProto'
+            'type' => '\Google\Protobuf\FieldDescriptorProto'
         ),
         self::OPTIONS => array(
             'name' => 'options',
             'required' => false,
             'type' => '\Google\Protobuf\MessageOptions'
+        ),
+        self::ONEOF_DECL => array(
+            'name' => 'oneof_decl',
+            'repeated' => true,
+            'type' => '\Google\Protobuf\OneofDescriptorProto'
         ),
         self::RESERVED_RANGE => array(
             'name' => 'reserved_range',
@@ -76,33 +74,6 @@ class DescriptorProto extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::NAME] = null;
-        $this->values[self::FIELD] = array();
-        $this->values[self::EXTENSION] = array();
-        $this->values[self::NESTED_TYPE] = array();
-        $this->values[self::ENUM_TYPE] = array();
-        $this->values[self::EXTENSION_RANGE] = array();
-        $this->values[self::ONEOF_DECL] = array();
-        $this->values[self::OPTIONS] = null;
-        $this->values[self::RESERVED_RANGE] = array();
-        $this->values[self::RESERVED_NAME] = array();
-    }
 
     /**
      * Returns field descriptors

@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2019-01-07 11:34:00
- *
- * google.protobuf package
+ * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf {
@@ -14,22 +12,22 @@ class FileOptions extends \ProtobufMessage
     /* Field index constants */
     const JAVA_PACKAGE = 1;
     const JAVA_OUTER_CLASSNAME = 8;
-    const JAVA_MULTIPLE_FILES = 10;
-    const JAVA_GENERATE_EQUALS_AND_HASH = 20;
-    const JAVA_STRING_CHECK_UTF8 = 27;
     const OPTIMIZE_FOR = 9;
+    const JAVA_MULTIPLE_FILES = 10;
     const GO_PACKAGE = 11;
     const CC_GENERIC_SERVICES = 16;
     const JAVA_GENERIC_SERVICES = 17;
     const PY_GENERIC_SERVICES = 18;
-    const PHP_GENERIC_SERVICES = 42;
+    const JAVA_GENERATE_EQUALS_AND_HASH = 20;
     const DEPRECATED = 23;
+    const JAVA_STRING_CHECK_UTF8 = 27;
     const CC_ENABLE_ARENAS = 31;
     const OBJC_CLASS_PREFIX = 36;
     const CSHARP_NAMESPACE = 37;
     const SWIFT_PREFIX = 39;
     const PHP_CLASS_PREFIX = 40;
     const PHP_NAMESPACE = 41;
+    const PHP_GENERIC_SERVICES = 42;
     const PHP_METADATA_NAMESPACE = 44;
     const RUBY_PACKAGE = 45;
     const UNINTERPRETED_OPTION = 999;
@@ -46,28 +44,17 @@ class FileOptions extends \ProtobufMessage
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
-        self::JAVA_MULTIPLE_FILES => array(
-            'default' => false,
-            'name' => 'java_multiple_files',
-            'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
-        ),
-        self::JAVA_GENERATE_EQUALS_AND_HASH => array(
-            'name' => 'java_generate_equals_and_hash',
-            'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
-        ),
-        self::JAVA_STRING_CHECK_UTF8 => array(
-            'default' => false,
-            'name' => 'java_string_check_utf8',
-            'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
-        ),
         self::OPTIMIZE_FOR => array(
             'default' => \Google\Protobuf\FileOptions_OptimizeMode::SPEED,
             'name' => 'optimize_for',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_INT,
+        ),
+        self::JAVA_MULTIPLE_FILES => array(
+            'default' => false,
+            'name' => 'java_multiple_files',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::GO_PACKAGE => array(
             'name' => 'go_package',
@@ -92,15 +79,20 @@ class FileOptions extends \ProtobufMessage
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
-        self::PHP_GENERIC_SERVICES => array(
-            'default' => false,
-            'name' => 'php_generic_services',
+        self::JAVA_GENERATE_EQUALS_AND_HASH => array(
+            'name' => 'java_generate_equals_and_hash',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::DEPRECATED => array(
             'default' => false,
             'name' => 'deprecated',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+        ),
+        self::JAVA_STRING_CHECK_UTF8 => array(
+            'default' => false,
+            'name' => 'java_string_check_utf8',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
@@ -135,6 +127,12 @@ class FileOptions extends \ProtobufMessage
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
+        self::PHP_GENERIC_SERVICES => array(
+            'default' => false,
+            'name' => 'php_generic_services',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+        ),
         self::PHP_METADATA_NAMESPACE => array(
             'name' => 'php_metadata_namespace',
             'required' => false,
@@ -151,44 +149,6 @@ class FileOptions extends \ProtobufMessage
             'type' => '\Google\Protobuf\UninterpretedOption'
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::JAVA_PACKAGE] = null;
-        $this->values[self::JAVA_OUTER_CLASSNAME] = null;
-        $this->values[self::JAVA_MULTIPLE_FILES] = self::$fields[self::JAVA_MULTIPLE_FILES]['default'];
-        $this->values[self::JAVA_GENERATE_EQUALS_AND_HASH] = null;
-        $this->values[self::JAVA_STRING_CHECK_UTF8] = self::$fields[self::JAVA_STRING_CHECK_UTF8]['default'];
-        $this->values[self::OPTIMIZE_FOR] = self::$fields[self::OPTIMIZE_FOR]['default'];
-        $this->values[self::GO_PACKAGE] = null;
-        $this->values[self::CC_GENERIC_SERVICES] = self::$fields[self::CC_GENERIC_SERVICES]['default'];
-        $this->values[self::JAVA_GENERIC_SERVICES] = self::$fields[self::JAVA_GENERIC_SERVICES]['default'];
-        $this->values[self::PY_GENERIC_SERVICES] = self::$fields[self::PY_GENERIC_SERVICES]['default'];
-        $this->values[self::PHP_GENERIC_SERVICES] = self::$fields[self::PHP_GENERIC_SERVICES]['default'];
-        $this->values[self::DEPRECATED] = self::$fields[self::DEPRECATED]['default'];
-        $this->values[self::CC_ENABLE_ARENAS] = self::$fields[self::CC_ENABLE_ARENAS]['default'];
-        $this->values[self::OBJC_CLASS_PREFIX] = null;
-        $this->values[self::CSHARP_NAMESPACE] = null;
-        $this->values[self::SWIFT_PREFIX] = null;
-        $this->values[self::PHP_CLASS_PREFIX] = null;
-        $this->values[self::PHP_NAMESPACE] = null;
-        $this->values[self::PHP_METADATA_NAMESPACE] = null;
-        $this->values[self::RUBY_PACKAGE] = null;
-        $this->values[self::UNINTERPRETED_OPTION] = array();
-    }
 
     /**
      * Returns field descriptors

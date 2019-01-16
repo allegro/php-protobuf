@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2019-01-07 11:34:00
- *
- * google.protobuf package
+ * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf {
@@ -35,26 +33,6 @@ class EnumOptions extends \ProtobufMessage
             'type' => '\Google\Protobuf\UninterpretedOption'
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::ALLOW_ALIAS] = null;
-        $this->values[self::DEPRECATED] = self::$fields[self::DEPRECATED]['default'];
-        $this->values[self::UNINTERPRETED_OPTION] = array();
-    }
 
     /**
      * Returns field descriptors

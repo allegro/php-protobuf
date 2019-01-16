@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from plugin.proto at 2019-01-07 11:34:00
- *
- * google.protobuf.compiler package
+ * Generated from plugin.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf\Compiler {
@@ -14,8 +12,8 @@ class CodeGeneratorRequest extends \ProtobufMessage
     /* Field index constants */
     const FILE_TO_GENERATE = 1;
     const PARAMETER = 2;
-    const PROTO_FILE = 15;
     const COMPILER_VERSION = 3;
+    const PROTO_FILE = 15;
 
     /* @var array Field descriptors */
     protected static $fields = array(
@@ -29,38 +27,17 @@ class CodeGeneratorRequest extends \ProtobufMessage
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
-        self::PROTO_FILE => array(
-            'name' => 'proto_file',
-            'repeated' => true,
-            'type' => '\Google\Protobuf\FileDescriptorProto'
-        ),
         self::COMPILER_VERSION => array(
             'name' => 'compiler_version',
             'required' => false,
             'type' => '\Google\Protobuf\Compiler\Version'
         ),
+        self::PROTO_FILE => array(
+            'name' => 'proto_file',
+            'repeated' => true,
+            'type' => '\Google\Protobuf\FileDescriptorProto'
+        ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::FILE_TO_GENERATE] = array();
-        $this->values[self::PARAMETER] = null;
-        $this->values[self::PROTO_FILE] = array();
-        $this->values[self::COMPILER_VERSION] = null;
-    }
 
     /**
      * Returns field descriptors

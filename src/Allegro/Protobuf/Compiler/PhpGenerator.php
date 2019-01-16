@@ -279,13 +279,7 @@ class PhpGenerator
     private function _createFileComment(FileDescriptor $file)
     {
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
-        $date = strftime("%Y-%m-%d %H:%M:%S");
-        $comment->append('Auto generated from ' . basename($file->getName()) . ' at ' . $date);
-
-        if ($file->getPackage()) {
-            $comment->newline()
-                ->append($file->getPackage() . ' package');
-        }
+        $comment->append('Generated from ' . basename($file->getName()) . ' by the protocol buffer compiler. DO NOT EDIT!');
         return $comment;
     }
 
@@ -800,6 +794,10 @@ class PhpGenerator
     {
         $buffer->append('/* Field index constants */');
 
+        usort($fields, function ($f0, $f1) {
+            return $f0->getNumber() - $f1->getNumber();
+        });
+
         foreach ($fields as $field) {
             $buffer->append(
                 'const ' . $field->getConstName() .
@@ -836,7 +834,7 @@ class PhpGenerator
                             '\'default\' => \'' .
                             addslashes($field->getDefault()) . '\','
                         );
-                    }  else {
+                    } else {
                         $buffer->append(
                             '\'default\' => ' . $field->getDefault() . ','
                         );
@@ -877,49 +875,67 @@ class PhpGenerator
             ->append(');')
             ->newline();
 
-        $comment = new CommentStringBuffer(self::TAB, self::EOL);
-        $comment->append(
-            'Constructs new message container and clears its internal state'
-        );
+        if (isset($this->customArguments['options']['format']) && $this->customArguments['options']['format'] === 'backward-compatible') {
+            $comment = new CommentStringBuffer(self::TAB, self::EOL);
+            $comment->append(
+                'Constructs new message container and clears its internal state'
+            );
 
-        $buffer->append($comment)
-            ->append('public function __construct()')
-            ->append('{')
-            ->increaseIdentation()
-            ->append('$this->reset();')
-            ->decreaseIdentation()
-            ->append('}')
-            ->newline();
+            $buffer->append($comment)
+                ->append('public function __construct()')
+                ->append('{')
+                ->increaseIdentation()
+                ->append('if (extension_loaded(\'allegro_protobuf\')) {')
+                ->increaseIdentation()
+                ->append('parent::__construct();')
+                ->decreaseIdentation()
+                ->append('} else {')
+                ->increaseIdentation()
+                ->append('$this->reset();')
+                ->decreaseIdentation()
+                ->append('}')
+                ->decreaseIdentation()
+                ->append('}')
+                ->newline();
 
-        $comment = new CommentStringBuffer(self::TAB, self::EOL);
-        $comment->append('Clears message values and sets default ones')
-            ->newline()
-            ->appendParam('return', 'null');
+            $comment = new CommentStringBuffer(self::TAB, self::EOL);
+            $comment->append('Clears message values and sets default ones')
+                ->newline()
+                ->appendParam('return', 'null');
 
-        $buffer->append($comment)
-            ->append('public function reset()')
-            ->append('{')
-            ->increaseIdentation();
+            $buffer->append($comment)
+                ->append('public function reset()')
+                ->append('{')
+                ->increaseIdentation()
+                ->append('if (extension_loaded(\'allegro_protobuf\')) {')
+                ->increaseIdentation()
+                ->append('parent::reset();')
+                ->decreaseIdentation()
+                ->append('} else {')
+                ->increaseIdentation();
 
-        foreach ($fields as $field) {
-            if ($field->isRepeated()) {
-                $buffer->append(
-                    '$this->values[self::' . $field->getConstName() . '] = array();'
-                );
-            } else if (!is_null($field->getDefault())) {
-                $buffer->append(
-                    '$this->values[self::' . $field->getConstName() . '] = ' .
-                    'self::$fields[self::' . $field->getConstName() . '][\'default\'];'
-                );
-            } else {
-                $buffer->append(
-                    '$this->values[self::' . $field->getConstName() . '] = null;'
-                );
+            foreach ($fields as $field) {
+                if ($field->isRepeated()) {
+                    $buffer->append(
+                        '$this->values[self::' . $field->getConstName() . '] = array();'
+                    );
+                } else if (!is_null($field->getDefault())) {
+                    $buffer->append(
+                        '$this->values[self::' . $field->getConstName() . '] = ' .
+                        'self::$fields[self::' . $field->getConstName() . '][\'default\'];'
+                    );
+                } else {
+                    $buffer->append(
+                        '$this->values[self::' . $field->getConstName() . '] = null;'
+                    );
+                }
             }
-        }
 
-        $buffer->decreaseIdentation()
-            ->append('}')
-            ->newline();
+            $buffer->decreaseIdentation()
+                ->append('}')
+                ->decreaseIdentation()
+                ->append('}')
+                ->newline();
+      }
     }
 }

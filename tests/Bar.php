@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2019-01-07 11:34:38
+ * Generated from test.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace {
@@ -20,24 +20,6 @@ class Bar extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_DOUBLE,
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::DOUBLE_FIELD] = null;
-    }
 
     /**
      * Returns field descriptors

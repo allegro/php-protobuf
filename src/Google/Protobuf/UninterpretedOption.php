@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2019-01-07 11:34:00
- *
- * google.protobuf package
+ * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf {
@@ -58,30 +56,6 @@ class UninterpretedOption extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::NAME] = array();
-        $this->values[self::IDENTIFIER_VALUE] = null;
-        $this->values[self::POSITIVE_INT_VALUE] = null;
-        $this->values[self::NEGATIVE_INT_VALUE] = null;
-        $this->values[self::DOUBLE_VALUE] = null;
-        $this->values[self::STRING_VALUE] = null;
-        $this->values[self::AGGREGATE_VALUE] = null;
-    }
 
     /**
      * Returns field descriptors

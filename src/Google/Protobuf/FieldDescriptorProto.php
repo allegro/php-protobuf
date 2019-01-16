@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2019-01-07 11:34:00
- *
- * google.protobuf package
+ * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf {
@@ -13,20 +11,25 @@ class FieldDescriptorProto extends \ProtobufMessage
 {
     /* Field index constants */
     const NAME = 1;
+    const EXTENDEE = 2;
     const NUMBER = 3;
     const LABEL = 4;
     const TYPE = 5;
     const TYPE_NAME = 6;
-    const EXTENDEE = 2;
     const DEFAULT_VALUE = 7;
+    const OPTIONS = 8;
     const ONEOF_INDEX = 9;
     const JSON_NAME = 10;
-    const OPTIONS = 8;
 
     /* @var array Field descriptors */
     protected static $fields = array(
         self::NAME => array(
             'name' => 'name',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
+        ),
+        self::EXTENDEE => array(
+            'name' => 'extendee',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
@@ -50,15 +53,15 @@ class FieldDescriptorProto extends \ProtobufMessage
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
-        self::EXTENDEE => array(
-            'name' => 'extendee',
-            'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
-        ),
         self::DEFAULT_VALUE => array(
             'name' => 'default_value',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_STRING,
+        ),
+        self::OPTIONS => array(
+            'name' => 'options',
+            'required' => false,
+            'type' => '\Google\Protobuf\FieldOptions'
         ),
         self::ONEOF_INDEX => array(
             'name' => 'oneof_index',
@@ -70,39 +73,7 @@ class FieldDescriptorProto extends \ProtobufMessage
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
-        self::OPTIONS => array(
-            'name' => 'options',
-            'required' => false,
-            'type' => '\Google\Protobuf\FieldOptions'
-        ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::NAME] = null;
-        $this->values[self::NUMBER] = null;
-        $this->values[self::LABEL] = null;
-        $this->values[self::TYPE] = null;
-        $this->values[self::TYPE_NAME] = null;
-        $this->values[self::EXTENDEE] = null;
-        $this->values[self::DEFAULT_VALUE] = null;
-        $this->values[self::ONEOF_INDEX] = null;
-        $this->values[self::JSON_NAME] = null;
-        $this->values[self::OPTIONS] = null;
-    }
 
     /**
      * Returns field descriptors

@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2019-01-07 11:34:00
- *
- * google.protobuf package
+ * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf {
@@ -14,9 +12,9 @@ class FieldOptions extends \ProtobufMessage
     /* Field index constants */
     const CTYPE = 1;
     const PACKED = 2;
-    const JSTYPE = 6;
-    const LAZY = 5;
     const DEPRECATED = 3;
+    const LAZY = 5;
+    const JSTYPE = 6;
     const WEAK = 10;
     const UNINTERPRETED_OPTION = 999;
 
@@ -33,11 +31,11 @@ class FieldOptions extends \ProtobufMessage
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
-        self::JSTYPE => array(
-            'default' => \Google\Protobuf\FieldOptions_JSType::JS_NORMAL,
-            'name' => 'jstype',
+        self::DEPRECATED => array(
+            'default' => false,
+            'name' => 'deprecated',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::LAZY => array(
             'default' => false,
@@ -45,11 +43,11 @@ class FieldOptions extends \ProtobufMessage
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
-        self::DEPRECATED => array(
-            'default' => false,
-            'name' => 'deprecated',
+        self::JSTYPE => array(
+            'default' => \Google\Protobuf\FieldOptions_JSType::JS_NORMAL,
+            'name' => 'jstype',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::WEAK => array(
             'default' => false,
@@ -63,30 +61,6 @@ class FieldOptions extends \ProtobufMessage
             'type' => '\Google\Protobuf\UninterpretedOption'
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::CTYPE] = self::$fields[self::CTYPE]['default'];
-        $this->values[self::PACKED] = null;
-        $this->values[self::JSTYPE] = self::$fields[self::JSTYPE]['default'];
-        $this->values[self::LAZY] = self::$fields[self::LAZY]['default'];
-        $this->values[self::DEPRECATED] = self::$fields[self::DEPRECATED]['default'];
-        $this->values[self::WEAK] = self::$fields[self::WEAK]['default'];
-        $this->values[self::UNINTERPRETED_OPTION] = array();
-    }
 
     /**
      * Returns field descriptors

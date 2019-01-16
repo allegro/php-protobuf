@@ -29,6 +29,7 @@ message Foo
 	optional Baz optional_embedded_field = 25;
 	repeated Bar repeated_obj_field = 26;
 	repeated string repeated_string_field = 27;
+	optional string string_field_with_default = 28 [default="foo"];
 }
 
 message Bar

@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2019-01-07 11:34:00
- *
- * google.protobuf package
+ * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf {
@@ -15,14 +13,14 @@ class FileDescriptorProto extends \ProtobufMessage
     const NAME = 1;
     const PACKAGE = 2;
     const DEPENDENCY = 3;
-    const PUBLIC_DEPENDENCY = 10;
-    const WEAK_DEPENDENCY = 11;
     const MESSAGE_TYPE = 4;
     const ENUM_TYPE = 5;
     const SERVICE = 6;
     const EXTENSION = 7;
     const OPTIONS = 8;
     const SOURCE_CODE_INFO = 9;
+    const PUBLIC_DEPENDENCY = 10;
+    const WEAK_DEPENDENCY = 11;
     const SYNTAX = 12;
 
     /* @var array Field descriptors */
@@ -41,16 +39,6 @@ class FileDescriptorProto extends \ProtobufMessage
             'name' => 'dependency',
             'repeated' => true,
             'type' => \ProtobufMessage::PB_TYPE_STRING,
-        ),
-        self::PUBLIC_DEPENDENCY => array(
-            'name' => 'public_dependency',
-            'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
-        ),
-        self::WEAK_DEPENDENCY => array(
-            'name' => 'weak_dependency',
-            'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
         self::MESSAGE_TYPE => array(
             'name' => 'message_type',
@@ -82,41 +70,22 @@ class FileDescriptorProto extends \ProtobufMessage
             'required' => false,
             'type' => '\Google\Protobuf\SourceCodeInfo'
         ),
+        self::PUBLIC_DEPENDENCY => array(
+            'name' => 'public_dependency',
+            'repeated' => true,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
+        ),
+        self::WEAK_DEPENDENCY => array(
+            'name' => 'weak_dependency',
+            'repeated' => true,
+            'type' => \ProtobufMessage::PB_TYPE_INT,
+        ),
         self::SYNTAX => array(
             'name' => 'syntax',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::NAME] = null;
-        $this->values[self::PACKAGE] = null;
-        $this->values[self::DEPENDENCY] = array();
-        $this->values[self::PUBLIC_DEPENDENCY] = array();
-        $this->values[self::WEAK_DEPENDENCY] = array();
-        $this->values[self::MESSAGE_TYPE] = array();
-        $this->values[self::ENUM_TYPE] = array();
-        $this->values[self::SERVICE] = array();
-        $this->values[self::EXTENSION] = array();
-        $this->values[self::OPTIONS] = null;
-        $this->values[self::SOURCE_CODE_INFO] = null;
-        $this->values[self::SYNTAX] = null;
-    }
 
     /**
      * Returns field descriptors

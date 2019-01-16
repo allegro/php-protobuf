@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2019-01-07 11:34:38
+ * Generated from test.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace {
@@ -37,6 +37,7 @@ class Foo extends \ProtobufMessage
     const OPTIONAL_EMBEDDED_FIELD = 25;
     const REPEATED_OBJ_FIELD = 26;
     const REPEATED_STRING_FIELD = 27;
+    const STRING_FIELD_WITH_DEFAULT = 28;
 
     /* @var array Field descriptors */
     protected static $fields = array(
@@ -182,51 +183,13 @@ class Foo extends \ProtobufMessage
             'repeated' => true,
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
+        self::STRING_FIELD_WITH_DEFAULT => array(
+            'default' => 'foo',
+            'name' => 'string_field_with_default',
+            'required' => false,
+            'type' => \ProtobufMessage::PB_TYPE_STRING,
+        ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::DOUBLE_FIELD] = null;
-        $this->values[self::FLOAT_FIELD] = null;
-        $this->values[self::INT32_FIELD] = null;
-        $this->values[self::INT64_FIELD] = null;
-        $this->values[self::UINT32_FIELD] = null;
-        $this->values[self::UINT64_FIELD] = null;
-        $this->values[self::SINT32_FIELD] = null;
-        $this->values[self::SINT64_FIELD] = null;
-        $this->values[self::FIXED32_FIELD] = null;
-        $this->values[self::FIXED64_FIELD] = null;
-        $this->values[self::SFIXED32_FIELD] = null;
-        $this->values[self::SFIXED64_FIELD] = null;
-        $this->values[self::BOOL_FIELD] = null;
-        $this->values[self::STRING_FIELD] = null;
-        $this->values[self::BYTES_FIELD] = null;
-        $this->values[self::REPEATED_FIELD] = array();
-        $this->values[self::EMBEDDED_FIELD] = null;
-        $this->values[self::DOUBLE_PACKED_FIELD] = array();
-        $this->values[self::FLOAT_PACKED_FIELD] = array();
-        $this->values[self::FIXED32_PACKED_FIELD] = array();
-        $this->values[self::FIXED64_PACKED_FIELD] = array();
-        $this->values[self::INT32_PACKED_FIELD] = array();
-        $this->values[self::SINT32_PACKED_FIELD] = array();
-        $this->values[self::BOOL_PACKED_FIELD] = array();
-        $this->values[self::OPTIONAL_EMBEDDED_FIELD] = null;
-        $this->values[self::REPEATED_OBJ_FIELD] = array();
-        $this->values[self::REPEATED_STRING_FIELD] = array();
-    }
 
     /**
      * Returns field descriptors
@@ -1535,6 +1498,39 @@ class Foo extends \ProtobufMessage
     public function getRepeatedStringFieldCount()
     {
         return $this->count(self::REPEATED_STRING_FIELD);
+    }
+
+    /**
+     * Sets value of 'string_field_with_default' property
+     *
+     * @param string $value Property value
+     *
+     * @return null
+     */
+    public function setStringFieldWithDefault($value)
+    {
+        return $this->set(self::STRING_FIELD_WITH_DEFAULT, $value);
+    }
+
+    /**
+     * Returns value of 'string_field_with_default' property
+     *
+     * @return string
+     */
+    public function getStringFieldWithDefault()
+    {
+        $value = $this->get(self::STRING_FIELD_WITH_DEFAULT);
+        return $value === null ? (string)$value : $value;
+    }
+
+    /**
+     * Returns true if 'string_field_with_default' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasStringFieldWithDefault()
+    {
+        return $this->get(self::STRING_FIELD_WITH_DEFAULT) !== null;
     }
 }
 }

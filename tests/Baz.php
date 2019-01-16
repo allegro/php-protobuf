@@ -1,6 +1,6 @@
 <?php
 /**
- * Auto generated from test.proto at 2019-01-07 11:34:38
+ * Generated from test.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace {
@@ -20,24 +20,6 @@ class Baz extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::ID] = null;
-    }
 
     /**
      * Returns field descriptors

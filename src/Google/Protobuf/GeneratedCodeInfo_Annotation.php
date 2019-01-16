@@ -1,8 +1,6 @@
 <?php
 /**
- * Auto generated from descriptor.proto at 2019-01-07 11:34:00
- *
- * google.protobuf package
+ * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
 namespace Google\Protobuf {
@@ -41,27 +39,6 @@ class GeneratedCodeInfo_Annotation extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_INT,
         ),
     );
-
-    /**
-     * Constructs new message container and clears its internal state
-     */
-    public function __construct()
-    {
-        $this->reset();
-    }
-
-    /**
-     * Clears message values and sets default ones
-     *
-     * @return null
-     */
-    public function reset()
-    {
-        $this->values[self::PATH] = array();
-        $this->values[self::SOURCE_FILE] = null;
-        $this->values[self::BEGIN] = null;
-        $this->values[self::END] = null;
-    }
 
     /**
      * Returns field descriptors
