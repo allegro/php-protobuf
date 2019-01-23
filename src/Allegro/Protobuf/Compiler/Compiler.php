@@ -6,7 +6,7 @@ use Google\Protobuf\Compiler\CodeGeneratorRequest;
 class Compiler
 {
     const MINIMUM_PROTOC_VERSION = '2.6.0';
-    const VERSION = '0.11.0';
+    const VERSION = '0.9.1';
 
     /**
      * @param string $pluginExecutable
