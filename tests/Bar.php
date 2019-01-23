@@ -3,7 +3,6 @@
  * Generated from test.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace {
 /**
  * Bar message
  */
@@ -63,5 +62,4 @@ class Bar extends \ProtobufMessage
     {
         return $this->get(self::DOUBLE_FIELD) !== null;
     }
-}
 }

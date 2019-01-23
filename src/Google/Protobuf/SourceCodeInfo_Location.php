@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * Location message embedded in SourceCodeInfo message
  */
@@ -344,5 +345,4 @@ class SourceCodeInfo_Location extends \ProtobufMessage
     {
         return $this->count(self::LEADING_DETACHED_COMMENTS);
     }
-}
 }

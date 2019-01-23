@@ -323,9 +323,8 @@ class PhpGenerator
 
         $namespaceName = $this->_createNamespaceName($descriptor);
         if ($namespaceName) {
-            $buffer->append('namespace ' . $namespaceName . ' {');
-        } else {
-            $buffer->append('namespace {');
+            $buffer->append('namespace ' . $namespaceName . ';')
+                ->newline();
         }
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -349,8 +348,6 @@ class PhpGenerator
         $buffer->decreaseIdentation()
             ->append('}');
 
-        $buffer->append('}');
-
         $createClass($className, $namespaceName, $buffer);
     }
 
@@ -370,9 +367,8 @@ class PhpGenerator
         $className = $this->_createClassName($descriptor);
         $namespaceName = $this->_createNamespaceName($descriptor);
         if ($namespaceName) {
-            $buffer->append('namespace ' . $namespaceName . ' {');
-        } else {
-            $buffer->append('namespace {');
+            $buffer->append('namespace ' . $namespaceName . ';')
+                ->newline();
         }
 
         $comment = new CommentStringBuffer(self::TAB, self::EOL);
@@ -393,8 +389,6 @@ class PhpGenerator
 
         $buffer->decreaseIdentation()
             ->append('}');
-
-        $buffer->append('}');
 
         $createClass($className, $namespaceName, $buffer);
     }

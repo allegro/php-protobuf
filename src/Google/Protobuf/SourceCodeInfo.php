@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * SourceCodeInfo message
  */
@@ -104,5 +105,4 @@ class SourceCodeInfo extends \ProtobufMessage
     {
         return $this->count(self::LOCATION);
     }
-}
 }

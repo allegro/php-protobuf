@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * ReservedRange message embedded in DescriptorProto message
  */
@@ -102,5 +103,4 @@ class DescriptorProto_ReservedRange extends \ProtobufMessage
     {
         return $this->get(self::END) !== null;
     }
-}
 }

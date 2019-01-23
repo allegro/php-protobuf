@@ -3,7 +3,6 @@
  * Generated from test.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace {
 /**
  * Foo message
  */
@@ -1532,5 +1531,4 @@ class Foo extends \ProtobufMessage
     {
         return $this->get(self::STRING_FIELD_WITH_DEFAULT) !== null;
     }
-}
 }

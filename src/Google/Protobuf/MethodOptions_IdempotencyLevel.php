@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * IdempotencyLevel enum embedded in MethodOptions message
  */
@@ -26,5 +27,4 @@ final class MethodOptions_IdempotencyLevel
             'IDEMPOTENT' => self::IDEMPOTENT,
         );
     }
-}
 }

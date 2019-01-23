@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * EnumReservedRange message embedded in EnumDescriptorProto message
  */
@@ -102,5 +103,4 @@ class EnumDescriptorProto_EnumReservedRange extends \ProtobufMessage
     {
         return $this->get(self::END) !== null;
     }
-}
 }

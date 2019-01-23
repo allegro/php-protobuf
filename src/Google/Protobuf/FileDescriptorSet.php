@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * FileDescriptorSet message
  */
@@ -104,5 +105,4 @@ class FileDescriptorSet extends \ProtobufMessage
     {
         return $this->count(self::FILE);
     }
-}
 }

@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * Label enum embedded in FieldDescriptorProto message
  */
@@ -26,5 +27,4 @@ final class FieldDescriptorProto_Label
             'LABEL_REPEATED' => self::LABEL_REPEATED,
         );
     }
-}
 }

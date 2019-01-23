@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * OptimizeMode enum embedded in FileOptions message
  */
@@ -26,5 +27,4 @@ final class FileOptions_OptimizeMode
             'LITE_RUNTIME' => self::LITE_RUNTIME,
         );
     }
-}
 }

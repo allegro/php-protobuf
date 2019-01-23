@@ -3,7 +3,8 @@
  * Generated from plugin.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf\Compiler;
+
 /**
  * Version message
  */
@@ -180,5 +181,4 @@ class Version extends \ProtobufMessage
     {
         return $this->get(self::SUFFIX) !== null;
     }
-}
 }

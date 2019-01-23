@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * JSType enum embedded in FieldOptions message
  */
@@ -26,5 +27,4 @@ final class FieldOptions_JSType
             'JS_NUMBER' => self::JS_NUMBER,
         );
     }
-}
 }

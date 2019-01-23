@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * ExtensionRange message embedded in DescriptorProto message
  */
@@ -140,5 +141,4 @@ class DescriptorProto_ExtensionRange extends \ProtobufMessage
     {
         return $this->get(self::OPTIONS) !== null;
     }
-}
 }

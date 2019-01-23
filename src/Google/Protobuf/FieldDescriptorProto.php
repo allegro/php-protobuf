@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * FieldDescriptorProto message
  */
@@ -413,5 +414,4 @@ class FieldDescriptorProto extends \ProtobufMessage
     {
         return $this->get(self::OPTIONS) !== null;
     }
-}
 }

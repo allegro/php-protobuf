@@ -3,7 +3,8 @@
  * Generated from plugin.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf\Compiler;
+
 /**
  * CodeGeneratorResponse message
  */
@@ -143,5 +144,4 @@ class CodeGeneratorResponse extends \ProtobufMessage
     {
         return $this->count(self::FILE);
     }
-}
 }

@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * FileDescriptorProto message
  */
@@ -777,5 +778,4 @@ class FileDescriptorProto extends \ProtobufMessage
     {
         return $this->get(self::SYNTAX) !== null;
     }
-}
 }

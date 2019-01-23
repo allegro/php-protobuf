@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * NamePart message embedded in UninterpretedOption message
  */
@@ -102,5 +103,4 @@ class UninterpretedOption_NamePart extends \ProtobufMessage
     {
         return $this->get(self::IS_EXTENSION) !== null;
     }
-}
 }

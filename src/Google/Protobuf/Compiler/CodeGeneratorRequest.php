@@ -3,7 +3,8 @@
  * Generated from plugin.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf\Compiler {
+namespace Google\Protobuf\Compiler;
+
 /**
  * CodeGeneratorRequest message
  */
@@ -261,5 +262,4 @@ class CodeGeneratorRequest extends \ProtobufMessage
     {
         return $this->get(self::COMPILER_VERSION) !== null;
     }
-}
 }

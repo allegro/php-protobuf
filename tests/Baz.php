@@ -3,7 +3,6 @@
  * Generated from test.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace {
 /**
  * Baz message
  */
@@ -63,5 +62,4 @@ class Baz extends \ProtobufMessage
     {
         return $this->get(self::ID) !== null;
     }
-}
 }

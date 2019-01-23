@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * Type enum embedded in FieldDescriptorProto message
  */
@@ -56,5 +57,4 @@ final class FieldDescriptorProto_Type
             'TYPE_SINT64' => self::TYPE_SINT64,
         );
     }
-}
 }

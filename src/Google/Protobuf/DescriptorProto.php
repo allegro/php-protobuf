@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * DescriptorProto message
  */
@@ -741,5 +742,4 @@ class DescriptorProto extends \ProtobufMessage
     {
         return $this->count(self::RESERVED_NAME);
     }
-}
 }

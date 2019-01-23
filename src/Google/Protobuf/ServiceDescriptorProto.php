@@ -3,7 +3,8 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf {
+namespace Google\Protobuf;
+
 /**
  * ServiceDescriptorProto message
  */
@@ -181,5 +182,4 @@ class ServiceDescriptorProto extends \ProtobufMessage
     {
         return $this->get(self::OPTIONS) !== null;
     }
-}
 }
