@@ -3,12 +3,12 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf;
+namespace Google\Protobuf\MethodOptions;
 
 /**
  * IdempotencyLevel enum embedded in MethodOptions message
  */
-final class MethodOptions_IdempotencyLevel
+final class IdempotencyLevel
 {
     const IDEMPOTENCY_UNKNOWN = 0;
     const NO_SIDE_EFFECTS = 1;

@@ -24,7 +24,7 @@ class UninterpretedOption extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'repeated' => true,
-            'type' => '\Google\Protobuf\UninterpretedOption_NamePart'
+            'type' => '\Google\Protobuf\UninterpretedOption\NamePart'
         ),
         self::IDENTIFIER_VALUE => array(
             'name' => 'identifier_value',
@@ -71,11 +71,11 @@ class UninterpretedOption extends \ProtobufMessage
     /**
      * Appends value to 'name' list
      *
-     * @param \Google\Protobuf\UninterpretedOption_NamePart $value Value to append
+     * @param \Google\Protobuf\UninterpretedOption\NamePart $value Value to append
      *
      * @return null
      */
-    public function appendName(\Google\Protobuf\UninterpretedOption_NamePart $value)
+    public function appendName(\Google\Protobuf\UninterpretedOption\NamePart $value)
     {
         return $this->append(self::NAME, $value);
     }
@@ -93,7 +93,7 @@ class UninterpretedOption extends \ProtobufMessage
     /**
      * Returns 'name' list
      *
-     * @return \Google\Protobuf\UninterpretedOption_NamePart[]
+     * @return \Google\Protobuf\UninterpretedOption\NamePart[]
      */
     public function getName()
     {
@@ -125,7 +125,7 @@ class UninterpretedOption extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\UninterpretedOption_NamePart
+     * @return \Google\Protobuf\UninterpretedOption\NamePart
      */
     public function getNameAt($offset)
     {

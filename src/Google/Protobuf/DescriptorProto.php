@@ -47,7 +47,7 @@ class DescriptorProto extends \ProtobufMessage
         self::EXTENSION_RANGE => array(
             'name' => 'extension_range',
             'repeated' => true,
-            'type' => '\Google\Protobuf\DescriptorProto_ExtensionRange'
+            'type' => '\Google\Protobuf\DescriptorProto\ExtensionRange'
         ),
         self::EXTENSION => array(
             'name' => 'extension',
@@ -67,7 +67,7 @@ class DescriptorProto extends \ProtobufMessage
         self::RESERVED_RANGE => array(
             'name' => 'reserved_range',
             'repeated' => true,
-            'type' => '\Google\Protobuf\DescriptorProto_ReservedRange'
+            'type' => '\Google\Protobuf\DescriptorProto\ReservedRange'
         ),
         self::RESERVED_NAME => array(
             'name' => 'reserved_name',
@@ -418,11 +418,11 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'extension_range' list
      *
-     * @param \Google\Protobuf\DescriptorProto_ExtensionRange $value Value to append
+     * @param \Google\Protobuf\DescriptorProto\ExtensionRange $value Value to append
      *
      * @return null
      */
-    public function appendExtensionRange(\Google\Protobuf\DescriptorProto_ExtensionRange $value)
+    public function appendExtensionRange(\Google\Protobuf\DescriptorProto\ExtensionRange $value)
     {
         return $this->append(self::EXTENSION_RANGE, $value);
     }
@@ -440,7 +440,7 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Returns 'extension_range' list
      *
-     * @return \Google\Protobuf\DescriptorProto_ExtensionRange[]
+     * @return \Google\Protobuf\DescriptorProto\ExtensionRange[]
      */
     public function getExtensionRange()
     {
@@ -472,7 +472,7 @@ class DescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\DescriptorProto_ExtensionRange
+     * @return \Google\Protobuf\DescriptorProto\ExtensionRange
      */
     public function getExtensionRangeAt($offset)
     {
@@ -598,11 +598,11 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'reserved_range' list
      *
-     * @param \Google\Protobuf\DescriptorProto_ReservedRange $value Value to append
+     * @param \Google\Protobuf\DescriptorProto\ReservedRange $value Value to append
      *
      * @return null
      */
-    public function appendReservedRange(\Google\Protobuf\DescriptorProto_ReservedRange $value)
+    public function appendReservedRange(\Google\Protobuf\DescriptorProto\ReservedRange $value)
     {
         return $this->append(self::RESERVED_RANGE, $value);
     }
@@ -620,7 +620,7 @@ class DescriptorProto extends \ProtobufMessage
     /**
      * Returns 'reserved_range' list
      *
-     * @return \Google\Protobuf\DescriptorProto_ReservedRange[]
+     * @return \Google\Protobuf\DescriptorProto\ReservedRange[]
      */
     public function getReservedRange()
     {
@@ -652,7 +652,7 @@ class DescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\DescriptorProto_ReservedRange
+     * @return \Google\Protobuf\DescriptorProto\ReservedRange
      */
     public function getReservedRangeAt($offset)
     {

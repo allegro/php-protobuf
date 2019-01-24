@@ -3,12 +3,12 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf;
+namespace Google\Protobuf\SourceCodeInfo;
 
 /**
  * Location message embedded in SourceCodeInfo message
  */
-class SourceCodeInfo_Location extends \ProtobufMessage
+class Location extends \ProtobufMessage
 {
     /* Field index constants */
     const PATH = 1;

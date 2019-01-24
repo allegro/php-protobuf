@@ -3,12 +3,12 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf;
+namespace Google\Protobuf\EnumDescriptorProto;
 
 /**
- * ReservedRange message embedded in DescriptorProto message
+ * EnumReservedRange message embedded in EnumDescriptorProto message
  */
-class DescriptorProto_ReservedRange extends \ProtobufMessage
+class EnumReservedRange extends \ProtobufMessage
 {
     /* Field index constants */
     const START = 1;

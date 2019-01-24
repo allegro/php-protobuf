@@ -24,7 +24,7 @@ class CodeGeneratorResponse extends \ProtobufMessage
         self::FILE => array(
             'name' => 'file',
             'repeated' => true,
-            'type' => '\Google\Protobuf\Compiler\CodeGeneratorResponse_File'
+            'type' => '\Google\Protobuf\Compiler\CodeGeneratorResponse\File'
         ),
     );
 
@@ -74,11 +74,11 @@ class CodeGeneratorResponse extends \ProtobufMessage
     /**
      * Appends value to 'file' list
      *
-     * @param \Google\Protobuf\Compiler\CodeGeneratorResponse_File $value Value to append
+     * @param \Google\Protobuf\Compiler\CodeGeneratorResponse\File $value Value to append
      *
      * @return null
      */
-    public function appendFile(\Google\Protobuf\Compiler\CodeGeneratorResponse_File $value)
+    public function appendFile(\Google\Protobuf\Compiler\CodeGeneratorResponse\File $value)
     {
         return $this->append(self::FILE, $value);
     }
@@ -96,7 +96,7 @@ class CodeGeneratorResponse extends \ProtobufMessage
     /**
      * Returns 'file' list
      *
-     * @return \Google\Protobuf\Compiler\CodeGeneratorResponse_File[]
+     * @return \Google\Protobuf\Compiler\CodeGeneratorResponse\File[]
      */
     public function getFile()
     {
@@ -128,7 +128,7 @@ class CodeGeneratorResponse extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\Compiler\CodeGeneratorResponse_File
+     * @return \Google\Protobuf\Compiler\CodeGeneratorResponse\File
      */
     public function getFileAt($offset)
     {

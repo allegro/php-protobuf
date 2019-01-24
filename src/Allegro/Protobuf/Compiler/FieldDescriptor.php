@@ -1,8 +1,7 @@
 <?php
 namespace Allegro\Protobuf\Compiler;
 
-use Google\Protobuf\FieldDescriptorProto_Label;
-use Google\Protobuf\FieldDescriptorProto_Type;
+use Google\Protobuf\FieldDescriptorProto;
 
 /**
  * Describes field
@@ -10,42 +9,42 @@ use Google\Protobuf\FieldDescriptorProto_Type;
 class FieldDescriptor
 {
     private static $_scalarInternalTypesByProtobufType = array(
-        FieldDescriptorProto_Type::TYPE_DOUBLE   => '\ProtobufMessage::PB_TYPE_DOUBLE',
-        FieldDescriptorProto_Type::TYPE_FLOAT    => '\ProtobufMessage::PB_TYPE_FLOAT',
-        FieldDescriptorProto_Type::TYPE_INT32    => '\ProtobufMessage::PB_TYPE_INT',
-        FieldDescriptorProto_Type::TYPE_INT64    => '\ProtobufMessage::PB_TYPE_INT',
-        FieldDescriptorProto_Type::TYPE_UINT32   => '\ProtobufMessage::PB_TYPE_INT',
-        FieldDescriptorProto_Type::TYPE_UINT64   => '\ProtobufMessage::PB_TYPE_INT',
-        FieldDescriptorProto_Type::TYPE_SINT32   => '\ProtobufMessage::PB_TYPE_SIGNED_INT',
-        FieldDescriptorProto_Type::TYPE_SINT64   => '\ProtobufMessage::PB_TYPE_SIGNED_INT',
-        FieldDescriptorProto_Type::TYPE_FIXED32  => '\ProtobufMessage::PB_TYPE_FIXED32',
-        FieldDescriptorProto_Type::TYPE_FIXED64  => '\ProtobufMessage::PB_TYPE_FIXED64',
-        FieldDescriptorProto_Type::TYPE_SFIXED32 => '\ProtobufMessage::PB_TYPE_FIXED32',
-        FieldDescriptorProto_Type::TYPE_SFIXED64 => '\ProtobufMessage::PB_TYPE_FIXED64',
-        FieldDescriptorProto_Type::TYPE_BOOL     => '\ProtobufMessage::PB_TYPE_BOOL',
-        FieldDescriptorProto_Type::TYPE_STRING   => '\ProtobufMessage::PB_TYPE_STRING',
-        FieldDescriptorProto_Type::TYPE_BYTES    => '\ProtobufMessage::PB_TYPE_STRING',
-        FieldDescriptorProto_Type::TYPE_ENUM     => '\ProtobufMessage::PB_TYPE_INT',
+        FieldDescriptorProto\Type::TYPE_DOUBLE   => '\ProtobufMessage::PB_TYPE_DOUBLE',
+        FieldDescriptorProto\Type::TYPE_FLOAT    => '\ProtobufMessage::PB_TYPE_FLOAT',
+        FieldDescriptorProto\Type::TYPE_INT32    => '\ProtobufMessage::PB_TYPE_INT',
+        FieldDescriptorProto\Type::TYPE_INT64    => '\ProtobufMessage::PB_TYPE_INT',
+        FieldDescriptorProto\Type::TYPE_UINT32   => '\ProtobufMessage::PB_TYPE_INT',
+        FieldDescriptorProto\Type::TYPE_UINT64   => '\ProtobufMessage::PB_TYPE_INT',
+        FieldDescriptorProto\Type::TYPE_SINT32   => '\ProtobufMessage::PB_TYPE_SIGNED_INT',
+        FieldDescriptorProto\Type::TYPE_SINT64   => '\ProtobufMessage::PB_TYPE_SIGNED_INT',
+        FieldDescriptorProto\Type::TYPE_FIXED32  => '\ProtobufMessage::PB_TYPE_FIXED32',
+        FieldDescriptorProto\Type::TYPE_FIXED64  => '\ProtobufMessage::PB_TYPE_FIXED64',
+        FieldDescriptorProto\Type::TYPE_SFIXED32 => '\ProtobufMessage::PB_TYPE_FIXED32',
+        FieldDescriptorProto\Type::TYPE_SFIXED64 => '\ProtobufMessage::PB_TYPE_FIXED64',
+        FieldDescriptorProto\Type::TYPE_BOOL     => '\ProtobufMessage::PB_TYPE_BOOL',
+        FieldDescriptorProto\Type::TYPE_STRING   => '\ProtobufMessage::PB_TYPE_STRING',
+        FieldDescriptorProto\Type::TYPE_BYTES    => '\ProtobufMessage::PB_TYPE_STRING',
+        FieldDescriptorProto\Type::TYPE_ENUM     => '\ProtobufMessage::PB_TYPE_INT',
     );
 
     private static $_phpTypesByProtobufType = array(
-        FieldDescriptorProto_Type::TYPE_DOUBLE   => 'double',
-        FieldDescriptorProto_Type::TYPE_FLOAT    => 'double',
-        FieldDescriptorProto_Type::TYPE_INT32    => 'integer',
-        FieldDescriptorProto_Type::TYPE_INT64    => 'integer',
-        FieldDescriptorProto_Type::TYPE_UINT32   => 'integer',
-        FieldDescriptorProto_Type::TYPE_UINT64   => 'integer',
-        FieldDescriptorProto_Type::TYPE_SINT32   => 'integer',
-        FieldDescriptorProto_Type::TYPE_SINT64   => 'integer',
-        FieldDescriptorProto_Type::TYPE_FIXED32  => 'integer',
-        FieldDescriptorProto_Type::TYPE_FIXED64  => 'integer',
-        FieldDescriptorProto_Type::TYPE_SFIXED32 => 'integer',
-        FieldDescriptorProto_Type::TYPE_SFIXED64 => 'integer',
-        FieldDescriptorProto_Type::TYPE_BOOL     => 'boolean',
-        FieldDescriptorProto_Type::TYPE_STRING   => 'string',
-        FieldDescriptorProto_Type::TYPE_BYTES    => 'string',
-        FieldDescriptorProto_Type::TYPE_ENUM     => 'integer',
-        FieldDescriptorProto_Type::TYPE_MESSAGE  => 'object'
+        FieldDescriptorProto\Type::TYPE_DOUBLE   => 'double',
+        FieldDescriptorProto\Type::TYPE_FLOAT    => 'double',
+        FieldDescriptorProto\Type::TYPE_INT32    => 'integer',
+        FieldDescriptorProto\Type::TYPE_INT64    => 'integer',
+        FieldDescriptorProto\Type::TYPE_UINT32   => 'integer',
+        FieldDescriptorProto\Type::TYPE_UINT64   => 'integer',
+        FieldDescriptorProto\Type::TYPE_SINT32   => 'integer',
+        FieldDescriptorProto\Type::TYPE_SINT64   => 'integer',
+        FieldDescriptorProto\Type::TYPE_FIXED32  => 'integer',
+        FieldDescriptorProto\Type::TYPE_FIXED64  => 'integer',
+        FieldDescriptorProto\Type::TYPE_SFIXED32 => 'integer',
+        FieldDescriptorProto\Type::TYPE_SFIXED64 => 'integer',
+        FieldDescriptorProto\Type::TYPE_BOOL     => 'boolean',
+        FieldDescriptorProto\Type::TYPE_STRING   => 'string',
+        FieldDescriptorProto\Type::TYPE_BYTES    => 'string',
+        FieldDescriptorProto\Type::TYPE_ENUM     => 'integer',
+        FieldDescriptorProto\Type::TYPE_MESSAGE  => 'object'
     );
 
     private $_default;
@@ -188,7 +187,7 @@ class FieldDescriptor
      */
     public function isRepeated()
     {
-        return $this->_label == FieldDescriptorProto_Label::LABEL_REPEATED;
+        return $this->_label == FieldDescriptorProto\Label::LABEL_REPEATED;
     }
 
     /**
@@ -198,7 +197,7 @@ class FieldDescriptor
      */
     public function isRequired()
     {
-        return $this->_label == FieldDescriptorProto_Label::LABEL_REQUIRED;
+        return $this->_label == FieldDescriptorProto\Label::LABEL_REQUIRED;
     }
 
     /**
@@ -208,7 +207,7 @@ class FieldDescriptor
      */
     public function isOptional()
     {
-        return $this->_label == FieldDescriptorProto_Label::LABEL_OPTIONAL;
+        return $this->_label == FieldDescriptorProto\Label::LABEL_OPTIONAL;
     }
 
     /**
@@ -216,7 +215,7 @@ class FieldDescriptor
      */
     public function isEnum()
     {
-        return $this->_type == FieldDescriptorProto_Type::TYPE_ENUM;
+        return $this->_type == FieldDescriptorProto\Type::TYPE_ENUM;
     }
 
     /**

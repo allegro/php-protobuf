@@ -22,7 +22,7 @@ class FieldOptions extends \ProtobufMessage
     /* @var array Field descriptors */
     protected static $fields = array(
         self::CTYPE => array(
-            'default' => \Google\Protobuf\FieldOptions_CType::STRING,
+            'default' => \Google\Protobuf\FieldOptions\CType::STRING,
             'name' => 'ctype',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_INT,
@@ -45,7 +45,7 @@ class FieldOptions extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::JSTYPE => array(
-            'default' => \Google\Protobuf\FieldOptions_JSType::JS_NORMAL,
+            'default' => \Google\Protobuf\FieldOptions\JSType::JS_NORMAL,
             'name' => 'jstype',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_INT,

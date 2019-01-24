@@ -24,7 +24,7 @@ class MethodOptions extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_BOOL,
         ),
         self::IDEMPOTENCY_LEVEL => array(
-            'default' => \Google\Protobuf\MethodOptions_IdempotencyLevel::IDEMPOTENCY_UNKNOWN,
+            'default' => \Google\Protobuf\MethodOptions\IdempotencyLevel::IDEMPOTENCY_UNKNOWN,
             'name' => 'idempotency_level',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_INT,

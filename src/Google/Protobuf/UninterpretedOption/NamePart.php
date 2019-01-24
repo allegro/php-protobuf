@@ -3,12 +3,12 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf;
+namespace Google\Protobuf\UninterpretedOption;
 
 /**
  * NamePart message embedded in UninterpretedOption message
  */
-class UninterpretedOption_NamePart extends \ProtobufMessage
+class NamePart extends \ProtobufMessage
 {
     /* Field index constants */
     const NAME_PART = 1;

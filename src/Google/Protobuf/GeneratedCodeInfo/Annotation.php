@@ -3,12 +3,12 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf;
+namespace Google\Protobuf\GeneratedCodeInfo;
 
 /**
  * Annotation message embedded in GeneratedCodeInfo message
  */
-class GeneratedCodeInfo_Annotation extends \ProtobufMessage
+class Annotation extends \ProtobufMessage
 {
     /* Field index constants */
     const PATH = 1;

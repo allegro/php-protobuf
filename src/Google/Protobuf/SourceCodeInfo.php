@@ -18,7 +18,7 @@ class SourceCodeInfo extends \ProtobufMessage
         self::LOCATION => array(
             'name' => 'location',
             'repeated' => true,
-            'type' => '\Google\Protobuf\SourceCodeInfo_Location'
+            'type' => '\Google\Protobuf\SourceCodeInfo\Location'
         ),
     );
 
@@ -35,11 +35,11 @@ class SourceCodeInfo extends \ProtobufMessage
     /**
      * Appends value to 'location' list
      *
-     * @param \Google\Protobuf\SourceCodeInfo_Location $value Value to append
+     * @param \Google\Protobuf\SourceCodeInfo\Location $value Value to append
      *
      * @return null
      */
-    public function appendLocation(\Google\Protobuf\SourceCodeInfo_Location $value)
+    public function appendLocation(\Google\Protobuf\SourceCodeInfo\Location $value)
     {
         return $this->append(self::LOCATION, $value);
     }
@@ -57,7 +57,7 @@ class SourceCodeInfo extends \ProtobufMessage
     /**
      * Returns 'location' list
      *
-     * @return \Google\Protobuf\SourceCodeInfo_Location[]
+     * @return \Google\Protobuf\SourceCodeInfo\Location[]
      */
     public function getLocation()
     {
@@ -89,7 +89,7 @@ class SourceCodeInfo extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\SourceCodeInfo_Location
+     * @return \Google\Protobuf\SourceCodeInfo\Location
      */
     public function getLocationAt($offset)
     {

@@ -3,12 +3,12 @@
  * Generated from plugin.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf\Compiler;
+namespace Google\Protobuf\Compiler\CodeGeneratorResponse;
 
 /**
  * File message embedded in CodeGeneratorResponse message
  */
-class CodeGeneratorResponse_File extends \ProtobufMessage
+class File extends \ProtobufMessage
 {
     /* Field index constants */
     const NAME = 1;

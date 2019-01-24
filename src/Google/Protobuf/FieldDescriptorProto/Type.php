@@ -3,12 +3,12 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf;
+namespace Google\Protobuf\FieldDescriptorProto;
 
 /**
  * Type enum embedded in FieldDescriptorProto message
  */
-final class FieldDescriptorProto_Type
+final class Type
 {
     const TYPE_DOUBLE = 1;
     const TYPE_FLOAT = 2;

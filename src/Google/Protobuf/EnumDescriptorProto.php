@@ -37,7 +37,7 @@ class EnumDescriptorProto extends \ProtobufMessage
         self::RESERVED_RANGE => array(
             'name' => 'reserved_range',
             'repeated' => true,
-            'type' => '\Google\Protobuf\EnumDescriptorProto_EnumReservedRange'
+            'type' => '\Google\Protobuf\EnumDescriptorProto\EnumReservedRange'
         ),
         self::RESERVED_NAME => array(
             'name' => 'reserved_name',
@@ -198,11 +198,11 @@ class EnumDescriptorProto extends \ProtobufMessage
     /**
      * Appends value to 'reserved_range' list
      *
-     * @param \Google\Protobuf\EnumDescriptorProto_EnumReservedRange $value Value to append
+     * @param \Google\Protobuf\EnumDescriptorProto\EnumReservedRange $value Value to append
      *
      * @return null
      */
-    public function appendReservedRange(\Google\Protobuf\EnumDescriptorProto_EnumReservedRange $value)
+    public function appendReservedRange(\Google\Protobuf\EnumDescriptorProto\EnumReservedRange $value)
     {
         return $this->append(self::RESERVED_RANGE, $value);
     }
@@ -220,7 +220,7 @@ class EnumDescriptorProto extends \ProtobufMessage
     /**
      * Returns 'reserved_range' list
      *
-     * @return \Google\Protobuf\EnumDescriptorProto_EnumReservedRange[]
+     * @return \Google\Protobuf\EnumDescriptorProto\EnumReservedRange[]
      */
     public function getReservedRange()
     {
@@ -252,7 +252,7 @@ class EnumDescriptorProto extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \Google\Protobuf\EnumDescriptorProto_EnumReservedRange
+     * @return \Google\Protobuf\EnumDescriptorProto\EnumReservedRange
      */
     public function getReservedRangeAt($offset)
     {

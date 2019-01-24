@@ -46,7 +46,7 @@ class FileOptions extends \ProtobufMessage
             'type' => \ProtobufMessage::PB_TYPE_STRING,
         ),
         self::OPTIMIZE_FOR => array(
-            'default' => \Google\Protobuf\FileOptions_OptimizeMode::SPEED,
+            'default' => \Google\Protobuf\FileOptions\OptimizeMode::SPEED,
             'name' => 'optimize_for',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_INT,

@@ -3,12 +3,12 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf;
+namespace Google\Protobuf\FileOptions;
 
 /**
  * OptimizeMode enum embedded in FileOptions message
  */
-final class FileOptions_OptimizeMode
+final class OptimizeMode
 {
     const SPEED = 1;
     const CODE_SIZE = 2;

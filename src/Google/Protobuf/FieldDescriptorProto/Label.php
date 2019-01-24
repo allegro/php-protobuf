@@ -3,12 +3,12 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf;
+namespace Google\Protobuf\FieldDescriptorProto;
 
 /**
  * Label enum embedded in FieldDescriptorProto message
  */
-final class FieldDescriptorProto_Label
+final class Label
 {
     const LABEL_OPTIONAL = 1;
     const LABEL_REQUIRED = 2;

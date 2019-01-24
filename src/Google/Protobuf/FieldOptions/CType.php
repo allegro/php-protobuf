@@ -3,12 +3,12 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf;
+namespace Google\Protobuf\FieldOptions;
 
 /**
  * CType enum embedded in FieldOptions message
  */
-final class FieldOptions_CType
+final class CType
 {
     const STRING = 0;
     const CORD = 1;

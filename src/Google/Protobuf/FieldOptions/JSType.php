@@ -3,12 +3,12 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf;
+namespace Google\Protobuf\FieldOptions;
 
 /**
  * JSType enum embedded in FieldOptions message
  */
-final class FieldOptions_JSType
+final class JSType
 {
     const JS_NORMAL = 0;
     const JS_STRING = 1;

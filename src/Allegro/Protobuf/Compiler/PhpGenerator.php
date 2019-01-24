@@ -3,7 +3,6 @@ namespace Allegro\Protobuf\Compiler;
 
 use Google\Protobuf\Compiler\CodeGeneratorRequest;
 use Google\Protobuf\Compiler\CodeGeneratorResponse;
-use Google\Protobuf\Compiler\CodeGeneratorResponse_File;
 use Google\Protobuf\DescriptorProto;
 use Google\Protobuf\EnumDescriptorProto;
 use Google\Protobuf\FileDescriptorProto;
@@ -47,7 +46,7 @@ class PhpGenerator
 
         $response = new CodeGeneratorResponse();
         $createClass = function ($className, $namespaceName, $content) use ($response, $createClassFilename) {
-            $file = new CodeGeneratorResponse_File();
+            $file = new CodeGeneratorResponse\File();
             $file->setName($createClassFilename($className, $namespaceName));
             $file->setContent('<?php' . PHP_EOL . $content);
 
@@ -398,7 +397,7 @@ class PhpGenerator
      *
      * @return string|null
      */
-    private function _createNamespaceName(DescriptorInterface $descriptor)
+    private function _createBaseNamespaceName(DescriptorInterface $descriptor)
     {
         if (isset($this->customArguments['options']['namespace'])) {
             return $this->customArguments['options']['namespace'];
@@ -424,9 +423,9 @@ class PhpGenerator
      *
      * @return string
      */
-    private function _createClassName(DescriptorInterface $descriptor)
+    private function _createSubNamespaceName(DescriptorInterface $descriptor)
     {
-        $components = array($descriptor->getName());
+        $components = array();
 
         $containing = $descriptor->getContaining();
         while (!is_null($containing)) {
@@ -434,11 +433,49 @@ class PhpGenerator
             $containing = $containing->getContaining();
         }
 
+        if (!$components) {
+            return null;
+        }
+
         $components = array_reverse($components);
 
-        $name = implode(self::CLASS_NAME_SEPARATOR, $components);
+        return implode(self::PHP_NAMESPACE_SEPARATOR, $components);
+    }
 
-        return $name;
+    /**
+     * @param DescriptorInterface $descriptor
+     *
+     * @return string|null
+     */
+    private function _createNamespaceName(DescriptorInterface $descriptor)
+    {
+        $baseNamespace = $this->_createBaseNamespaceName($descriptor);
+        if ($baseNamespace) {
+            $namespace = $baseNamespace;
+        } else {
+            $namespace = null;
+        }
+
+        $subNamespace = $this->_createSubNamespaceName($descriptor);
+        if ($subNamespace) {
+            if ($namespace) {
+                $namespace = $namespace . self::PHP_NAMESPACE_SEPARATOR . $subNamespace;
+            } else {
+                $namespace = $subNamespace;
+            }
+        }
+
+        return $namespace;
+    }
+
+    /**
+     * @param DescriptorInterface $descriptor
+     *
+     * @return string
+     */
+    private function _createClassName(DescriptorInterface $descriptor)
+    {
+        return $descriptor->getName();
     }
 
     /**

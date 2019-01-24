@@ -3,16 +3,17 @@
  * Generated from descriptor.proto by the protocol buffer compiler. DO NOT EDIT!
  */
 
-namespace Google\Protobuf;
+namespace Google\Protobuf\DescriptorProto;
 
 /**
- * EnumReservedRange message embedded in EnumDescriptorProto message
+ * ExtensionRange message embedded in DescriptorProto message
  */
-class EnumDescriptorProto_EnumReservedRange extends \ProtobufMessage
+class ExtensionRange extends \ProtobufMessage
 {
     /* Field index constants */
     const START = 1;
     const END = 2;
+    const OPTIONS = 3;
 
     /* @var array Field descriptors */
     protected static $fields = array(
@@ -25,6 +26,11 @@ class EnumDescriptorProto_EnumReservedRange extends \ProtobufMessage
             'name' => 'end',
             'required' => false,
             'type' => \ProtobufMessage::PB_TYPE_INT,
+        ),
+        self::OPTIONS => array(
+            'name' => 'options',
+            'required' => false,
+            'type' => '\Google\Protobuf\ExtensionRangeOptions'
         ),
     );
 
@@ -102,5 +108,37 @@ class EnumDescriptorProto_EnumReservedRange extends \ProtobufMessage
     public function hasEnd()
     {
         return $this->get(self::END) !== null;
+    }
+
+    /**
+     * Sets value of 'options' property
+     *
+     * @param \Google\Protobuf\ExtensionRangeOptions $value Property value
+     *
+     * @return null
+     */
+    public function setOptions(\Google\Protobuf\ExtensionRangeOptions $value=null)
+    {
+        return $this->set(self::OPTIONS, $value);
+    }
+
+    /**
+     * Returns value of 'options' property
+     *
+     * @return \Google\Protobuf\ExtensionRangeOptions
+     */
+    public function getOptions()
+    {
+        return $this->get(self::OPTIONS);
+    }
+
+    /**
+     * Returns true if 'options' property is set, false otherwise
+     *
+     * @return boolean
+     */
+    public function hasOptions()
+    {
+        return $this->get(self::OPTIONS) !== null;
     }
 }
