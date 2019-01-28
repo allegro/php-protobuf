@@ -337,7 +337,7 @@ class PhpGenerator
         $buffer->append($comment);
 
         $className = $this->_createClassName($descriptor);
-        $buffer->append('class ' . $className . ' extends \ProtobufMessage')
+        $buffer->append('class ' . $className . ' extends \Allegro\Protobuf\Internal\Message')
             ->append('{')
             ->increaseIdentation();
 

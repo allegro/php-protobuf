@@ -2,7 +2,9 @@
 
 die("This is a stub file for IDEs, don't use it directly!");
 
-abstract class ProtobufMessage
+namespace Allegro\Protobuf\Internal;
+
+abstract class Message
 {
     const PB_TYPE_DOUBLE     = 1;
     const PB_TYPE_FIXED32    = 2;

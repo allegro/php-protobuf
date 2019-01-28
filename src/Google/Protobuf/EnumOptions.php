@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * EnumOptions message
  */
-class EnumOptions extends \ProtobufMessage
+class EnumOptions extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const ALLOW_ALIAS = 2;
@@ -20,13 +20,13 @@ class EnumOptions extends \ProtobufMessage
         self::ALLOW_ALIAS => array(
             'name' => 'allow_alias',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::DEPRECATED => array(
             'default' => false,
             'name' => 'deprecated',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::UNINTERPRETED_OPTION => array(
             'name' => 'uninterpreted_option',

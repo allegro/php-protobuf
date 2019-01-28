@@ -8,7 +8,7 @@ namespace Google\Protobuf\Compiler;
 /**
  * Version message
  */
-class Version extends \ProtobufMessage
+class Version extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const MAJOR = 1;
@@ -21,22 +21,22 @@ class Version extends \ProtobufMessage
         self::MAJOR => array(
             'name' => 'major',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::MINOR => array(
             'name' => 'minor',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::PATCH => array(
             'name' => 'patch',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::SUFFIX => array(
             'name' => 'suffix',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
     );
 

@@ -8,7 +8,7 @@ namespace Google\Protobuf\DescriptorProto;
 /**
  * ReservedRange message embedded in DescriptorProto message
  */
-class ReservedRange extends \ProtobufMessage
+class ReservedRange extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const START = 1;
@@ -19,12 +19,12 @@ class ReservedRange extends \ProtobufMessage
         self::START => array(
             'name' => 'start',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::END => array(
             'name' => 'end',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
     );
 

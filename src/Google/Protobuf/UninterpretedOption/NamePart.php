@@ -8,7 +8,7 @@ namespace Google\Protobuf\UninterpretedOption;
 /**
  * NamePart message embedded in UninterpretedOption message
  */
-class NamePart extends \ProtobufMessage
+class NamePart extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const NAME_PART = 1;
@@ -19,12 +19,12 @@ class NamePart extends \ProtobufMessage
         self::NAME_PART => array(
             'name' => 'name_part',
             'required' => true,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::IS_EXTENSION => array(
             'name' => 'is_extension',
             'required' => true,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
     );
 

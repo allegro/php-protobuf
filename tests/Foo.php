@@ -6,7 +6,7 @@
 /**
  * Foo message
  */
-class Foo extends \ProtobufMessage
+class Foo extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const DOUBLE_FIELD = 1;
@@ -43,82 +43,82 @@ class Foo extends \ProtobufMessage
         self::DOUBLE_FIELD => array(
             'name' => 'double_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_DOUBLE,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_DOUBLE,
         ),
         self::FLOAT_FIELD => array(
             'name' => 'float_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_FLOAT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_FLOAT,
         ),
         self::INT32_FIELD => array(
             'name' => 'int32_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::INT64_FIELD => array(
             'name' => 'int64_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::UINT32_FIELD => array(
             'name' => 'uint32_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::UINT64_FIELD => array(
             'name' => 'uint64_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::SINT32_FIELD => array(
             'name' => 'sint32_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_SIGNED_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_SIGNED_INT,
         ),
         self::SINT64_FIELD => array(
             'name' => 'sint64_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_SIGNED_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_SIGNED_INT,
         ),
         self::FIXED32_FIELD => array(
             'name' => 'fixed32_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_FIXED32,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_FIXED32,
         ),
         self::FIXED64_FIELD => array(
             'name' => 'fixed64_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_FIXED64,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_FIXED64,
         ),
         self::SFIXED32_FIELD => array(
             'name' => 'sfixed32_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_FIXED32,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_FIXED32,
         ),
         self::SFIXED64_FIELD => array(
             'name' => 'sfixed64_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_FIXED64,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_FIXED64,
         ),
         self::BOOL_FIELD => array(
             'name' => 'bool_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::STRING_FIELD => array(
             'name' => 'string_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::BYTES_FIELD => array(
             'name' => 'bytes_field',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::REPEATED_FIELD => array(
             'name' => 'repeated_field',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::EMBEDDED_FIELD => array(
             'name' => 'embedded_field',
@@ -128,43 +128,43 @@ class Foo extends \ProtobufMessage
         self::DOUBLE_PACKED_FIELD => array(
             'name' => 'double_packed_field',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_DOUBLE,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_DOUBLE,
             'packed' => true
         ),
         self::FLOAT_PACKED_FIELD => array(
             'name' => 'float_packed_field',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_FLOAT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_FLOAT,
             'packed' => true
         ),
         self::FIXED32_PACKED_FIELD => array(
             'name' => 'fixed32_packed_field',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_FIXED32,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_FIXED32,
             'packed' => true
         ),
         self::FIXED64_PACKED_FIELD => array(
             'name' => 'fixed64_packed_field',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_FIXED64,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_FIXED64,
             'packed' => true
         ),
         self::INT32_PACKED_FIELD => array(
             'name' => 'int32_packed_field',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
             'packed' => true
         ),
         self::SINT32_PACKED_FIELD => array(
             'name' => 'sint32_packed_field',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_SIGNED_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_SIGNED_INT,
             'packed' => true
         ),
         self::BOOL_PACKED_FIELD => array(
             'name' => 'bool_packed_field',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
             'packed' => true
         ),
         self::OPTIONAL_EMBEDDED_FIELD => array(
@@ -180,13 +180,13 @@ class Foo extends \ProtobufMessage
         self::REPEATED_STRING_FIELD => array(
             'name' => 'repeated_string_field',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::STRING_FIELD_WITH_DEFAULT => array(
             'default' => 'foo',
             'name' => 'string_field_with_default',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
     );
 

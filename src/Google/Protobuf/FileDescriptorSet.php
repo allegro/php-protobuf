@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * FileDescriptorSet message
  */
-class FileDescriptorSet extends \ProtobufMessage
+class FileDescriptorSet extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const FILE = 1;

@@ -8,7 +8,7 @@ namespace Google\Protobuf\Compiler\CodeGeneratorResponse;
 /**
  * File message embedded in CodeGeneratorResponse message
  */
-class File extends \ProtobufMessage
+class File extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const NAME = 1;
@@ -20,17 +20,17 @@ class File extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::INSERTION_POINT => array(
             'name' => 'insertion_point',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::CONTENT => array(
             'name' => 'content',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
     );
 

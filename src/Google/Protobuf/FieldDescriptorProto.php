@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * FieldDescriptorProto message
  */
-class FieldDescriptorProto extends \ProtobufMessage
+class FieldDescriptorProto extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const NAME = 1;
@@ -27,37 +27,37 @@ class FieldDescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::EXTENDEE => array(
             'name' => 'extendee',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::NUMBER => array(
             'name' => 'number',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::LABEL => array(
             'name' => 'label',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::TYPE => array(
             'name' => 'type',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::TYPE_NAME => array(
             'name' => 'type_name',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::DEFAULT_VALUE => array(
             'name' => 'default_value',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::OPTIONS => array(
             'name' => 'options',
@@ -67,12 +67,12 @@ class FieldDescriptorProto extends \ProtobufMessage
         self::ONEOF_INDEX => array(
             'name' => 'oneof_index',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::JSON_NAME => array(
             'name' => 'json_name',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
     );
 

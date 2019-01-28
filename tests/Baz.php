@@ -6,7 +6,7 @@
 /**
  * Baz message
  */
-class Baz extends \ProtobufMessage
+class Baz extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const ID = 1;
@@ -16,7 +16,7 @@ class Baz extends \ProtobufMessage
         self::ID => array(
             'name' => 'id',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
     );
 

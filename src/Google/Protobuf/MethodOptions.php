@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * MethodOptions message
  */
-class MethodOptions extends \ProtobufMessage
+class MethodOptions extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const DEPRECATED = 33;
@@ -21,13 +21,13 @@ class MethodOptions extends \ProtobufMessage
             'default' => false,
             'name' => 'deprecated',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::IDEMPOTENCY_LEVEL => array(
             'default' => \Google\Protobuf\MethodOptions\IdempotencyLevel::IDEMPOTENCY_UNKNOWN,
             'name' => 'idempotency_level',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::UNINTERPRETED_OPTION => array(
             'name' => 'uninterpreted_option',

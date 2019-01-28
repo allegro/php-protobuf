@@ -800,7 +800,7 @@ PHP_MINIT_FUNCTION(allegro_protobuf)
 	PB_FIELD_REPEATED_HASH = zend_get_hash_value(PB_FIELD_REPEATED, sizeof(PB_FIELD_REPEATED));
 	PB_FIELD_TYPE_HASH = zend_get_hash_value(PB_FIELD_TYPE, sizeof(PB_FIELD_TYPE));
 
-	INIT_CLASS_ENTRY(ce, "ProtobufMessage", pb_methods);
+	INIT_CLASS_ENTRY(ce, "Allegro\\Protobuf\\Internal\\Message", pb_methods);
 	pb_entry = zend_register_internal_class(&ce TSRMLS_CC);
 	pb_entry->create_object = message_create_object;
 

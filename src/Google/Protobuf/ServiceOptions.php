@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * ServiceOptions message
  */
-class ServiceOptions extends \ProtobufMessage
+class ServiceOptions extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const DEPRECATED = 33;
@@ -20,7 +20,7 @@ class ServiceOptions extends \ProtobufMessage
             'default' => false,
             'name' => 'deprecated',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::UNINTERPRETED_OPTION => array(
             'name' => 'uninterpreted_option',

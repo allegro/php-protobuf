@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * OneofOptions message
  */
-class OneofOptions extends \ProtobufMessage
+class OneofOptions extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const UNINTERPRETED_OPTION = 999;

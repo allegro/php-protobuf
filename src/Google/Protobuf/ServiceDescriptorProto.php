@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * ServiceDescriptorProto message
  */
-class ServiceDescriptorProto extends \ProtobufMessage
+class ServiceDescriptorProto extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const NAME = 1;
@@ -20,7 +20,7 @@ class ServiceDescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::METHOD => array(
             'name' => 'method',

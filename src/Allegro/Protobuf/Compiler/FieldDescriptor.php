@@ -9,22 +9,22 @@ use Google\Protobuf\FieldDescriptorProto;
 class FieldDescriptor
 {
     private static $_scalarInternalTypesByProtobufType = array(
-        FieldDescriptorProto\Type::TYPE_DOUBLE   => '\ProtobufMessage::PB_TYPE_DOUBLE',
-        FieldDescriptorProto\Type::TYPE_FLOAT    => '\ProtobufMessage::PB_TYPE_FLOAT',
-        FieldDescriptorProto\Type::TYPE_INT32    => '\ProtobufMessage::PB_TYPE_INT',
-        FieldDescriptorProto\Type::TYPE_INT64    => '\ProtobufMessage::PB_TYPE_INT',
-        FieldDescriptorProto\Type::TYPE_UINT32   => '\ProtobufMessage::PB_TYPE_INT',
-        FieldDescriptorProto\Type::TYPE_UINT64   => '\ProtobufMessage::PB_TYPE_INT',
-        FieldDescriptorProto\Type::TYPE_SINT32   => '\ProtobufMessage::PB_TYPE_SIGNED_INT',
-        FieldDescriptorProto\Type::TYPE_SINT64   => '\ProtobufMessage::PB_TYPE_SIGNED_INT',
-        FieldDescriptorProto\Type::TYPE_FIXED32  => '\ProtobufMessage::PB_TYPE_FIXED32',
-        FieldDescriptorProto\Type::TYPE_FIXED64  => '\ProtobufMessage::PB_TYPE_FIXED64',
-        FieldDescriptorProto\Type::TYPE_SFIXED32 => '\ProtobufMessage::PB_TYPE_FIXED32',
-        FieldDescriptorProto\Type::TYPE_SFIXED64 => '\ProtobufMessage::PB_TYPE_FIXED64',
-        FieldDescriptorProto\Type::TYPE_BOOL     => '\ProtobufMessage::PB_TYPE_BOOL',
-        FieldDescriptorProto\Type::TYPE_STRING   => '\ProtobufMessage::PB_TYPE_STRING',
-        FieldDescriptorProto\Type::TYPE_BYTES    => '\ProtobufMessage::PB_TYPE_STRING',
-        FieldDescriptorProto\Type::TYPE_ENUM     => '\ProtobufMessage::PB_TYPE_INT',
+        FieldDescriptorProto\Type::TYPE_DOUBLE   => '\Allegro\Protobuf\Internal\Message::PB_TYPE_DOUBLE',
+        FieldDescriptorProto\Type::TYPE_FLOAT    => '\Allegro\Protobuf\Internal\Message::PB_TYPE_FLOAT',
+        FieldDescriptorProto\Type::TYPE_INT32    => '\Allegro\Protobuf\Internal\Message::PB_TYPE_INT',
+        FieldDescriptorProto\Type::TYPE_INT64    => '\Allegro\Protobuf\Internal\Message::PB_TYPE_INT',
+        FieldDescriptorProto\Type::TYPE_UINT32   => '\Allegro\Protobuf\Internal\Message::PB_TYPE_INT',
+        FieldDescriptorProto\Type::TYPE_UINT64   => '\Allegro\Protobuf\Internal\Message::PB_TYPE_INT',
+        FieldDescriptorProto\Type::TYPE_SINT32   => '\Allegro\Protobuf\Internal\Message::PB_TYPE_SIGNED_INT',
+        FieldDescriptorProto\Type::TYPE_SINT64   => '\Allegro\Protobuf\Internal\Message::PB_TYPE_SIGNED_INT',
+        FieldDescriptorProto\Type::TYPE_FIXED32  => '\Allegro\Protobuf\Internal\Message::PB_TYPE_FIXED32',
+        FieldDescriptorProto\Type::TYPE_FIXED64  => '\Allegro\Protobuf\Internal\Message::PB_TYPE_FIXED64',
+        FieldDescriptorProto\Type::TYPE_SFIXED32 => '\Allegro\Protobuf\Internal\Message::PB_TYPE_FIXED32',
+        FieldDescriptorProto\Type::TYPE_SFIXED64 => '\Allegro\Protobuf\Internal\Message::PB_TYPE_FIXED64',
+        FieldDescriptorProto\Type::TYPE_BOOL     => '\Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL',
+        FieldDescriptorProto\Type::TYPE_STRING   => '\Allegro\Protobuf\Internal\Message::PB_TYPE_STRING',
+        FieldDescriptorProto\Type::TYPE_BYTES    => '\Allegro\Protobuf\Internal\Message::PB_TYPE_STRING',
+        FieldDescriptorProto\Type::TYPE_ENUM     => '\Allegro\Protobuf\Internal\Message::PB_TYPE_INT',
     );
 
     private static $_phpTypesByProtobufType = array(

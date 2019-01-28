@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * DescriptorProto message
  */
-class DescriptorProto extends \ProtobufMessage
+class DescriptorProto extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const NAME = 1;
@@ -27,7 +27,7 @@ class DescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::FIELD => array(
             'name' => 'field',
@@ -72,7 +72,7 @@ class DescriptorProto extends \ProtobufMessage
         self::RESERVED_NAME => array(
             'name' => 'reserved_name',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
     );
 

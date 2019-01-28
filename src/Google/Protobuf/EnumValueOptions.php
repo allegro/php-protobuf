@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * EnumValueOptions message
  */
-class EnumValueOptions extends \ProtobufMessage
+class EnumValueOptions extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const DEPRECATED = 1;
@@ -20,7 +20,7 @@ class EnumValueOptions extends \ProtobufMessage
             'default' => false,
             'name' => 'deprecated',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::UNINTERPRETED_OPTION => array(
             'name' => 'uninterpreted_option',

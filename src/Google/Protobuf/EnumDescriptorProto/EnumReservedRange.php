@@ -8,7 +8,7 @@ namespace Google\Protobuf\EnumDescriptorProto;
 /**
  * EnumReservedRange message embedded in EnumDescriptorProto message
  */
-class EnumReservedRange extends \ProtobufMessage
+class EnumReservedRange extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const START = 1;
@@ -19,12 +19,12 @@ class EnumReservedRange extends \ProtobufMessage
         self::START => array(
             'name' => 'start',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::END => array(
             'name' => 'end',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
     );
 

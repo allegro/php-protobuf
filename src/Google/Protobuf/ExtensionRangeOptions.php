@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * ExtensionRangeOptions message
  */
-class ExtensionRangeOptions extends \ProtobufMessage
+class ExtensionRangeOptions extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const UNINTERPRETED_OPTION = 999;

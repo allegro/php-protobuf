@@ -8,7 +8,7 @@ namespace Google\Protobuf\GeneratedCodeInfo;
 /**
  * Annotation message embedded in GeneratedCodeInfo message
  */
-class Annotation extends \ProtobufMessage
+class Annotation extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const PATH = 1;
@@ -21,23 +21,23 @@ class Annotation extends \ProtobufMessage
         self::PATH => array(
             'name' => 'path',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
             'packed' => true
         ),
         self::SOURCE_FILE => array(
             'name' => 'source_file',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::BEGIN => array(
             'name' => 'begin',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::END => array(
             'name' => 'end',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
     );
 

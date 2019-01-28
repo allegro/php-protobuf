@@ -8,7 +8,7 @@ namespace Google\Protobuf\Compiler;
 /**
  * CodeGeneratorRequest message
  */
-class CodeGeneratorRequest extends \ProtobufMessage
+class CodeGeneratorRequest extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const FILE_TO_GENERATE = 1;
@@ -21,12 +21,12 @@ class CodeGeneratorRequest extends \ProtobufMessage
         self::FILE_TO_GENERATE => array(
             'name' => 'file_to_generate',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::PARAMETER => array(
             'name' => 'parameter',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::COMPILER_VERSION => array(
             'name' => 'compiler_version',

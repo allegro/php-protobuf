@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * FileOptions message
  */
-class FileOptions extends \ProtobufMessage
+class FileOptions extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const JAVA_PACKAGE = 1;
@@ -38,111 +38,111 @@ class FileOptions extends \ProtobufMessage
         self::JAVA_PACKAGE => array(
             'name' => 'java_package',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::JAVA_OUTER_CLASSNAME => array(
             'name' => 'java_outer_classname',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::OPTIMIZE_FOR => array(
             'default' => \Google\Protobuf\FileOptions\OptimizeMode::SPEED,
             'name' => 'optimize_for',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::JAVA_MULTIPLE_FILES => array(
             'default' => false,
             'name' => 'java_multiple_files',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::GO_PACKAGE => array(
             'name' => 'go_package',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::CC_GENERIC_SERVICES => array(
             'default' => false,
             'name' => 'cc_generic_services',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::JAVA_GENERIC_SERVICES => array(
             'default' => false,
             'name' => 'java_generic_services',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::PY_GENERIC_SERVICES => array(
             'default' => false,
             'name' => 'py_generic_services',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::JAVA_GENERATE_EQUALS_AND_HASH => array(
             'name' => 'java_generate_equals_and_hash',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::DEPRECATED => array(
             'default' => false,
             'name' => 'deprecated',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::JAVA_STRING_CHECK_UTF8 => array(
             'default' => false,
             'name' => 'java_string_check_utf8',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::CC_ENABLE_ARENAS => array(
             'default' => false,
             'name' => 'cc_enable_arenas',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::OBJC_CLASS_PREFIX => array(
             'name' => 'objc_class_prefix',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::CSHARP_NAMESPACE => array(
             'name' => 'csharp_namespace',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::SWIFT_PREFIX => array(
             'name' => 'swift_prefix',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::PHP_CLASS_PREFIX => array(
             'name' => 'php_class_prefix',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::PHP_NAMESPACE => array(
             'name' => 'php_namespace',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::PHP_GENERIC_SERVICES => array(
             'default' => false,
             'name' => 'php_generic_services',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::PHP_METADATA_NAMESPACE => array(
             'name' => 'php_metadata_namespace',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::RUBY_PACKAGE => array(
             'name' => 'ruby_package',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::UNINTERPRETED_OPTION => array(
             'name' => 'uninterpreted_option',

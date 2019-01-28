@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * MessageOptions message
  */
-class MessageOptions extends \ProtobufMessage
+class MessageOptions extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const MESSAGE_SET_WIRE_FORMAT = 1;
@@ -23,24 +23,24 @@ class MessageOptions extends \ProtobufMessage
             'default' => false,
             'name' => 'message_set_wire_format',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::NO_STANDARD_DESCRIPTOR_ACCESSOR => array(
             'default' => false,
             'name' => 'no_standard_descriptor_accessor',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::DEPRECATED => array(
             'default' => false,
             'name' => 'deprecated',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::MAP_ENTRY => array(
             'name' => 'map_entry',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::UNINTERPRETED_OPTION => array(
             'name' => 'uninterpreted_option',

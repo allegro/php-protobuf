@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * EnumDescriptorProto message
  */
-class EnumDescriptorProto extends \ProtobufMessage
+class EnumDescriptorProto extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const NAME = 1;
@@ -22,7 +22,7 @@ class EnumDescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::VALUE => array(
             'name' => 'value',
@@ -42,7 +42,7 @@ class EnumDescriptorProto extends \ProtobufMessage
         self::RESERVED_NAME => array(
             'name' => 'reserved_name',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
     );
 

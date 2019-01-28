@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * SourceCodeInfo message
  */
-class SourceCodeInfo extends \ProtobufMessage
+class SourceCodeInfo extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const LOCATION = 1;

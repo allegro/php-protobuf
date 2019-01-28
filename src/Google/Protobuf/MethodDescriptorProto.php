@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * MethodDescriptorProto message
  */
-class MethodDescriptorProto extends \ProtobufMessage
+class MethodDescriptorProto extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const NAME = 1;
@@ -23,17 +23,17 @@ class MethodDescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::INPUT_TYPE => array(
             'name' => 'input_type',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::OUTPUT_TYPE => array(
             'name' => 'output_type',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::OPTIONS => array(
             'name' => 'options',
@@ -44,13 +44,13 @@ class MethodDescriptorProto extends \ProtobufMessage
             'default' => false,
             'name' => 'client_streaming',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::SERVER_STREAMING => array(
             'default' => false,
             'name' => 'server_streaming',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
     );
 

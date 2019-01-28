@@ -8,7 +8,7 @@ namespace Google\Protobuf\SourceCodeInfo;
 /**
  * Location message embedded in SourceCodeInfo message
  */
-class Location extends \ProtobufMessage
+class Location extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const PATH = 1;
@@ -22,29 +22,29 @@ class Location extends \ProtobufMessage
         self::PATH => array(
             'name' => 'path',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
             'packed' => true
         ),
         self::SPAN => array(
             'name' => 'span',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
             'packed' => true
         ),
         self::LEADING_COMMENTS => array(
             'name' => 'leading_comments',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::TRAILING_COMMENTS => array(
             'name' => 'trailing_comments',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::LEADING_DETACHED_COMMENTS => array(
             'name' => 'leading_detached_comments',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
     );
 

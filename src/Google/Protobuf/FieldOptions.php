@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * FieldOptions message
  */
-class FieldOptions extends \ProtobufMessage
+class FieldOptions extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const CTYPE = 1;
@@ -25,36 +25,36 @@ class FieldOptions extends \ProtobufMessage
             'default' => \Google\Protobuf\FieldOptions\CType::STRING,
             'name' => 'ctype',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::PACKED => array(
             'name' => 'packed',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::DEPRECATED => array(
             'default' => false,
             'name' => 'deprecated',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::LAZY => array(
             'default' => false,
             'name' => 'lazy',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::JSTYPE => array(
             'default' => \Google\Protobuf\FieldOptions\JSType::JS_NORMAL,
             'name' => 'jstype',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::WEAK => array(
             'default' => false,
             'name' => 'weak',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_BOOL,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_BOOL,
         ),
         self::UNINTERPRETED_OPTION => array(
             'name' => 'uninterpreted_option',

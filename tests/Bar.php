@@ -6,7 +6,7 @@
 /**
  * Bar message
  */
-class Bar extends \ProtobufMessage
+class Bar extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const DOUBLE_FIELD = 1;
@@ -16,7 +16,7 @@ class Bar extends \ProtobufMessage
         self::DOUBLE_FIELD => array(
             'name' => 'double_field',
             'required' => true,
-            'type' => \ProtobufMessage::PB_TYPE_DOUBLE,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_DOUBLE,
         ),
     );
 

@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * GeneratedCodeInfo message
  */
-class GeneratedCodeInfo extends \ProtobufMessage
+class GeneratedCodeInfo extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const ANNOTATION = 1;

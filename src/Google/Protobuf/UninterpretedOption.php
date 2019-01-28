@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * UninterpretedOption message
  */
-class UninterpretedOption extends \ProtobufMessage
+class UninterpretedOption extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const NAME = 2;
@@ -29,32 +29,32 @@ class UninterpretedOption extends \ProtobufMessage
         self::IDENTIFIER_VALUE => array(
             'name' => 'identifier_value',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::POSITIVE_INT_VALUE => array(
             'name' => 'positive_int_value',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::NEGATIVE_INT_VALUE => array(
             'name' => 'negative_int_value',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::DOUBLE_VALUE => array(
             'name' => 'double_value',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_DOUBLE,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_DOUBLE,
         ),
         self::STRING_VALUE => array(
             'name' => 'string_value',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::AGGREGATE_VALUE => array(
             'name' => 'aggregate_value',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
     );
 

@@ -8,7 +8,7 @@ namespace Google\Protobuf;
 /**
  * FileDescriptorProto message
  */
-class FileDescriptorProto extends \ProtobufMessage
+class FileDescriptorProto extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const NAME = 1;
@@ -29,17 +29,17 @@ class FileDescriptorProto extends \ProtobufMessage
         self::NAME => array(
             'name' => 'name',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::PACKAGE => array(
             'name' => 'package',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::DEPENDENCY => array(
             'name' => 'dependency',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::MESSAGE_TYPE => array(
             'name' => 'message_type',
@@ -74,17 +74,17 @@ class FileDescriptorProto extends \ProtobufMessage
         self::PUBLIC_DEPENDENCY => array(
             'name' => 'public_dependency',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::WEAK_DEPENDENCY => array(
             'name' => 'weak_dependency',
             'repeated' => true,
-            'type' => \ProtobufMessage::PB_TYPE_INT,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_INT,
         ),
         self::SYNTAX => array(
             'name' => 'syntax',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
     );
 

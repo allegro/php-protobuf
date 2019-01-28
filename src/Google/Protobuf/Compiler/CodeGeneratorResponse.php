@@ -8,7 +8,7 @@ namespace Google\Protobuf\Compiler;
 /**
  * CodeGeneratorResponse message
  */
-class CodeGeneratorResponse extends \ProtobufMessage
+class CodeGeneratorResponse extends \Allegro\Protobuf\Internal\Message
 {
     /* Field index constants */
     const ERROR = 1;
@@ -19,7 +19,7 @@ class CodeGeneratorResponse extends \ProtobufMessage
         self::ERROR => array(
             'name' => 'error',
             'required' => false,
-            'type' => \ProtobufMessage::PB_TYPE_STRING,
+            'type' => \Allegro\Protobuf\Internal\Message::PB_TYPE_STRING,
         ),
         self::FILE => array(
             'name' => 'file',
