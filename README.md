@@ -261,6 +261,7 @@ Known issues
 * [maps](https://developers.google.com/protocol-buffers/docs/proto#maps) are not fully supported ([#73](https://github.com/allegro/php-protobuf/issues/73))
 * [oneof](https://developers.google.com/protocol-buffers/docs/proto#oneof) is not supported ([#72](https://github.com/allegro/php-protobuf/issues/72))
 * [groups](https://developers.google.com/protocol-buffers/docs/proto#groups) are not supported
+* [extenions](https://developers.google.com/protocol-buffers/docs/proto#extensions) are not supported ([#131](https://github.com/allegro/php-protobuf/issues/131))
 
 References
 ----------
