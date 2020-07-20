@@ -383,8 +383,6 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 	if (pb_get_field_descriptors(getThis(), &field_descriptors))
 		return;
 	values = pb_get_values(getThis());
-	//if ((values = pb_get_values(getThis())) == NULL)
-		//goto fail0;
 
 	reader_init(&reader, pack, pack_size);
 
