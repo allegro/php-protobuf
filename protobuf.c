@@ -382,9 +382,7 @@ PHP_METHOD(ProtobufMessage, parseFromString)
 
 	if (pb_get_field_descriptors(getThis(), &field_descriptors))
 		return;
-
-	if ((values = pb_get_values(getThis())) == NULL)
-		goto fail0;
+	values = pb_get_values(getThis());
 
 	reader_init(&reader, pack, pack_size);
 
@@ -813,6 +811,7 @@ fail0:
 static int pb_print_field_value(zval *value, zend_long level, zend_bool only_set)
 {
 	const char *string_value;
+	int used_tmp=0;
 	zval tmp;
 	TSRMLS_FETCH();
 
@@ -826,6 +825,7 @@ static int pb_print_field_value(zval *value, zend_long level, zend_bool only_set
 		ZVAL_DUP(&tmp, value);
 		convert_to_string(&tmp);
 		string_value = Z_STRVAL(tmp);
+		used_tmp=1;
 	}
 
 	if (Z_TYPE_P(value) == IS_STRING)
@@ -833,7 +833,8 @@ static int pb_print_field_value(zval *value, zend_long level, zend_bool only_set
 	else
 		php_printf(" %s\n", string_value);
 
-	zval_dtor(&tmp);
+	if(used_tmp)
+		zval_dtor(&tmp);
 
 	return 0;
 }
