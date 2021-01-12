@@ -1,3 +1,8 @@
+This repository is no longer maintained
+=======================================
+
+Since Google's official [Protocol Buffers][1] supports PHP language, it's unjustifiable to maintain this project. Please refer to [Protocol Buffers][1] for PHP language support.
+
 PHP Protobuf - Google's Protocol Buffers for PHP
 ================================================
 
@@ -274,5 +279,5 @@ Acknowledgments
 * PHP7 support ([Sergey](https://github.com/serggp))
 
 
-[1]: http://code.google.com/p/protobuf/ "Protocol Buffers"
+[1]: https://developers.google.com/protocol-buffers "Protocol Buffers"
 [2]: http://php.net/manual/en/install.pecl.phpize.php
